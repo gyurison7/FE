@@ -18,7 +18,8 @@ module.exports = {
       "react/react-in-jsx-scope": "off"
     },
     "env":{
-        "browser": true
+        "browser": true,
+        "node" :true
     }
   }
   
