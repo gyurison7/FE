@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { login } from '../../api/auth';
 
@@ -22,7 +22,7 @@ function Login() {
       const responseData = await login(id, password);
       if (responseData) {
         alert('로그인 성공');
-        navigate('/');
+        navigate('/groupmain');
       } else {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
       }
@@ -54,11 +54,11 @@ function Login() {
         <ButtonContainer>
           <button type='submit'>로그인</button>
         </ButtonContainer>
-        <SpanContainer>
-          <span>아이디 찾기</span>
-          <span>비밀번호 찾기</span>
-          <span>회원가입</span>
-        </SpanContainer>
+        <LinkContainer>
+          {/* <LinkStyle to='/'>아이디 찾기</LinkStyle>
+          <LinkStyle to='/'>비밀번호 찾기</LinkStyle> */}
+          <LinkStyle to='/signup'>회원가입</LinkStyle>
+        </LinkContainer>
         <KakaoLoginButton>
           <img src={`${process.env.PUBLIC_URL}assets/image/kakao_login.png`} alt='kakao_login' />
         </KakaoLoginButton>
@@ -74,7 +74,7 @@ const Wrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 24.375rem;
+  width: 100%;
   height: 52.75rem;
   border-radius: 1.25rem;
   display: flex;
@@ -116,30 +116,27 @@ const ButtonContainer = styled.div`
     background: #959595;
     color: white;
   }
-`
+`;
 
-const SpanContainer = styled.div`
+const LinkContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;  
   margin-top: 1rem;
+`;
 
-  span {
-    margin-right: 0.625rem;
-    color: #535353;
-    text-align: center;
-    font-family: Apple SD Gothic Neo;
-    font-size: 0.9375rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-
-  span:last-child {
-    margin-right: 0;
-  }
-`
+const LinkStyle = styled(Link)`
+  text-decoration: none;
+  margin-right: 0.625rem;
+  color: #535353;
+  text-align: center;
+  font-family: Apple SD Gothic Neo;
+  font-size: 0.9375rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
 
 const KakaoLoginButton = styled.div`
   margin-top: 4rem;
-`
+`;
