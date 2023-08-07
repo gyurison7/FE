@@ -4,8 +4,6 @@ import Login from "../pages/login";
 import Signup from "../pages/signup";
 import Write from "../pages/write";
 
-
-
 const Router = () => {
   return (
     <BrowserRouter>
