@@ -1,9 +1,52 @@
-import React from 'react'
+import React from "react";
+import { styled } from "styled-components";
 
 function GroupPageHeader() {
   return (
-    <div>GroupPageHeader</div>
-  )
+    <StLogoWrapper>
+      <StLogoContainer>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <StLogoImage
+            src={`${process.env.PUBLIC_URL}/assets/image/logo.png`}
+            alt="logo"
+          />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "10px",
+          }}
+        >
+          <button style={{ height: "42px" }}> search</button>
+        </div>
+      </StLogoContainer>
+    </StLogoWrapper>
+  );
 }
 
-export default GroupPageHeader
+export default GroupPageHeader;
+
+const StLogoContainer = styled.div`
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  max-width: 428px;
+`;
+
+const StLogoImage = styled.img`
+  width: 75px;
+  height: auto;
+`;
+
+const StLogoWrapper = styled.div`
+  width: 100%;
+  position: relative;
+`;
