@@ -5,17 +5,21 @@ import Signup from "../pages/signup-login/Signup.jsx";
 import GroupWrite from "../pages/group/GroupWrite.jsx";
 import MyPage from "../pages/mypage/MyPage.jsx";
 import Introduction from "../pages/app-introduction/Introduction.jsx";
+import PostMain from "../pages/post/PostMain.jsx";
+import PostWrite from "../pages/post/PostWrite.jsx";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<GroupMain />} />
+        <Route path="/" element={<Introduction />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/write" element={<GroupWrite />} />
+        <Route path="/groupmain" element={<GroupMain />} />
+        <Route path="/groupwrite" element={<GroupWrite />} />
+        <Route path="/postmain" element={<PostMain />} />
+        <Route path="/postwrite" element={<PostWrite />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/introduction" element={<Introduction/>} />
       </Routes>
     </BrowserRouter>
   );
