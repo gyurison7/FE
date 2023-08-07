@@ -13,8 +13,12 @@ function Itroduction() {
     <Wrap>
       <CarouselWrap>
         <Carousel autoplay>
-          <IMG
+          {/* <IMG
             src={`${process.env.PUBLIC_URL}/assets/image/img1.png`}
+            alt="rasm"
+          /> */}
+          <IMG
+            src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`}
             alt="rasm"
           />
           <IMG
