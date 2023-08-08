@@ -272,7 +272,7 @@ const StProfileImage = styled.img`
 
 const StThumbNail = styled.button`
   width: 100%;
-  height: 25vh;
+  height: 20vh;
   border: none;
   border-radius: 15px;
   cursor: pointer;
