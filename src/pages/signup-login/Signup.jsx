@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup } from '../../api/auth'
-import { useNavigate } from 'react-router-dom';
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
+import SignupModal from '../../components/SignupModal';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -11,7 +11,7 @@ function Signup() {
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
@@ -54,8 +54,7 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
-        alert('회원가입 완료');
-        navigate('/login');
+        setOpenModal(true);
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
       }
@@ -98,6 +97,7 @@ function Signup() {
           <button type='submit'>가입하기</button>
         </ButtonContainer>
       </form>
+      {setOpenModal ? openModal && (<SignupModal />) : null}
     </Wrapper>
   )
 }
@@ -157,8 +157,8 @@ const ButtonContainer = styled.div`
     flex-shrink: 0;
     border: none;
     border-radius: 1.78125rem;
-    background: #959595;
-    color: white;
+    background: #5873FE;
+    color: #FFF;
     cursor: pointer;
   }
 `;

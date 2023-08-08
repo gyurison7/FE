@@ -16,6 +16,8 @@ export const signup = async (loginId, password, confirm) => {
     loginId,
     password,
     confirm,
+  }, {
+    withCredentials: true
   });
   
   return response.data;
