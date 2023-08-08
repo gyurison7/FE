@@ -15,7 +15,7 @@ const SignupModal = () => {
                     <p>지금 바로 메모리 밍글을<br />만들어보세요</p>
                 </TextContainer>
                 <ButtonContainer>
-                    <button onClick={() => navigate('/groupmain')}>확인</button>
+                    <button onClick={() => navigate('/userinfo')}>확인</button>
                 </ButtonContainer>
             </ModalBody>
         </ModalWrapper>
