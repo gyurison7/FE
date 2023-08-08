@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { login } from '../../api/auth';
-import Input from '../../components/common/input/Input';
+import Input from '../../components/common/input/Input.jsx';
 
 function Login() {
   const [id, setId] = useState('');
