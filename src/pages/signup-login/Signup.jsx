@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import { signup } from '../../api/auth'
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
 import SignupModal from '../../components/SignupModal';
+import Input from '../../components/common/input/Input';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -69,28 +70,34 @@ function Signup() {
       <SignupPageHeader />
       <form onSubmit={signupHandler}>
         <InputContainer>
-          <input
+          <Input
             onChange={onChangeIdHandelr}
             name='id'
             type="text"
             value={id}
-            placeholder='아이디 입력' />
+            placeholder='아이디 입력'
+            theme='underLine'
+          />
           {idError && <small>{idError}</small>}
         </InputContainer>
         <InputContainer>
-          <input
+          <Input
             onChange={onChangePasswordHandelr}
             name='password'
             type="password"
             value={password}
-            placeholder='비밀번호 입력' />
+            placeholder='비밀번호 입력'
+            theme='underLine'
+          />
           {passwordError && <small>{passwordError}</small>}
-          <input
+          <Input
             onChange={onChangeConfirmHandelr}
             name='confirm'
             type="password"
             value={confirm}
-            placeholder='비밀번호 확인' />
+            placeholder='비밀번호 확인'
+            theme='underLine'
+          />
           {confirmError && <small>{confirmError}</small>}
         </InputContainer>
         <ButtonContainer>
@@ -127,19 +134,10 @@ const InputContainer = styled.div`
   margin-top: 4rem;
   margin-bottom: 4rem;
 
-  input {
-    width: 21.375rem;
-    height: 3.5625rem;
-    flex-shrink: 0;
-    border-radius: 1.78125rem;
-    border: 1px solid #E8E8E8;
-    padding: 0 1.25rem;
-  }
-
   small {
-    width: 85%;
+    width: 90%;
     font-size: 0.8rem;
-    color: red;
+    color: #FF7E62;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-line;
