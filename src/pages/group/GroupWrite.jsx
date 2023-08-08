@@ -13,14 +13,14 @@ function GroupWrite() {
 
   const [participants, setParticipant] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
-  // const [selectedFriends, setSelectedFriends] = useState([]);
+  const [selectedFriends, setSelectedFriends] = useState([]);
 
   console.log("-------------------");
   console.log("groupName", groupName);
   console.log("place", places);
   console.log("startDate", startDate);
   console.log("endDate", endDate);
-  console.log("participants", participants);
+  console.log("participants", selectedFriends);
   console.log("image", thumbnailUrl);
   console.log("searchResult", searchResult);
   const searchUser = async (nickname) => {
@@ -115,9 +115,28 @@ function GroupWrite() {
     setPlace("");
   };
 
-  const addFriendHandler = ()=>{
-    
-  }
+  const addFriendHandler = (item) => {
+    const newFriend = {
+      userId: item.userId,
+      loginId: item.loginId,
+      nickname: item.nickname,
+      profileUrl: item.profileUrl,
+    };
+    setSelectedFriends((prevFriend) => [...prevFriend, newFriend]);
+    setParticipant("");
+    setSearchResult([]);
+  };
+
+  const removeFriendHandler = (id) => {
+    setSelectedFriends((prevfri) =>
+      prevfri.filter((item) => item.userId !== id)
+    );
+  };
+
+  const isUserSelected = (loginId) => {
+    return selectedFriends.some((friend) => friend.loginId === loginId);
+  };
+
   return (
     <>
       <StWriteHeader>
@@ -185,16 +204,33 @@ function GroupWrite() {
             value={participants}
             onChange={universalHandler}
           />
-          {searchResult.map((item) => {
-            return (
-              <div key={item.userId}>
+          {searchResult
+            .filter((item) => !isUserSelected(item.loginId))
+            .map((item) => {
+              return (
+                <div key={item.userId}>
                   {item.loginId}
                   {item.nickname}
-                  <button onClick={addFriendHandler}> 추가</button>
-               
-              </div>
-            );
-          })}
+                  <button onClick={() => addFriendHandler(item)}> 추가</button>
+                </div>
+              );
+            })}
+        </div>
+        <div style={{ display: "flex", gap: "12px" }}>
+          {selectedFriends &&
+            selectedFriends.map((item) => {
+              return (
+                <div key={item.userId}>
+                  <StProfileImage src={item.profileUrl} alt={item.nickname} />
+                  <div> {item.nickname} </div>
+                  <p> {item.loginId}</p>
+                  <button onClick={() => removeFriendHandler(item.userId)}>
+                    {" "}
+                    제거
+                  </button>
+                </div>
+              );
+            })}
         </div>
       </StWriteBody>
     </>
@@ -218,4 +254,11 @@ const StWriteBody = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+  overflow: scroll;
+`;
+
+const StProfileImage = styled.img`
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
 `;
