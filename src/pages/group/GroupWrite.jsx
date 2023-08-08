@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-
+import api from '../../api/index.jsx';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -19,32 +19,45 @@ function GroupWrite() {
   console.log('endDate', endDate);
   console.log('participants', participants);
 
+  const searchUser = async (nickname) => {
+    try {
+      const payload = { 
+        "nickname": nickname 
+      };
   
-  const groupNameHandler = (e)=>{
-    setGroupName(e.target.value)
+      const response = await api.post('/nickname', payload); 
+      const userData = response.data;
+  
+      console.log(userData); 
+  
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   }
+  const universalHandler = (e) => {
+    const { name, value } = e.target;
 
-  const placeHandler = (e) =>{
-    setPlace(e.target.value)
-  }
-
-  const placeButtonHandler = ()=>{
-    const newPlaces = place;
-    setPlaces(prevPlaces =>  [...prevPlaces, newPlaces]);
-    setPlace('')
-  }
-
-  const startDateHandler = (e)=>{
-    setStartDate(e.target.value)
-  }
-
-  const endDateHandler = (e)=>{
-    setEndDate(e.target.value)
-  }
-
-  const participantsHandler = (e)=>{
-    setParticipant(e.target.value)
-  }
+    switch(name) {
+        case "groupName":
+            setGroupName(value);
+            break;
+        case "place":
+            setPlace(value);
+            break;
+        case "startDate":
+            setStartDate(value);
+            break;
+        case "endDate":
+            setEndDate(value);
+            break;
+        case "participants":
+            setParticipant(value);
+            searchUser(value);
+            break;
+        default:
+            break;
+    }
+}
 
   const deletePlaceHandler = (indexToDelete) => {
     setPlaces(prevPlaces => prevPlaces.filter((_, index) => index !== indexToDelete));
@@ -54,6 +67,15 @@ function GroupWrite() {
   const backButtonHandler = ()=>{
     navigate("/groupmain")
   }
+
+  const placeButtonHandler = ()=>{
+    const newPlaces = place;
+    setPlaces(prevPlaces =>  [...prevPlaces, newPlaces]);
+    setPlace('')
+  }
+
+
+
     return (
         <>
             <StWriteHeader>
@@ -71,18 +93,20 @@ function GroupWrite() {
             <StWriteBody>
                 <div>
                     <input 
+                    name='groupName'
                     type='text' 
                     value={groupName} 
                     placeholder='그룹 이름을 입력해주세요'
-                    onChange={groupNameHandler}/>
+                    onChange={universalHandler}/>
                 </div>
                     <button>image</button>
                 <div>
                     함께한 추억 장소
                     <input 
+                    name='place'
                     placeholder='장소' 
                     value={place}
-                    onChange={placeHandler}
+                    onChange={universalHandler}
                     />
                     <button onClick={placeButtonHandler}> 추가</button>
                 </div>
@@ -97,23 +121,26 @@ function GroupWrite() {
                 <div>
                     함께한 추억 기간
                     <input 
+                    name='startDate'
                     type="date"
                      placeholder='2023-08-02' 
                      value={startDate}
-                     onChange={startDateHandler}
+                     onChange={universalHandler}
                      /> ~ 
                     <input 
+                    name='endDate'
                     type="date"
                      placeholder='2023-08-03'
                      value={endDate}
-                     onChange={endDateHandler} />
+                     onChange={universalHandler} />
                 </div>
                 <div>
                     함께한 친구들
                     <input 
+                    name='participants'
                     placeholder='친구 아이디' 
                     value={participants}
-                    onChange={participantsHandler}/>
+                    onChange={universalHandler}/>
                 </div>
             </StWriteBody>
         

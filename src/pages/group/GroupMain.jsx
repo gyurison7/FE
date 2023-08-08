@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import GroupPageHeader from "../../layout/header/GroupPageHeader";
+import Footer from "../../layout/footer/Footer.jsx";
 // import Footer from "../../layout/footer/Footer";
 
 function GroupMain() {
@@ -97,7 +98,7 @@ function GroupMain() {
           </StButtonWrapper>
         ))}
       </StGroupWrapper>
-      {/* <Footer/> */}
+      <Footer/>
       </StMainContainer>
     </>
   );
