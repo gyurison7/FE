@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup } from '../../api/auth'
-import { useNavigate } from 'react-router-dom';
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
+import SignupModal from '../../components/SignupModal';
+import Input from '../../components/common/input/Input';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -11,7 +12,7 @@ function Signup() {
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
@@ -54,8 +55,7 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
-        alert('회원가입 완료');
-        navigate('/login');
+        setOpenModal(true);
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
       }
@@ -70,34 +70,41 @@ function Signup() {
       <SignupPageHeader />
       <form onSubmit={signupHandler}>
         <InputContainer>
-          <input
+          <Input
             onChange={onChangeIdHandelr}
             name='id'
             type="text"
             value={id}
-            placeholder='아이디 입력' />
+            placeholder='아이디 입력'
+            theme='underLine'
+          />
           {idError && <small>{idError}</small>}
         </InputContainer>
         <InputContainer>
-          <input
+          <Input
             onChange={onChangePasswordHandelr}
             name='password'
             type="password"
             value={password}
-            placeholder='비밀번호 입력' />
+            placeholder='비밀번호 입력'
+            theme='underLine'
+          />
           {passwordError && <small>{passwordError}</small>}
-          <input
+          <Input
             onChange={onChangeConfirmHandelr}
             name='confirm'
             type="password"
             value={confirm}
-            placeholder='비밀번호 확인' />
+            placeholder='비밀번호 확인'
+            theme='underLine'
+          />
           {confirmError && <small>{confirmError}</small>}
         </InputContainer>
         <ButtonContainer>
           <button type='submit'>가입하기</button>
         </ButtonContainer>
       </form>
+      {setOpenModal ? openModal && (<SignupModal />) : null}
     </Wrapper>
   )
 }
@@ -127,19 +134,10 @@ const InputContainer = styled.div`
   margin-top: 4rem;
   margin-bottom: 4rem;
 
-  input {
-    width: 21.375rem;
-    height: 3.5625rem;
-    flex-shrink: 0;
-    border-radius: 1.78125rem;
-    border: 1px solid #E8E8E8;
-    padding: 0 1.25rem;
-  }
-
   small {
-    width: 85%;
+    width: 90%;
     font-size: 0.8rem;
-    color: red;
+    color: #FF7E62;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-line;
@@ -157,8 +155,8 @@ const ButtonContainer = styled.div`
     flex-shrink: 0;
     border: none;
     border-radius: 1.78125rem;
-    background: #959595;
-    color: white;
+    background: #5873FE;
+    color: #FFF;
     cursor: pointer;
   }
 `;

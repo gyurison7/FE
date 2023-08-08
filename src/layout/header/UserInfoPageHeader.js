@@ -2,42 +2,43 @@ import React from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const SignupPageHeader = () => {
+const UserInfoPageHeader = () => {
     const navigate = useNavigate();
 
     return (
         <HeaderContainer>
-            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_X.svg`} alt='' onClick={() => navigate(-1)} />
-            <TitleContainer>
-                <Title>회원가입</Title>
-            </TitleContainer>
+            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_back.svg`} alt='' onClick={() => navigate(-1)} />
+            <Title>프로필 등록</Title>
         </HeaderContainer>
     )
 }
 
-export default SignupPageHeader;
+export default UserInfoPageHeader;
 
 const HeaderContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     width: 100%;
-    padding: 1rem;
+    height: 10vh;
+    padding: 1vw;
     position: relative;
-    top: -10vh;
+    top: -8vh;
+    @media (max-height: 750px) {
+        top: 0;
+    }
 `;
 
 const BackButton = styled.img`
     cursor: pointer;
-    margin-right: auto; 
-`;
-
-const TitleContainer = styled.div`
-    width: 100%;
-    text-align: center;
+    margin-top: 10vw;
+    @media (max-height: 750px) {
+        margin-top: 5vw;
+    }
 `;
 
 const Title = styled.h1`
+    width: 100%;
+    text-align: center;
     color: #4C4C4C;
     font-family: Pretendard Variable;
     font-size: 1rem;
