@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserInfoPageHeader from '../../layout/header/UserInfoPageHeader';
-import Input from '../../components/common/input/Input';
+import Input from '../../components/common/input/Input.jsx';
 
 const UserInfo = () => {
     const [nickname, setNickname] = useState('');

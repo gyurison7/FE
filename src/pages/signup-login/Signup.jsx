@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup } from '../../api/auth'
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
-import SignupModal from '../../components/SignupModal';
-import Input from '../../components/common/input/Input';
+import SignupModal from '../../components/SignupModal.jsx';
+import Input from '../../components/common/input/Input.jsx';
 
 function Signup() {
   const [id, setId] = useState('');
