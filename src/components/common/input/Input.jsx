@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import PropTypes from "prop-types";
 
-const Input = ({ onChange, name, type, value, placeholder, theme }) => {
+const Input = ({ onChange, name, type, value, placeholder, theme, borderColor }) => {
   return (
     <InputStyle
       onChange={onChange}
@@ -10,6 +10,7 @@ const Input = ({ onChange, name, type, value, placeholder, theme }) => {
       value={value}
       placeholder={placeholder}
       theme={theme}
+      borderColor={borderColor}
     />
   );
 };
@@ -19,10 +20,10 @@ const InputStyle = styled.input`
   height: 3.5625rem;
   flex-shrink: 0;
 
-  ${({ theme }) => themeHandler(theme)};
+  ${({ theme, borderColor }) => themeHandler(theme, borderColor)};
 `;
 
-const themeHandler = (theme) => {
+const themeHandler = (theme, borderColor) => {
   switch (theme) {
     case "radius":
       return `
@@ -30,23 +31,35 @@ const themeHandler = (theme) => {
                 background-color: transparent;
                 border-radius: 1.75rem;
                 border: 1px solid #FFF;
-                color: #FFF;
                 outline: none;
+                color: #FFF;
+                font-family: Apple SD Gothic Neo;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
                 &::placeholder {
                     color: #FFF;
+                    font-size: 16px;
                 }
-                `;
+            `;
     case "underLine":
       return `
                 background-color: transparent;
                 border: none;
-                border-bottom: 1px solid #5873FE;
-                color: #8B8B8B;
+                border-bottom: 1px solid ${borderColor || '#5873FE'};
                 outline: none;
+                color: #8B8B8B;
+                font-family: Pretendard Variable;
+                font-size: 22px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
                 &::placeholder {
                     color: #8B8B8B;
+                    font-size: 22px;
                 }
-                `;
+            `;
     default:
       return;
   }
@@ -59,6 +72,7 @@ Input.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   theme: PropTypes.oneOf(["radius", "underLine"]),
+  borderColor: PropTypes.string
 };
 
 Input.defaultProps = {
@@ -67,6 +81,7 @@ Input.defaultProps = {
   value: "",
   placeholder: "",
   theme: "radius",
+  borderColor: ""
 };
 
 export default Input;
