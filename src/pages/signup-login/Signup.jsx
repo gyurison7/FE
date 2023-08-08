@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup } from '../../api/auth'
 import { useNavigate } from 'react-router-dom';
-import SignupPageHeader from '../../layout/header/SignupPageHeader';
-
+import SignupPageHeader from '../../layout/header/SignupPageHeader'
 function Signup() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');

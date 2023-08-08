@@ -5,7 +5,6 @@ const Layout = styled.div`
   max-width: 428px;
   height: 100vh;
   margin: 0 auto;
-  overflow: scroll;
 `;
 
 export default Layout;
