@@ -2,22 +2,35 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { login } from '../../api/auth';
+import Input from '../../components/common/input/Input';
 
 function Login() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [idError, setIdError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
+    setIdError('');
   }
 
   const onChangePasswordHandelr = (e) => {
     setPassword(e.target.value);
+    setPasswordError('');
   }
 
   const loginHandler = async (e) => {
     e.preventDefault();
+    if (id === '') {
+      setIdError('아이디를 입력해주세요.');
+      return;
+    } else if (password === '') {
+      setPasswordError('비밀번호를 입력해주세요.');
+      return;
+    }
+
     try {
       const responseData = await login(id, password);
       if (responseData) {
@@ -37,18 +50,22 @@ function Login() {
       <form onSubmit={loginHandler}>
         <ImageStyle src={`${process.env.PUBLIC_URL}/assets/image/logo.png`} alt='logo' />
         <InputContainer>
-          <input
+          <Input
             onChange={onChangeIdHandelr}
             name='id'
             type='text'
             value={id}
-            placeholder='아이디 입력' />
-          <input
+            placeholder='아이디 입력'
+            theme='radius' />
+          {idError && <small>{idError}</small>}
+          <Input
             onChange={onChangePasswordHandelr}
             name='password'
             type='password'
             value={password}
-            placeholder='비밀번호 입력' />
+            placeholder='비밀번호 입력'
+            theme='radius' />
+          {passwordError && <small>{passwordError}</small>}
         </InputContainer>
         <ButtonContainer>
           <button type='submit'>로그인</button>
@@ -95,13 +112,14 @@ const InputContainer = styled.div`
   margin-top: 4rem;
   margin-bottom: 4rem;
 
-  input {
-    width: 21.375rem;
-    height: 3.5625rem;
-    flex-shrink: 0;
-    border-radius: 1.78125rem;
-    border: 1px solid #E8E8E8;
-    padding: 0 1.25rem;
+  small {
+    width: 85%;
+    font-size: 0.8rem;
+    color: #FF7E62;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    margin-left: 1rem;
   }
 `;
 
