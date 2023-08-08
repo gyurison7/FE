@@ -16,8 +16,8 @@ const Input = ({ onChange, name, type, value, placeholder, theme, borderColor })
 };
 
 const InputStyle = styled.input`
-  width: 21.375rem;
-  height: 3.5625rem;
+  width: 100%;
+  height: 7vh;
   flex-shrink: 0;
 
   ${({ theme, borderColor }) => themeHandler(theme, borderColor)};
