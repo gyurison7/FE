@@ -30,7 +30,6 @@ function Login() {
       alert('아이디 또는 비밀번호를 다시 확인해주세요.');
       console.error(error);
     }
-
   }
 
   return (
@@ -115,6 +114,7 @@ const ButtonContainer = styled.div`
     border-radius: 1.78125rem;
     background: #959595;
     color: white;
+    cursor: pointer;
   }
 `;
 
@@ -139,4 +139,5 @@ const LinkStyle = styled(Link)`
 
 const KakaoLoginButton = styled.div`
   margin-top: 4rem;
+  cursor: pointer;
 `;
