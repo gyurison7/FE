@@ -10,3 +10,13 @@ export const login = async (loginId, password) => {
   
   return response.data;
 }
+
+export const signup = async (loginId, password, confirm) => {
+  const response = await axios.post(`${process.env.REACT_APP_URL}/signup`, {
+    loginId,
+    password,
+    confirm,
+  });
+  
+  return response.data;
+}
