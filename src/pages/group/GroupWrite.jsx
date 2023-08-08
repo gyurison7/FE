@@ -151,7 +151,8 @@ function GroupWrite() {
 
       <StWriteBody>
         <div>
-          <input
+          <StGroupInput
+            theme="underLine"
             name="groupName"
             type="text"
             value={groupName}
@@ -159,7 +160,13 @@ function GroupWrite() {
             onChange={universalHandler}
           />
         </div>
-        <button onClick={imageHandler}>image</button>
+        <StThumbNail onClick={imageHandler}>
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/image/photo.png`}
+            alt="thumbnail"
+          />
+          <p> 썸네일 추가하기</p>
+        </StThumbNail>
         함께한 추억 장소
         <div>
           <input
@@ -261,4 +268,43 @@ const StProfileImage = styled.img`
   height: 40px;
   width: 40px;
   border-radius: 100%;
+`;
+
+const StThumbNail = styled.button`
+  width: 100%;
+  height: 25vh;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  
+  img {
+    height: 40px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    color: #707070;
+  }
+`;
+
+const StGroupInput = styled.input`
+  width: 100%;
+  padding: 15px 60px 15px 0px;
+  font-size: 20px;
+  line-height: 21px;
+  border: none;
+  color: rgb(41, 41, 41);
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  background-color: transparent;
+
+  &::placeholder {
+    color: rgba(119, 116, 116, 0.786);
+    font-weight: 600;
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
