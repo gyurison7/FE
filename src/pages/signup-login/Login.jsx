@@ -6,18 +6,30 @@ import { login } from '../../api/auth';
 function Login() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [idError, setIdError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
+    setIdError('');
   }
 
   const onChangePasswordHandelr = (e) => {
     setPassword(e.target.value);
+    setPasswordError('');
   }
 
   const loginHandler = async (e) => {
     e.preventDefault();
+    if(id === '') {
+      setIdError('아이디를 입력해주세요.');
+      return;
+    } else if (password === '') {
+      setPasswordError('비밀번호를 입력해주세요.');
+      return;
+    }
+
     try {
       const responseData = await login(id, password);
       if (responseData) {
@@ -43,12 +55,14 @@ function Login() {
             type='text'
             value={id}
             placeholder='아이디 입력' />
+            {idError && <small>{idError}</small>}
           <input
             onChange={onChangePasswordHandelr}
             name='password'
             type='password'
             value={password}
             placeholder='비밀번호 입력' />
+            {passwordError && <small>{passwordError}</small>}
         </InputContainer>
         <ButtonContainer>
           <button type='submit'>로그인</button>
@@ -102,6 +116,16 @@ const InputContainer = styled.div`
     border-radius: 1.78125rem;
     border: 1px solid #E8E8E8;
     padding: 0 1.25rem;
+  }
+
+  small {
+    width: 85%;
+    font-size: 0.8rem;
+    color: red;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    margin-left: 1rem;
   }
 `;
 
