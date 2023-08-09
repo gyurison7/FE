@@ -53,6 +53,7 @@ function Login() {
           <Input
             onChange={onChangeIdHandelr}
             type='text'
+            id='id'
             name='id'
             value={id}
             placeholder='아이디 입력'
@@ -61,6 +62,7 @@ function Login() {
           <Input
             onChange={onChangePasswordHandelr}
             type='password'
+            id='password'
             name='password'
             value={password}
             placeholder='비밀번호 입력'
@@ -115,7 +117,7 @@ const InputContainer = styled.div`
   margin-top: 3rem;
   margin-bottom: 4rem;
   @media (max-height: 750px) {
-    margin-top: 2rem;
+    margin-top: 0;
     margin-bottom: 2rem;
   }
 

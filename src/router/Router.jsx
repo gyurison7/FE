@@ -5,10 +5,9 @@ import Signup from '../pages/signup-login/Signup.jsx';
 import GroupWrite from '../pages/group/GroupWrite.jsx';
 import MyPage from '../pages/mypage/MyPage.jsx';
 import Introduction from '../pages/app-introduction/Introduction.jsx';
+import UserInfo from '../pages/signup-login/UserInfo.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
-import GroupAlbum from '../pages/group-album/GroupAlbum.jsx';
-import UserInfo from '../pages/signup-login/UserInfo.jsx';
 
 const Router = () => {
   return (
@@ -23,7 +22,6 @@ const Router = () => {
         <Route path="/postmain" element={<PostMain />} />
         <Route path="/postwrite" element={<PostWrite />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/album" element={<GroupAlbum />} />
       </Routes>
     </BrowserRouter>
   );
