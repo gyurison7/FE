@@ -66,50 +66,52 @@ function Signup() {
   }
 
   return (
-    <Wrapper>
+    <>
       <SignupPageHeader />
-      <form onSubmit={signupHandler}>
-        <InputContainer>
-          <label htmlFor='id'>아이디</label>
-          <Input
-            onChange={onChangeIdHandelr}
-            type="text"
-            id='id'
-            name='id'
-            value={id}
-            placeholder='아이디 입력'
-            theme='underLine'
-          />
-          {idError && <small>{idError}</small>}
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor='id'>비밀번호</label>
-          <Input
-            onChange={onChangePasswordHandelr}
-            type="password"
-            id='password'
-            name='password'
-            value={password}
-            placeholder='비밀번호 입력'
-            theme='underLine'
-          />
-          {passwordError && <small>{passwordError}</small>}
-          <Input
-            onChange={onChangeConfirmHandelr}
-            type="password"
-            name='confirm'
-            value={confirm}
-            placeholder='비밀번호 확인'
-            theme='underLine'
-          />
-          {confirmError && <small>{confirmError}</small>}
-        </InputContainer>
-        <ButtonContainer>
-          <button type='submit'>가입하기</button>
-        </ButtonContainer>
-      </form>
-      {setOpenModal ? openModal && (<SignupModal />) : null}
-    </Wrapper>
+      <Wrapper>
+        <form onSubmit={signupHandler}>
+          <InputContainer>
+            <label htmlFor='id'>아이디</label>
+            <Input
+              onChange={onChangeIdHandelr}
+              type="text"
+              id='id'
+              name='id'
+              value={id}
+              placeholder='아이디 입력'
+              theme='underLine'
+            />
+            {idError && <small>{idError}</small>}
+          </InputContainer>
+          <InputContainer>
+            <label htmlFor='id'>비밀번호</label>
+            <Input
+              onChange={onChangePasswordHandelr}
+              type="password"
+              id='password'
+              name='password'
+              value={password}
+              placeholder='비밀번호 입력'
+              theme='underLine'
+            />
+            {passwordError && <small>{passwordError}</small>}
+            <Input
+              onChange={onChangeConfirmHandelr}
+              type="password"
+              name='confirm'
+              value={confirm}
+              placeholder='비밀번호 확인'
+              theme='underLine'
+            />
+            {confirmError && <small>{confirmError}</small>}
+          </InputContainer>
+          <ButtonContainer>
+            <button type='submit'>가입하기</button>
+          </ButtonContainer>
+        </form>
+        {setOpenModal ? openModal && (<SignupModal />) : null}
+      </Wrapper>
+    </>
   )
 }
 
@@ -177,9 +179,12 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 18rem;
+  margin-top: 28vh;
   @media (max-height: 750px) {
-    margin-top: 10rem;
+    margin-top: 17vh;
+  }
+  @media (max-height: 670px) {
+    margin-top: 13vh;
   }
   button {
     width: 21.375rem;
