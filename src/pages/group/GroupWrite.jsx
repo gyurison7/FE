@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import api from "../../api/index.jsx";
+import { DatePicker } from "antd";
+import moment from "moment";
+
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState("");
@@ -168,15 +171,15 @@ function GroupWrite() {
           <p> 썸네일 추가하기</p>
         </StThumbNail>
         함께한 추억 장소
-        <div>
-          <input
+        <PlaceInputWrapper>
+          <GroupWriteInput
             name="place"
             placeholder="장소"
             value={place}
             onChange={universalHandler}
           />
-          <button onClick={placeButtonHandler}> 추가</button>
-        </div>
+           {place && <button className="button" onClick={placeButtonHandler}> 추가</button>}
+        </PlaceInputWrapper>
         <ul>
           {places.map((place, index) => (
             <li key={index}>
@@ -186,26 +189,23 @@ function GroupWrite() {
           ))}
         </ul>
         함께한 추억 기간
-        <div>
-          <input
-            name="startDate"
-            type="date"
-            placeholder="2023-08-02"
-            value={startDate}
-            onChange={universalHandler}
-          />{" "}
-          ~
-          <input
-            name="endDate"
-            type="date"
-            placeholder="2023-08-03"
-            value={endDate}
-            onChange={universalHandler}
+        <StDateWrapper>
+          <DatePicker.RangePicker
+            className="my-picker"
+            value={[
+              startDate ? moment(startDate) : null,
+              endDate ? moment(endDate) : null,
+            ]}
+            onChange={(dates, dateStrings) => {
+              setStartDate(dateStrings[0]);
+              setEndDate(dateStrings[1]);
+            }}
+            style={{ width: "100%" }}
           />
-        </div>
+        </StDateWrapper>
         함께한 친구들
         <div>
-          <input
+          <GroupWriteInput
             name="participants"
             placeholder="친구 아이디"
             value={participants}
@@ -277,7 +277,7 @@ const StThumbNail = styled.button`
   border-radius: 15px;
   cursor: pointer;
   margin-bottom: 12px;
-  
+
   img {
     height: 40px;
     margin-bottom: 5px;
@@ -308,3 +308,47 @@ const StGroupInput = styled.input`
     outline: none;
   }
 `;
+
+const StDateWrapper = styled.div`
+  width: 100%;
+
+  .my-picker .ant-picker-panel-container .ant-picker-panel > div > div:nth-child(2) {
+    display: none;
+  }
+
+  .my-picker .ant-picker-dropdown {
+    width: 50% !important; 
+  }
+`;
+
+const GroupWriteInput = styled.input`
+  width: 100%;
+  height: 44px;
+  padding-right: 50px;
+  border-radius: 7px;
+  background-color: #F5F5F5;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+`
+
+const PlaceInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+
+.button{
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: #f5f5f5;
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover{
+  background-color: #e0e0e0;
+}
+`

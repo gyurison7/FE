@@ -14,19 +14,19 @@ function GroupMain() {
   const data = [
     {
       id: 1,
-      memoryName: "갈릉의 추억",
+      memoryName: "찐친즈 모임",
       date: "2023.08.01~2023.08.14",
       img: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
     },
     {
       id: 2,
-      memoryName: "부산에 가면",
+      memoryName: "멍청이와 아이들",
       date: "2023.08.01~2023.08.14",
       img: "https://youmatter.world/app/uploads/sites/2/2019/11/travel-cities-man.jpg",
     },
     {
       id: 3,
-      memoryName: "서울에서 2박",
+      memoryName: "스위스를 좋아하는",
       date: "2023.08.01~2023.08.14",
       img: "https://www.libertytravel.com/sites/default/files/styles/full_size/public/Groups%20Product%20Tiles-Celebrations-1262x500.jpg?itok=t8BTk2fJ",
     },
@@ -69,7 +69,7 @@ function GroupMain() {
             <div
               style={{
                 width: "100%",
-                height: "175px",
+                height: "170px",
                 border: "none",
                 borderRadius: "12px",
                 backgroundImage: `url(${item.img})`,
@@ -124,6 +124,7 @@ const StGroupWrapper = styled.div`
 const StButtonWrapper = styled.div`
   margin-top: 12px;
   width: 40%;
+  padding-bottom:24px ;
 `;
 
 
@@ -131,12 +132,12 @@ const StButtonWrapper = styled.div`
 //styled
 const StWriteButton = styled.button`
   width: 100%;
-  height: 175px;
+  height: 170px;
   border-radius: 12px;
   border: none;
   cursor: pointer;
   font-size: 50px ;
   color: white;
-  background-color: #cac8c8;
+  background-color: rgba(88, 115, 254, 1);
   
 `;
