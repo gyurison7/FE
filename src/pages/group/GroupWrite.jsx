@@ -5,7 +5,6 @@ import api from "../../api/index.jsx";
 import { DatePicker } from "antd";
 import moment from "moment";
 
-
 function GroupWrite() {
   const [groupName, setGroupName] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -47,6 +46,28 @@ function GroupWrite() {
       } else {
         console.error("Error fetching user data:", error);
       }
+    }
+  };
+
+  //데이터 보내는 로직
+  const submitHandler = async () => {
+    const payload = {
+      groupName: groupName,
+      thumbnailUrl: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
+      place: places,
+      participant: selectedFriends.map((friend) => friend.userId.toString()), 
+      startDate:startDate,
+      endDate: endDate,
+    };
+
+    try {
+      const response = await api.post("/group", (payload),{
+        withCredentials: true,
+      });
+      console.log(response.data);
+      navigate("/groupmain");
+    } catch (error) {
+      console.error("Error sending group data:", error);
     }
   };
 
@@ -148,7 +169,7 @@ function GroupWrite() {
         </div>
         <div>구룹 만들기</div>
         <div>
-          <button>확인</button>
+          <button onClick={submitHandler}>확인</button>
         </div>
       </StWriteHeader>
 
@@ -178,7 +199,12 @@ function GroupWrite() {
             value={place}
             onChange={universalHandler}
           />
-           {place && <button className="button" onClick={placeButtonHandler}> 추가</button>}
+          {place && (
+            <button className="button" onClick={placeButtonHandler}>
+              {" "}
+              추가
+            </button>
+          )}
         </PlaceInputWrapper>
         <ul>
           {places.map((place, index) => (
@@ -312,12 +338,8 @@ const StGroupInput = styled.input`
 const StDateWrapper = styled.div`
   width: 100%;
 
-  .my-picker .ant-picker-panel-container .ant-picker-panel > div > div:nth-child(2) {
-    display: none;
-  }
-
-  .my-picker .ant-picker-dropdown {
-    width: 50% !important; 
+  &&.ant-picker-dropdown .ant-picker-panels > .ant-picker-panel:nth-of-type(1) {
+    display: none !important;
   }
 `;
 
@@ -326,29 +348,29 @@ const GroupWriteInput = styled.input`
   height: 44px;
   padding-right: 50px;
   border-radius: 7px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   border: none;
 
   &:focus {
     outline: none;
   }
-`
+`;
 
 const PlaceInputWrapper = styled.div`
   position: relative;
   width: 100%;
 
-.button{
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  background-color: #f5f5f5;
-  border: none;
-  cursor: pointer;
-}
+  .button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: #f5f5f5;
+    border: none;
+    cursor: pointer;
+  }
 
-.button:hover{
-  background-color: #e0e0e0;
-}
-`
+  .button:hover {
+    background-color: #e0e0e0;
+  }
+`;
