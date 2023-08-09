@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import MyPageHeader from '../../layout/header/MyPageHeader';
+import MyPageHeader from '../../layout/header/MyPageHeader.js';
 import Footer from '../../layout/footer/Footer.jsx';
 
 const MyPage = () => {
