@@ -2,18 +2,18 @@ import React from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const SignupPageHeader = () => {
+const UserInfoPageHeader = () => {
     const navigate = useNavigate();
 
     return (
         <HeaderContainer>
-            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_X.svg`} alt='back' onClick={() => navigate(-1)} />
-            <Title>회원가입</Title>
+            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_back.svg`} alt='back' onClick={() => navigate(-1)} />
+            <Title>프로필 등록</Title>
         </HeaderContainer>
     )
 }
 
-export default SignupPageHeader;
+export default UserInfoPageHeader;
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -22,25 +22,35 @@ const HeaderContainer = styled.div`
     width: 100%;
     padding: 5vw;
     position: relative;
-    top: -4vh;
-    @media (min-height: 910px) {
-        top: -6vh;
+    margin-bottom: -5rem;
+    @media (max-height: 670px) {
+        margin-bottom: -3rem;
+    }
+    top: -14vh;
+    @media (max-height: 670px) {
+        top: -8vh;
     }
 `;
 
 const BackButton = styled.img`
     display: flex;
-    width: 1.10269rem;
-    height: 1.10269rem;
+    width: 0.53763rem;
+    height: 1.10906rem;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+    margin-top: 3.5vh;
+    @media (max-height: 750px) {
+        margin-top: 1.5vh;
+    }
 `;
 
 const Title = styled.h1`
     width: 100%;
     text-align: center;
-    color: #565656;
+    color: #4C4C4C;
+    text-align: center;
     font-family: Apple SD Gothic Neo;
     font-size: 1rem;
     font-style: normal;

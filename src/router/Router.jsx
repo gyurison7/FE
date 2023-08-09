@@ -8,6 +8,7 @@ import Introduction from '../pages/app-introduction/Introduction.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
 import GroupAlbum from '../pages/group-album/GroupAlbum.jsx';
+import UserInfo from '../pages/signup-login/UserInfo.jsx';
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
         <Route path="/" element={<Introduction />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/groupmain" element={<GroupMain />} />
         <Route path="/groupwrite" element={<GroupWrite />} />
         <Route path="/postmain" element={<PostMain />} />

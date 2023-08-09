@@ -2,30 +2,27 @@ import React from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const SignupPageHeader = () => {
+const MyPageHeader = () => {
     const navigate = useNavigate();
 
     return (
         <HeaderContainer>
-            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_X.svg`} alt='back' onClick={() => navigate(-1)} />
-            <Title>회원가입</Title>
+            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_back.svg`} alt='back' onClick={() => navigate(-1)} />
+            <Title>마이페이지</Title>
         </HeaderContainer>
     )
 }
 
-export default SignupPageHeader;
+export default MyPageHeader;
 
 const HeaderContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     width: 100%;
     padding: 5vw;
     position: relative;
-    top: -4vh;
-    @media (min-height: 910px) {
-        top: -6vh;
-    }
+    top: 3vh;
 `;
 
 const BackButton = styled.img`
@@ -40,7 +37,7 @@ const BackButton = styled.img`
 const Title = styled.h1`
     width: 100%;
     text-align: center;
-    color: #565656;
+    color: #4C4C4C;
     font-family: Apple SD Gothic Neo;
     font-size: 1rem;
     font-style: normal;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup } from '../../api/auth'
-import { useNavigate } from 'react-router-dom';
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
+import SignupModal from '../../components/SignupModal.jsx';
+import Input from '../../components/common/input/Input.jsx';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -11,7 +12,7 @@ function Signup() {
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
@@ -54,8 +55,7 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
-        alert('회원가입 완료');
-        navigate('/login');
+        setOpenModal(true);
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
       }
@@ -70,34 +70,45 @@ function Signup() {
       <SignupPageHeader />
       <form onSubmit={signupHandler}>
         <InputContainer>
-          <input
+          <label htmlFor='id'>아이디</label>
+          <Input
             onChange={onChangeIdHandelr}
-            name='id'
             type="text"
+            id='id'
+            name='id'
             value={id}
-            placeholder='아이디 입력' />
+            placeholder='아이디 입력'
+            theme='underLine'
+          />
           {idError && <small>{idError}</small>}
         </InputContainer>
         <InputContainer>
-          <input
+          <label htmlFor='id'>비밀번호</label>
+          <Input
             onChange={onChangePasswordHandelr}
+            type="password"
+            id='password'
             name='password'
-            type="password"
             value={password}
-            placeholder='비밀번호 입력' />
+            placeholder='비밀번호 입력'
+            theme='underLine'
+          />
           {passwordError && <small>{passwordError}</small>}
-          <input
+          <Input
             onChange={onChangeConfirmHandelr}
-            name='confirm'
             type="password"
+            name='confirm'
             value={confirm}
-            placeholder='비밀번호 확인' />
+            placeholder='비밀번호 확인'
+            theme='underLine'
+          />
           {confirmError && <small>{confirmError}</small>}
         </InputContainer>
         <ButtonContainer>
           <button type='submit'>가입하기</button>
         </ButtonContainer>
       </form>
+      {setOpenModal ? openModal && (<SignupModal />) : null}
     </Wrapper>
   )
 }
@@ -110,8 +121,8 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: 52.75rem;
-  border-radius: 1.25rem;
+  height: 100vh;
+  //border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -122,25 +133,41 @@ const InputContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  @media (max-height: 670px) {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
 
-  input {
-    width: 21.375rem;
-    height: 3.5625rem;
-    flex-shrink: 0;
-    border-radius: 1.78125rem;
-    border: 1px solid #E8E8E8;
-    padding: 0 1.25rem;
+  label {
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5vw;
+    color: #5873FE;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 
   small {
-    width: 85%;
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5vw;
+    margin-right: 5vw;
     font-size: 0.8rem;
-    color: red;
-    word-wrap: break-word;
+    color: #FF7E62;
+    font-family: Apple SD Gothic Neo;
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    word-break: break-all;
     overflow-wrap: break-word;
     white-space: pre-line;
   }
@@ -149,17 +176,25 @@ const InputContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
+  margin-top: 18rem;
+  @media (max-height: 750px) {
+    margin-top: 10rem;
+  }
   button {
     width: 21.375rem;
     height: 3.5625rem;
     flex-shrink: 0;
     border: none;
     border-radius: 1.78125rem;
-    background: #959595;
-    color: white;
-    cursor: pointer;
+    background: #5873FE;
+    color: #FFF;
+    text-align: center;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 `;
 
