@@ -137,7 +137,11 @@ const InputContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
   margin-top: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
+  @media (max-height: 670px) {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
 
   label {
     align-self: flex-start;
