@@ -7,7 +7,7 @@ const UserInfoPageHeader = () => {
 
     return (
         <HeaderContainer>
-            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_back.svg`} alt='' onClick={() => navigate(-1)} />
+            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_back.svg`} alt='back' onClick={() => navigate(-1)} />
             <Title>프로필 등록</Title>
         </HeaderContainer>
     )
@@ -17,22 +17,32 @@ export default UserInfoPageHeader;
 
 const HeaderContainer = styled.div`
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
-    height: 10vh;
-    padding: 1vw;
+    padding: 5vw;
     position: relative;
-    top: -8vh;
-    @media (max-height: 750px) {
-        top: 0;
+    margin-bottom: -5rem;
+    @media (max-height: 670px) {
+        margin-bottom: -3rem;
+    }
+    top: -13vh;
+    @media (max-height: 670px) {
+        top: -7vh;
     }
 `;
 
 const BackButton = styled.img`
-    cursor: pointer;
-    margin-top: 10vw;
+    display: flex;
+    width: 0.53763rem;
+    height: 1.10906rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: 4.5vh;
     @media (max-height: 750px) {
-        margin-top: 5vw;
+        margin-top: 3vh;
     }
 `;
 
@@ -40,7 +50,8 @@ const Title = styled.h1`
     width: 100%;
     text-align: center;
     color: #4C4C4C;
-    font-family: Pretendard Variable;
+    text-align: center;
+    font-family: Apple SD Gothic Neo;
     font-size: 1rem;
     font-style: normal;
     font-weight: 600;

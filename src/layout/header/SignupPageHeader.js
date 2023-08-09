@@ -7,10 +7,8 @@ const SignupPageHeader = () => {
 
     return (
         <HeaderContainer>
-            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_X.svg`} alt='' onClick={() => navigate(-1)} />
-            <TitleContainer>
-                <Title>회원가입</Title>
-            </TitleContainer>
+            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_X.svg`} alt='back' onClick={() => navigate(-1)} />
+            <Title>회원가입</Title>
         </HeaderContainer>
     )
 }
@@ -22,24 +20,25 @@ const HeaderContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    padding: 1rem;
+    padding: 5vw;
     position: relative;
-    top: -10vh;
+    top: -5vh;
 `;
 
 const BackButton = styled.img`
-    cursor: pointer;
-    margin-right: auto; 
-`;
-
-const TitleContainer = styled.div`
-    width: 100%;
-    text-align: center;
+    display: flex;
+    width: 1.10269rem;
+    height: 1.10269rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
 `;
 
 const Title = styled.h1`
-    color: #4C4C4C;
-    font-family: Pretendard Variable;
+    width: 100%;
+    text-align: center;
+    color: #565656;
+    font-family: Apple SD Gothic Neo;
     font-size: 1rem;
     font-style: normal;
     font-weight: 600;
