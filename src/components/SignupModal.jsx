@@ -29,7 +29,7 @@ const ModalWrapper = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -40,7 +40,7 @@ const ModalBackground = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     opacity: 0.8;
     background-color: #000;
     z-index: 1;
@@ -55,18 +55,16 @@ const ModalBody = styled.div`
     border-radius: 1.75rem;
     opacity: 1;
     background: #FFF;
-    width: 21.125rem;
+    width: 80%;
     height: 27.25rem;
     flex-shrink: 0;
-    max-width: 80%;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-
+    align-items: center;
     img {
-        margin-top: 2rem;
+        margin-top: 3rem;
     }
 `;
 
@@ -77,9 +75,18 @@ const TextContainer = styled.div`
     justify-content: center;
     text-align: center;
     flex-direction: column;
-
+    color: #4C4C4C;
+    font-family: Apple SD Gothic Neo;
+    font-style: normal;
+    line-height: 129.336%;
     h2 {
-        margin-bottom: 1.25rem;
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    p{
+        font-size: 1rem;
+        font-weight: 500;
     }
 `;
 
@@ -88,15 +95,14 @@ const ButtonContainer = styled.div`
     justify-content: center;
     align-items: center;
     padding: 1rem 0;
-
+    width: 100%;
     button {
-        width: 18.5rem;
+        width: 100%;
         height: 3.5625rem;
         flex-shrink: 0;
         border: none;
         border-radius: 1.75rem;
         background: #5873FE;
         color: #FFF;
-        cursor: pointer;
     }
 `;

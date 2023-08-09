@@ -70,10 +70,12 @@ function Signup() {
       <SignupPageHeader />
       <form onSubmit={signupHandler}>
         <InputContainer>
+          <label htmlFor='id'>아이디</label>
           <Input
             onChange={onChangeIdHandelr}
-            name='id'
             type="text"
+            id='id'
+            name='id'
             value={id}
             placeholder='아이디 입력'
             theme='underLine'
@@ -81,10 +83,12 @@ function Signup() {
           {idError && <small>{idError}</small>}
         </InputContainer>
         <InputContainer>
+          <label htmlFor='id'>비밀번호</label>
           <Input
             onChange={onChangePasswordHandelr}
-            name='password'
             type="password"
+            id='password'
+            name='password'
             value={password}
             placeholder='비밀번호 입력'
             theme='underLine'
@@ -92,8 +96,8 @@ function Signup() {
           {passwordError && <small>{passwordError}</small>}
           <Input
             onChange={onChangeConfirmHandelr}
-            name='confirm'
             type="password"
+            name='confirm'
             value={confirm}
             placeholder='비밀번호 확인'
             theme='underLine'
@@ -117,8 +121,8 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: 52.75rem;
-  border-radius: 1.25rem;
+  height: 100vh;
+  //border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -129,16 +133,37 @@ const InputContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 4rem;
+  margin-top: 2rem;
   margin-bottom: 4rem;
 
+  label {
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5vw;
+    color: #5873FE;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
   small {
-    width: 90%;
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5vw;
+    margin-right: 5vw;
     font-size: 0.8rem;
     color: #FF7E62;
-    word-wrap: break-word;
+    font-family: Apple SD Gothic Neo;
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    word-break: break-all;
     overflow-wrap: break-word;
     white-space: pre-line;
   }
@@ -147,8 +172,11 @@ const InputContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
+  margin-top: 18rem;
+  @media (max-height: 750px) {
+    margin-top: 10rem;
+  }
   button {
     width: 21.375rem;
     height: 3.5625rem;
@@ -157,7 +185,12 @@ const ButtonContainer = styled.div`
     border-radius: 1.78125rem;
     background: #5873FE;
     color: #FFF;
-    cursor: pointer;
+    text-align: center;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 `;
 

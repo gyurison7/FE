@@ -34,7 +34,7 @@ const UserInfo = () => {
                     name='nickname'
                     type="text"
                     value={nickname}
-                    placeholder="닉네임을 입력해주세요."
+                    placeholder="닉네임 입력"
                     theme='underLine'
                 />
                 {nicknameError && <small>{nicknameError}</small>}
@@ -58,18 +58,26 @@ const UserInfoContainer = styled.div`
     align-items: center;
     height: 100vh;
     padding: 2vw;
-
     img {
-        margin-bottom: 10vw;
+        margin-bottom: 8vw;
         @media (max-height: 750px) {
-            margin-bottom: 5vw;
+            margin-bottom: 4vw;
         }
     }
 `;
 
 const Text = styled.h2`
     margin-bottom: 10vw;
+    @media (max-height: 750px) {
+        margin-bottom: 7vw;
+    }
     text-align: left;
+    color: #4C4C4C;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 129.336%;
 `;
 
 const FormContainer = styled.form`
@@ -81,17 +89,25 @@ const FormContainer = styled.form`
 
     small {
         width: 90%;
-        font-size: 0.8rem;
         color: #FF7E62;
-        word-wrap: break-word;
+        font-family: Apple SD Gothic Neo;
+        font-size: 0.8125rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        word-break: break-all;
         overflow-wrap: break-word;
         white-space: pre-line;
     }
 
     p {
         width: 90%;
-        font-size: 0.8rem;
         color: #959595;
+        font-family: Apple SD Gothic Neo;
+        font-size: 0.8125rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
         margin-bottom: 10vw;
         @media (max-height: 750px) {
             margin-bottom: 5vw;
@@ -99,14 +115,19 @@ const FormContainer = styled.form`
     }
 
     button {
-        width: 21.375rem;
+        width: 90%;
         height: 3.5625rem;
         flex-shrink: 0;
         border-radius: 1.75rem;
         background: #5873FE;
         color: #FFF;
+        text-align: center;
+        font-family: Apple SD Gothic Neo;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
         border: none;
-        cursor: pointer;
     }
 `;
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { login } from '../../api/auth';
-import Input from '../../components/common/input/Input';
+import Input from '../../components/common/input/Input.jsx';
 
 function Login() {
   const [id, setId] = useState('');
@@ -48,20 +48,20 @@ function Login() {
   return (
     <Wrapper>
       <form onSubmit={loginHandler}>
-        <ImageStyle src={`${process.env.PUBLIC_URL}/assets/image/logo.png`} alt='logo' />
+        <LogoImage src={`${process.env.PUBLIC_URL}/assets/image/logo.png`} alt='logo' />
         <InputContainer>
           <Input
             onChange={onChangeIdHandelr}
-            name='id'
             type='text'
+            name='id'
             value={id}
             placeholder='아이디 입력'
             theme='radius' />
           {idError && <small>{idError}</small>}
           <Input
             onChange={onChangePasswordHandelr}
-            name='password'
             type='password'
+            name='password'
             value={password}
             placeholder='비밀번호 입력'
             theme='radius' />
@@ -86,20 +86,21 @@ function Login() {
 export default Login;
 
 const Wrapper = styled.div`
+  background: linear-gradient(#5570FF, #8895F0);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: 52.75rem;
-  border-radius: 1.25rem;
+  height: 100vh;
+  //border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const ImageStyle = styled.img`
+const LogoImage = styled.img`
   margin: 0 auto;
   display: block;
 `;
@@ -108,31 +109,50 @@ const InputContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
-  margin-top: 4rem;
+  margin-top: 3rem;
   margin-bottom: 4rem;
+  @media (max-height: 750px) {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
 
   small {
-    width: 85%;
-    font-size: 0.8rem;
+    align-self: flex-start;
+    text-align: left;
+    margin-left: 5vw;
+    margin-right: 5vw;
     color: #FF7E62;
-    word-wrap: break-word;
+    font-family: Apple SD Gothic Neo;
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    word-break: break-all;
     overflow-wrap: break-word;
     white-space: pre-line;
-    margin-left: 1rem;
   }
 `;
 
 const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
   button {
-    width: 21.375rem;
+    width: 90%;
     height: 3.5625rem;
     flex-shrink: 0;
     border: none;
     border-radius: 1.78125rem;
-    background: #959595;
-    color: white;
-    cursor: pointer;
+    background: #FFF;
+    color: #5873FE;
+    text-align: center;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 `;
 
@@ -145,8 +165,8 @@ const LinkContainer = styled.div`
 
 const LinkStyle = styled(Link)`
   text-decoration: none;
-  margin-right: 0.625rem;
-  color: #535353;
+  //margin-right: 0.625rem;
+  color: #FFF;
   text-align: center;
   font-family: Apple SD Gothic Neo;
   font-size: 0.9375rem;
@@ -156,6 +176,14 @@ const LinkStyle = styled(Link)`
 `;
 
 const KakaoLoginButton = styled.div`
-  margin-top: 4rem;
-  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  @media (max-height: 750px) {
+    margin-top: 2rem;
+  }
+
+  img {
+    width: 90%
+  }
 `;
