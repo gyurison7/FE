@@ -61,12 +61,13 @@ const UserInfoContainer = styled.div`
     img {
         margin-bottom: 8vw;
         @media (max-height: 750px) {
-            margin-bottom: 4vw;
+            margin-bottom: 3vw;
         }
     }
 `;
 
 const Text = styled.h2`
+    margin-top: -2vh;
     margin-bottom: 10vw;
     @media (max-height: 750px) {
         margin-bottom: 7vw;

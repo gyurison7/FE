@@ -26,9 +26,9 @@ const HeaderContainer = styled.div`
     @media (max-height: 670px) {
         margin-bottom: -3rem;
     }
-    top: -13vh;
+    top: -14vh;
     @media (max-height: 670px) {
-        top: -7vh;
+        top: -8vh;
     }
 `;
 
@@ -40,9 +40,9 @@ const BackButton = styled.img`
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    margin-top: 4.5vh;
+    margin-top: 3.5vh;
     @media (max-height: 750px) {
-        margin-top: 3vh;
+        margin-top: 1.5vh;
     }
 `;
 

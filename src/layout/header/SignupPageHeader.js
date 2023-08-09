@@ -22,7 +22,10 @@ const HeaderContainer = styled.div`
     width: 100%;
     padding: 5vw;
     position: relative;
-    top: -5vh;
+    top: -4vh;
+    @media (min-height: 910px) {
+        top: -6vh;
+    }
 `;
 
 const BackButton = styled.img`
