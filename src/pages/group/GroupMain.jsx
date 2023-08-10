@@ -38,54 +38,47 @@ function GroupMain() {
               />
             </StWriteButton>
           </StButtonWrapper>
-          {groupData.map((item) => (
-            <StButtonWrapper key={item.groupId} onClick={() => navigate(`/postmain/${item.groupId}`)}>
-              <div
-                style={{
-                  width: "100%",
-                  height: "170px",
-                  border: "none",
-                  borderRadius: "12px",
-                  backgroundImage: `url(${item.thumbnailUrl})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              > </div>
-              <div
-                style={{
-                  lineHeight: "1px",
-                  paddingLeft: "12px",
-                  marginTop: "12px",
-                }}
+          {groupData.map((item) => {
+            const formattedStartDate = item.startDate.slice(0, 10);
+            const formattedEndDate = item.endDate.slice(0, 10);
+
+            return (
+              <StButtonWrapper
+                key={item.groupId}
+                onClick={() => navigate(`/postmain/${item.groupId}`)}
               >
-                <h4> {item.groupName}</h4>
-                <p
+                <div
                   style={{
-                    fontSize: "12px",
-                    color: "gray",
+                    width: "100%",
+                    height: "170px",
+                    border: "none",
+                    borderRadius: "12px",
+                    backgroundImage: `url(${item.thumbnailUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    lineHeight: "1px",
+                    paddingLeft: "12px",
                     marginTop: "12px",
                   }}
                 >
-                  {item.startDate}
-                  <br />
-                  <br />
-
-                  <br />
-
-                  <br />
-
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-
-                  <br />
-                  {item.endDate}
-                </p>
-              </div>
-            </StButtonWrapper>
-          ))}
+                  <h4> {item.groupName}</h4>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "gray",
+                      marginTop: "12px",
+                    }}
+                  >
+                    <p>{formattedStartDate}~{formattedEndDate}</p>
+                  </p>
+                </div>
+              </StButtonWrapper>
+            );
+          })}
         </StGroupWrapper>
         <Footer />
       </StMainContainer>
@@ -105,17 +98,17 @@ const StMainContainer = styled.div`
 const StGroupWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: ${(props) =>
-    props.datalength > 0 ? "space-around" : "flex-start"}; */
   margin-top: 80px;
   overflow-y: auto;
   flex-grow: 1;
-  /* margin-left: ${(props) => (props.datalength > 0 ? "0px" : "24px")}; */
+  column-gap: 10vw;
+  margin-left: 33px;
 `;
 const StButtonWrapper = styled.div`
   margin-top: 12px;
   width: 40%;
   padding-bottom: 24px;
+  cursor: pointer;
 `;
 
 //styled

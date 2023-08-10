@@ -11,11 +11,12 @@ export async function uploadImage(file) {
     .then((data) => data.url);
 }
 
+
 // 불러오는 방식
 
 // import { uploadImage } from './upload';
 
-// post 방식
+// post  방식
 
 // const handleSubmit = (e) => {
 //   e.preventDefault();
