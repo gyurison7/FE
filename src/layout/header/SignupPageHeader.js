@@ -17,15 +17,12 @@ export default SignupPageHeader;
 
 const HeaderContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     width: 100%;
     padding: 5vw;
     position: relative;
-    top: -4vh;
-    @media (min-height: 910px) {
-        top: -6vh;
-    }
+    top: 3vh;
 `;
 
 const BackButton = styled.img`
