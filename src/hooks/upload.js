@@ -14,7 +14,7 @@ export async function uploadImage(file) {
 
 // import { uploadImage } from './upload';
 
-// post 방식
+// post  방식
 
 // const handleSubmit = (e) => {
 //   e.preventDefault();
