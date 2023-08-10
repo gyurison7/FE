@@ -55,7 +55,7 @@ function Signup() {
       } else {
         setIdError('이미 사용중인 아이디입니다.');
         setIsIdAvailable(false);
-        return true;
+        return false;
       }
     } catch (error) {
       alert('서버 오류입니다. 관리자에게 문의하세요.');
