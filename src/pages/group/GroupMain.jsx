@@ -9,26 +9,26 @@ import { getGroupData } from "../../api/groupMainApi";
 function GroupMain() {
   const [groupData, setGroupData] = useState([]);
   const navigate = useNavigate();
-  const writeButtonHandler = () => {
-    navigate("/groupwrite");
+  const writeButtonHandler = (id) => {
+    navigate(`/postmain/${id}`);
   };
 
   // groupdata 가져오기
   useEffect(() => {
       getGroupData()
       .then((data) => {
-        console.log(data)
-        setGroupData(data);
+        setGroupData(data.findMyGroupData);
         
       })
       .catch((error) => {
         console.error("Error fetching group data:", error);
       });
   }, []);
+console.log(groupData)
 
   return (
     <>
-      <StMainContainer>
+      <StMainContainer>  
         <GroupPageHeader />
         <StGroupWrapper datalength={groupData.length}>
           <StButtonWrapper>
@@ -39,15 +39,15 @@ function GroupMain() {
               />
             </StWriteButton>
           </StButtonWrapper>
-          {/* {groupData.map((item) => (
-            <StButtonWrapper key={item.id}>
+          {groupData.map((item) => (
+            <StButtonWrapper key={item.groupId} onClick={()=> navigate(`/postmain/${item.groupId}`)}>
               <div
                 style={{
                   width: "100%",
                   height: "170px",
                   border: "none",
                   borderRadius: "12px",
-                  backgroundImage: `url(${item.img})`,
+                  backgroundImage: `url(${item.thumbnailUrl})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -59,7 +59,7 @@ function GroupMain() {
                   marginTop: "12px",
                 }}
               >
-                <h4> {item.memoryName}</h4>
+                <h4> {item.groupName}</h4>
                 <p
                   style={{
                     fontSize: "12px",
@@ -67,11 +67,26 @@ function GroupMain() {
                     marginTop: "12px",
                   }}
                 >
-                  {item.date}
-                </p>
+                  {item.startDate}
+                  <br/>
+                  <br/>
+
+                  <br/>
+
+                  <br/>
+
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+
+                  <br/>
+                  {item.endDate}
+                </p> 
               </div>
             </StButtonWrapper>
-          ))} */}
+          ))}
         </StGroupWrapper>
         <Footer />
       </StMainContainer>
@@ -91,12 +106,12 @@ const StMainContainer = styled.div`
 const StGroupWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: ${(props) =>
-    props.datalength > 0 ? "space-around" : "flex-start"};
+  /* justify-content: ${(props) =>
+    props.datalength > 0 ? "space-around" : "flex-start"}; */
   margin-top: 80px;
   overflow-y: auto;
   flex-grow: 1;
-  margin-left: ${(props) => (props.datalength > 0 ? "0px" : "24px")};
+  /* margin-left: ${(props) => (props.datalength > 0 ? "0px" : "24px")}; */
 `;
 const StButtonWrapper = styled.div`
   margin-top: 12px;
