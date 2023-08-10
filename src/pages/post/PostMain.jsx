@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import Footer from '../../layout/footer/Footer.jsx';
-// import GroupAlbumHeader from '../../layout/header/GroupAlbumHeader.jsx';
+import api from '../../api/index.jsx';
+import { useParams } from 'react-router-dom';
 
 function PostMain() {
   const [scrollTop, setScrollTop] = useState(0);
+  const { id } = useParams();
+  useEffect(() => {
+    console.log(id);
+    api.get(`group/${id}`).then((res) => {
+      console.log(res);
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,7 +39,7 @@ function PostMain() {
           top: '0',
           display: 'flex',
           flexDirection: 'column',
-          transition: 'all ease 0.5s     0s',
+          transition: 'all ease 0.5s 0s',
         }}
       >
         <Head
