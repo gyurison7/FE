@@ -24,11 +24,9 @@ export const signup = async (loginId, password, confirm) => {
 }
 
 export const idDuplicateCheck = async (loginId) => {
-  console.log("loginId",loginId);
-  const response = await axios.get(`${process.env.REACT_APP_URL}/signup/check`, {
-    loginId,
+  const response = await axios.post(`${process.env.REACT_APP_URL}/signup/check`, {
+    loginId
   });
-  console.log("response",response);
 
-  return response.data;
+  return response.data.idCheck;
 }

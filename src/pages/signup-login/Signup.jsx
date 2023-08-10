@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { signup } from '../../api/auth'
+import { signup, idDuplicateCheck } from '../../api/auth'
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
 import SignupModal from '../../components/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
-import { idDuplicateCheck } from '../../api/auth.js';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -20,22 +19,24 @@ function Signup() {
   const [isIdCheck, setIsIdCheck] = useState(false); // 중복 검사를 했는지 안했는지
   const [isIdAvailable, setIsIdAvailable] = useState(false); // 아이디 사용 가능한지 아닌지
 
-  const onChangeIdHandelr = (e) => {
-    setId(e.target.value);
-    setIdError('');
+  const onChangeIdHandler = (e) => {
+    const idValue = e.target.value;
+    setId(idValue);
+    idCheckHandler(idValue);
   }
 
-  const onChangePasswordHandelr = (e) => {
-    setPassword(e.target.value);
-    setPasswordError('');
+  const onChangePasswordHandler = (e) => {
+    const { name, value } = e.target;
+    if (name === 'password') {
+      setPassword(value);
+      passwordCheckHandler(value, confirm);
+    } else {
+      setConfirm(value);
+      passwordCheckHandler(password, value);
+    }
   }
 
-  const onChangeConfirmHandelr = (e) => {
-    setConfirm(e.target.value);
-    setConfirmError('');
-  }
-
-  const inputIdCheck = (id) => {
+  const idCheckHandler = async (id) => {
     const idRegex = /^[a-z\d]{5,10}$/;
     if (id === '') {
       setIdError('아이디를 입력해주세요.');
@@ -44,51 +45,59 @@ function Signup() {
       setIdError('아이디는 5~10자의 영소문자, 숫자만 입력 가능합니다.');
       return false;
     }
-    return true;
-  }
-
-  const idCheckHandler = async () => {
-    const result = inputIdCheck(id);
-    if (!result) return;
     try {
       const responseData = await idDuplicateCheck(id);
-      console.log("responseData",responseData);
       if (responseData) {
         setIdError('사용 가능한 아이디입니다.');
         setIsIdCheck(true);
         setIsIdAvailable(true);
+        return true;
       } else {
         setIdError('이미 사용중인 아이디입니다.');
         setIsIdAvailable(false);
+        return true;
       }
     } catch (error) {
-      alert('오류');
-      setIsIdAvailable(false);
+      alert('서버 오류입니다. 관리자에게 문의하세요.');
       console.error(error);
+      return false;
+    }
+  }
+
+  const passwordCheckHandler = (password, confirm) => {
+    const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
+    console.log("password", password);
+    console.log("confirm", confirm);
+    if (password === '') {
+      setPasswordError('비밀번호를 입력해주세요.');
+      return false;
+    } else if (!passwordRegex.test(password)) {
+      setPasswordError('비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
+      return false;
+    } else if (confirm !== password) {
+      setPasswordError('');
+      setConfirmError('비밀번호가 일치하지 않습니다.');
+      return false;
+    } else {
+      setConfirmError('');
+      return true;
     }
   }
 
   const signupHandler = async (e) => {
     e.preventDefault();
-    const result = inputIdCheck(id);
-    if (!result) return;
+
+    const idCheckresult = await idCheckHandler(id);
+    if (idCheckresult) setIdError('');
+    else return;
     if (!isIdCheck || !isIdAvailable) {
       alert('아이디 중복 검사를 해주세요.');
       return;
     }
 
-    const passwordRegex = /^[a-z\d!@*&-_]{4,16}$/; // TODO : 테스트용으로 길이 4로 조정 테스트 완료 후 수정 예정
-    if (password === '') {
-      setPasswordError('비밀번호를 입력해주세요.');
-      return;
-    } else if (!passwordRegex.test(password)) {
-      setPasswordError('비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
-      return;
-    }
-    if (confirm !== password) {
-      setConfirmError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
+    const passwordCheckResult = passwordCheckHandler(password, confirm);
+    if (passwordCheckResult) { setPasswordError(''); setConfirmError(''); }
+    else return;
 
     try {
       const responseData = await signup(id, password, confirm);
@@ -108,11 +117,11 @@ function Signup() {
       <SignupPageHeader />
       <Wrapper>
         <form onSubmit={signupHandler}>
-          <InputContainer>
-            <label htmlFor='id'>아이디</label>
-            <div className='idGroup'>
+          <InputWrapper>
+            <InputContainer>
+              <label htmlFor='id'>아이디</label>
               <Input
-                onChange={onChangeIdHandelr}
+                onChange={onChangeIdHandler}
                 type="text"
                 id='id'
                 name='id'
@@ -120,32 +129,32 @@ function Signup() {
                 placeholder='아이디 입력'
                 theme='underLine'
               />
-              <button type='button' onClick={idCheckHandler}>✔️</button>
-            </div>
-            {idError && <small>{idError}</small>}
-          </InputContainer>
-          <InputContainer>
-            <label htmlFor='id'>비밀번호</label>
-            <Input
-              onChange={onChangePasswordHandelr}
-              type="password"
-              id='password'
-              name='password'
-              value={password}
-              placeholder='비밀번호 입력'
-              theme='underLine'
-            />
-            {passwordError && <small>{passwordError}</small>}
-            <Input
-              onChange={onChangeConfirmHandelr}
-              type="password"
-              name='confirm'
-              value={confirm}
-              placeholder='비밀번호 확인'
-              theme='underLine'
-            />
-            {confirmError && <small>{confirmError}</small>}
-          </InputContainer>
+              {idError && <small>{idError}</small>}
+            </InputContainer>
+            <InputContainer>
+              <label htmlFor='id'>비밀번호</label>
+              <Input
+                onChange={onChangePasswordHandler}
+                type="password"
+                id='password'
+                name='password'
+                value={password}
+                placeholder='비밀번호 입력'
+                theme='underLine'
+              />
+              {passwordError && <small>{passwordError}</small>}
+              <Input
+                onChange={onChangePasswordHandler}
+                type="password"
+                id='confirm'
+                name='confirm'
+                value={confirm}
+                placeholder='비밀번호 확인'
+                theme='underLine'
+              />
+              {confirmError && <small>{confirmError}</small>}
+            </InputContainer>
+          </InputWrapper>
           <ButtonContainer>
             <button type='submit'>가입하기</button>
           </ButtonContainer>
@@ -172,8 +181,13 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const InputWrapper = styled.div`
+  position: relative;
+  margin-top: -50%;
+`;
+
 const InputContainer = styled.div`
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -184,19 +198,6 @@ const InputContainer = styled.div`
   @media (max-height: 670px) {
     margin-top: 1rem;
     margin-bottom: 2rem;
-  }
-
-  .idGroup {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-    width: 90%;
-  }
-
-  button {
-    background: transparent;
-    border: none;
   }
 
   label {
@@ -230,18 +231,16 @@ const InputContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  position: fixed;
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 28vh;
+  bottom: -25vh;
   @media (max-height: 750px) {
-    margin-top: 17vh;
-  }
-  @media (max-height: 670px) {
-    margin-top: 13vh;
+    bottom: -20vh;
   }
   button {
-    width: 21.375rem;
+    width: 90%;
     height: 3.5625rem;
     flex-shrink: 0;
     border: none;
@@ -256,4 +255,3 @@ const ButtonContainer = styled.div`
     line-height: normal;
   }
 `;
-
