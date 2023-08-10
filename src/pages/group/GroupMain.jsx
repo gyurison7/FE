@@ -1,66 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import GroupPageHeader from "../../layout/header/GroupPageHeader";
 import Footer from "../../layout/footer/Footer.jsx";
+import { getGroupData } from "../../api/groupMainApi";
 // import Footer from "../../layout/footer/Footer";
 
 function GroupMain() {
+  const [groupData, setGroupData] = useState([]);
   const navigate = useNavigate();
-  const writeButtonHandler = () => {
-    navigate("/groupwrite");
+  const writeButtonHandler = (id) => {
+    navigate(`/postmain/${id}`);
   };
 
-  const data = [
-    {
-      id: 1,
-      memoryName: "찐친즈 모임",
-      date: "2023.08.01~2023.08.14",
-      img: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
-    },
-    {
-      id: 2,
-      memoryName: "멍청이와 아이들",
-      date: "2023.08.01~2023.08.14",
-      img: "https://youmatter.world/app/uploads/sites/2/2019/11/travel-cities-man.jpg",
-    },
-    {
-      id: 3,
-      memoryName: "스위스를 좋아하는",
-      date: "2023.08.01~2023.08.14",
-      img: "https://www.libertytravel.com/sites/default/files/styles/full_size/public/Groups%20Product%20Tiles-Celebrations-1262x500.jpg?itok=t8BTk2fJ",
-    },
-    {
-      id: 4,
-      memoryName: "강원도에서 스키",
-      date: "2023.08.01~2023.08.14",
-      img: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
-    },
-    {
-      id: 5,
-      memoryName: "제주도 민박",
-      date: "2023.08.01~2023.08.14",
-      img: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
-    },
-    {
-      id: 6,
-      memoryName: "제주도 민박",
-      date: "2023.08.01~2023.08.14",
-      img: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
-    },
-    {
-      id: 7,
-      memoryName: "제주도 민박",
-      date: "2023.08.01~2023.08.14",
-      img: "https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp",
-    },
-  ];
+  // groupdata 가져오기
+  useEffect(() => {
+      getGroupData()
+      .then((data) => {
+        setGroupData(data.findMyGroupData);
+        
+      })
+      .catch((error) => {
+        console.error("Error fetching group data:", error);
+      });
+  }, []);
+console.log(groupData)
 
   return (
     <>
-      <StMainContainer>
+      <StMainContainer>  
         <GroupPageHeader />
-        <StGroupWrapper datalength={data.length}>
+        <StGroupWrapper datalength={groupData.length}>
           <StButtonWrapper>
             <StWriteButton onClick={writeButtonHandler}>
               <PlusImage
@@ -69,15 +39,15 @@ function GroupMain() {
               />
             </StWriteButton>
           </StButtonWrapper>
-          {data.map((item) => (
-            <StButtonWrapper key={item.id}>
+          {groupData.map((item) => (
+            <StButtonWrapper key={item.groupId} onClick={()=> navigate(`/postmain/${item.groupId}`)}>
               <div
                 style={{
                   width: "100%",
                   height: "170px",
                   border: "none",
                   borderRadius: "12px",
-                  backgroundImage: `url(${item.img})`,
+                  backgroundImage: `url(${item.thumbnailUrl})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -89,7 +59,7 @@ function GroupMain() {
                   marginTop: "12px",
                 }}
               >
-                <h4> {item.memoryName}</h4>
+                <h4> {item.groupName}</h4>
                 <p
                   style={{
                     fontSize: "12px",
@@ -97,8 +67,23 @@ function GroupMain() {
                     marginTop: "12px",
                   }}
                 >
-                  {item.date}
-                </p>
+                  {item.startDate}
+                  <br/>
+                  <br/>
+
+                  <br/>
+
+                  <br/>
+
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+
+                  <br/>
+                  {item.endDate}
+                </p> 
               </div>
             </StButtonWrapper>
           ))}
@@ -121,12 +106,12 @@ const StMainContainer = styled.div`
 const StGroupWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: ${(props) =>
-    props.datalength > 0 ? "space-around" : "flex-start"};
+  /* justify-content: ${(props) =>
+    props.datalength > 0 ? "space-around" : "flex-start"}; */
   margin-top: 80px;
   overflow-y: auto;
   flex-grow: 1;
-  margin-left: ${(props) => (props.datalength > 0 ? "0px" : "24px")};
+  /* margin-left: ${(props) => (props.datalength > 0 ? "0px" : "24px")}; */
 `;
 const StButtonWrapper = styled.div`
   margin-top: 12px;
