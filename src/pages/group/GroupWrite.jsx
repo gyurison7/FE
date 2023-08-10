@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
-import api from '../../api/index.jsx';
-import { DatePicker } from 'antd';
-import moment from 'moment';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
+import api from "../../api/index.jsx";
+import { DatePicker } from "antd";
+import moment from "moment";
+import { uploadImage } from "../../hooks/upload.js";
 
 function GroupWrite() {
-  const [groupName, setGroupName] = useState('');
-  const [thumbnailUrl, setThumbnailUrl] = useState('');
-  const [place, setPlace] = useState('');
+  const [groupName, setGroupName] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [place, setPlace] = useState("");
   const [places, setPlaces] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const [participants, setParticipant] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
 
-  console.log('-------------------');
-  console.log('groupName', groupName);
-  console.log('place', places);
-  console.log('startDate', startDate);
-  console.log('endDate', endDate);
-  console.log('participants', selectedFriends);
-  console.log('image', thumbnailUrl);
-  console.log('searchResult', searchResult);
+  console.log("-------------------");
+  console.log("groupName", groupName);
+  console.log("place", places);
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);
+  console.log("participants", selectedFriends);
+  console.log("image", thumbnailUrl);
+  console.log("searchResult", searchResult);
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -32,7 +33,7 @@ function GroupWrite() {
       });
 
       const userData = response.data;
-      console.log('nickname', response);
+      console.log("nickname", response);
       console.log(userData);
       setSearchResult(response.data.findByNicknameData);
     } catch (error) {
@@ -40,11 +41,11 @@ function GroupWrite() {
         error &&
         error.response &&
         error.response.data &&
-        error.response.data.message === '로그인이 필요한 기능입니다.'
+        error.response.data.message === "로그인이 필요한 기능입니다."
       ) {
-        console.error('User needs to log in to access this feature.');
+        console.error("User needs to log in to access this feature.");
       } else {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     }
   };
@@ -53,8 +54,7 @@ function GroupWrite() {
   const submitHandler = async () => {
     const payload = {
       groupName: groupName,
-      thumbnailUrl:
-        'https://assets.weforum.org/article/image/responsive_large_webp_ns5Qu2SktVwSiHNWgMsKjEucTivc9vfJYYa7lW63NNA.webp',
+      thumbnailUrl: thumbnailUrl,
       place: places,
       participant: selectedFriends.map((friend) => friend.userId.toString()),
       startDate: startDate,
@@ -62,13 +62,13 @@ function GroupWrite() {
     };
 
     try {
-      const response = await api.post('/group', payload, {
+      const response = await api.post("/group", payload, {
         withCredentials: true,
       });
       console.log(response.data);
-      navigate('/groupmain');
+      navigate("/groupmain");
     } catch (error) {
-      console.error('Error sending group data:', error);
+      console.error("Error sending group data:", error);
     }
   };
 
@@ -76,19 +76,19 @@ function GroupWrite() {
     const { name, value } = e.target;
 
     switch (name) {
-      case 'groupName':
+      case "groupName":
         setGroupName(value);
         break;
-      case 'place':
+      case "place":
         setPlace(value);
         break;
-      case 'startDate':
+      case "startDate":
         setStartDate(value);
         break;
-      case 'endDate':
+      case "endDate":
         setEndDate(value);
         break;
-      case 'participants':
+      case "participants":
         setParticipant(value);
         searchUser(value);
         break;
@@ -98,30 +98,16 @@ function GroupWrite() {
   };
 
   //이미지 처리한는 로직
-  const imageHandler = () => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-
-    input.onchange = async () => {
-      const file = input.files[0];
-      const formData = new FormData();
-      formData.append('thumpnail', file);
-
-      try {
-        const result = await api.post(''.formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        const tumbnail_URL = result.data.url;
-        setThumbnailUrl(tumbnail_URL);
-      } catch (error) {
-        console.log('upload failed');
-      }
-    };
+  const imageHandler = async (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    if (file) {
+      uploadImage(file).then((url) => {
+        setThumbnailUrl(url);
+      });
+    }
   };
+  
 
   const deletePlaceHandler = (indexToDelete) => {
     setPlaces((prevPlaces) =>
@@ -131,13 +117,13 @@ function GroupWrite() {
 
   const navigate = useNavigate();
   const backButtonHandler = () => {
-    navigate('/groupmain');
+    navigate("/groupmain");
   };
 
   const placeButtonHandler = () => {
     const newPlaces = place;
     setPlaces((prevPlaces) => [...prevPlaces, newPlaces]);
-    setPlace('');
+    setPlace("");
   };
 
   const addFriendHandler = (item) => {
@@ -148,7 +134,7 @@ function GroupWrite() {
       profileUrl: item.profileUrl,
     };
     setSelectedFriends((prevFriend) => [...prevFriend, newFriend]);
-    setParticipant('');
+    setParticipant("");
     setSearchResult([]);
   };
 
@@ -164,6 +150,7 @@ function GroupWrite() {
 
   return (
     <>
+    <Form>
       <StWriteHeader>
         <div>
           <button onClick={backButtonHandler}>back</button>
@@ -185,13 +172,15 @@ function GroupWrite() {
             onChange={universalHandler}
           />
         </div>
-        <StThumbNail onClick={imageHandler}>
+   
+        <StThumbnailLabel htmlFor="imageUpload">
           <img
             src={`${process.env.PUBLIC_URL}/assets/image/photo.png`}
             alt="thumbnail"
           />
           <p> 썸네일 추가하기</p>
-        </StThumbNail>
+        </StThumbnailLabel>
+        <StThumbNail id="imageUpload" onChange={imageHandler} />
         함께한 추억 장소
         <PlaceInputWrapper>
           <GroupWriteInput
@@ -202,7 +191,7 @@ function GroupWrite() {
           />
           {place && (
             <button className="button" onClick={placeButtonHandler}>
-              {' '}
+              {" "}
               추가
             </button>
           )}
@@ -227,7 +216,7 @@ function GroupWrite() {
               setStartDate(dateStrings[0]);
               setEndDate(dateStrings[1]);
             }}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
           />
         </StDateWrapper>
         함께한 친구들
@@ -250,7 +239,7 @@ function GroupWrite() {
               );
             })}
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: "flex", gap: "12px" }}>
           {selectedFriends &&
             selectedFriends.map((item) => {
               return (
@@ -259,7 +248,7 @@ function GroupWrite() {
                   <div> {item.nickname} </div>
                   <p> {item.loginId}</p>
                   <button onClick={() => removeFriendHandler(item.userId)}>
-                    {' '}
+                    {" "}
                     제거
                   </button>
                 </div>
@@ -267,11 +256,16 @@ function GroupWrite() {
             })}
         </div>
       </StWriteBody>
+    </Form>
     </>
   );
 }
 
 export default GroupWrite;
+
+const Form = styled.form`
+  
+`
 
 const StWriteHeader = styled.div`
   width: 100%;
@@ -297,22 +291,17 @@ const StProfileImage = styled.img`
   border-radius: 100%;
 `;
 
-const StThumbNail = styled.button`
+const StThumbNail = styled.input.attrs({
+  type: "file",
+  accept: "image/*",
+})`
   width: 100%;
   height: 20vh;
   border: none;
   border-radius: 15px;
   cursor: pointer;
   margin-bottom: 12px;
-
-  img {
-    height: 40px;
-    margin-bottom: 5px;
-  }
-
-  p {
-    color: #707070;
-  }
+  display: none;
 `;
 
 const StGroupInput = styled.input`
@@ -375,3 +364,25 @@ const PlaceInputWrapper = styled.div`
     background-color: #e0e0e0;
   }
 `;
+
+const StThumbnailLabel = styled.label`
+  width: 100%;
+  height: 20vh;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  border: none;
+  background-color: rgba(245, 246, 248, 1) ;
+  border-radius: 15px;
+  padding: 50px;
+
+  img {
+    height: 40px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    color: #707070;
+  }
+`;
+
