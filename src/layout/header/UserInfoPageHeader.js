@@ -22,14 +22,7 @@ const HeaderContainer = styled.div`
     width: 100%;
     padding: 5vw;
     position: relative;
-    margin-bottom: -5rem;
-    @media (max-height: 670px) {
-        margin-bottom: -3rem;
-    }
-    top: -14vh;
-    @media (max-height: 670px) {
-        top: -8vh;
-    }
+    top: 3vh;
 `;
 
 const BackButton = styled.img`
@@ -40,10 +33,6 @@ const BackButton = styled.img`
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    margin-top: 3.5vh;
-    @media (max-height: 750px) {
-        margin-top: 1.5vh;
-    }
 `;
 
 const Title = styled.h1`

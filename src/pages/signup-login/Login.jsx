@@ -34,7 +34,7 @@ function Login() {
     try {
       const responseData = await login(id, password);
       if (responseData) {
-        alert('로그인 성공');
+        alert('로그인 성공'); // TODO : 테스트 완료 후 삭제하기
         navigate('/groupmain');
       } else {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
