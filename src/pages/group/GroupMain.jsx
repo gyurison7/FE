@@ -11,8 +11,6 @@ function GroupMain() {
     navigate("/groupwrite");
   };
 
-
-
   const data = [
     {
       id: 1,
@@ -64,7 +62,12 @@ function GroupMain() {
         <GroupPageHeader />
         <StGroupWrapper datalength={data.length}>
           <StButtonWrapper>
-            <StWriteButton onClick={writeButtonHandler}> + </StWriteButton>
+            <StWriteButton onClick={writeButtonHandler}>
+              <PlusImage
+                src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
+                alt="logo"
+              />
+            </StWriteButton>
           </StButtonWrapper>
           {data.map((item) => (
             <StButtonWrapper key={item.id}>
@@ -113,16 +116,17 @@ const StMainContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-`; 
+`;
 
 const StGroupWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: ${props => props.datalength > 0 ? 'space-around' : 'flex-start'};
+  justify-content: ${(props) =>
+    props.datalength > 0 ? "space-around" : "flex-start"};
   margin-top: 80px;
   overflow-y: auto;
   flex-grow: 1;
-  margin-left: ${props => props.datalength > 0 ? '0px' : '24px'};
+  margin-left: ${(props) => (props.datalength > 0 ? "0px" : "24px")};
 `;
 const StButtonWrapper = styled.div`
   margin-top: 12px;
@@ -141,3 +145,5 @@ const StWriteButton = styled.button`
   color: white;
   background-color: rgba(88, 115, 254, 1);
 `;
+
+const PlusImage = styled.img``;
