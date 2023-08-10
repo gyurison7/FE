@@ -12,7 +12,7 @@ function GroupPageHeader() {
           }}
         >
           <StLogoImage
-            src={`${process.env.PUBLIC_URL}/assets/image/logo.png`}
+            src={`${process.env.PUBLIC_URL}/assets/image/logo_blue.png`}
             alt="logo"
           />
         </div>
@@ -42,7 +42,7 @@ const StLogoContainer = styled.div`
 `;
 
 const StLogoImage = styled.img`
-  width: 75px;
+  width: 43px;
   height: auto;
 `;
 
