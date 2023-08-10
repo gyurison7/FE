@@ -28,10 +28,9 @@ function PostMain() {
       <div
         style={{
           height: animateHeaderHeight,
-
           position: 'fixed',
           background: 'red',
-          width: '428px',
+          width: '100%',
           top: '0',
           display: 'flex',
           flexDirection: 'column',
@@ -53,11 +52,12 @@ function PostMain() {
               alt="add"
             />
           </Icons>
+          {scrollTop}
         </Head>
         <div
           style={{
             display: scrollTop >= 307 ? 'none' : 'block',
-            background: 'white',
+            background: 'yellow',
             height: '40%',
           }}
         >
@@ -67,6 +67,7 @@ function PostMain() {
 
       <WrapContent>
         <Box />
+        {/* <Box />
         <Box />
         <Box />
         <Box />
@@ -102,17 +103,7 @@ function PostMain() {
         <Box />
         <Box />
         <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
+        <Box /> */}
       </WrapContent>
       <Foot>
         <Footer />
@@ -129,7 +120,6 @@ const Icons = styled.div`
 `;
 const Head = styled.div`
   height: 60%;
-
   padding: 57px 23px;
 `;
 const Box = styled.div`
@@ -139,6 +129,7 @@ const Box = styled.div`
 
 const WrapContent = styled.div`
   margin-top: 25.5rem;
+  border: 1px solid red;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2px;
