@@ -31,12 +31,12 @@ function Footer() {
 
 export default Footer;
 
-const Wrap = styled.div`    
+const Wrap = styled.div`
   max-width: 428px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 111px;
+  height: 88px;
   background: #fff;
   box-shadow: 8px 4px 23px 0px rgba(0, 0, 0, 0.25);
 `;
