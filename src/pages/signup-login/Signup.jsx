@@ -4,15 +4,21 @@ import { signup } from '../../api/auth'
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
 import SignupModal from '../../components/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
+import { idDuplicateCheck } from '../../api/auth.js';
 
 function Signup() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
+
   const [openModal, setOpenModal] = useState(false);
+
+  const [isIdCheck, setIsIdCheck] = useState(false); // 중복 검사를 했는지 안했는지
+  const [isIdAvailable, setIsIdAvailable] = useState(false); // 아이디 사용 가능한지 아닌지
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
@@ -29,21 +35,53 @@ function Signup() {
     setConfirmError('');
   }
 
-  const signupHandler = async (e) => {
-    e.preventDefault();
-    const idCheck = /^[a-z\d]{5,10}$/;
-    const passwordCheck = /^[a-z\d!@*&-_]{4,16}$/; // TODO : 테스트용으로 길이 4로 조정 테스트 완료 후 수정 예정
+  const inputIdCheck = (id) => {
+    const idRegex = /^[a-z\d]{5,10}$/;
     if (id === '') {
       setIdError('아이디를 입력해주세요.');
-      return;
-    } else if (!idCheck.test(id)) {
+      return false;
+    } else if (!idRegex.test(id)) {
       setIdError('아이디는 5~10자의 영소문자, 숫자만 입력 가능합니다.');
+      return false;
+    }
+    return true;
+  }
+
+  const idCheckHandler = async () => {
+    const result = inputIdCheck(id);
+    if (!result) return;
+    try {
+      const responseData = await idDuplicateCheck(id);
+      console.log("responseData",responseData);
+      if (responseData) {
+        setIdError('사용 가능한 아이디입니다.');
+        setIsIdCheck(true);
+        setIsIdAvailable(true);
+      } else {
+        setIdError('이미 사용중인 아이디입니다.');
+        setIsIdAvailable(false);
+      }
+    } catch (error) {
+      alert('오류');
+      setIsIdAvailable(false);
+      console.error(error);
+    }
+  }
+
+  const signupHandler = async (e) => {
+    e.preventDefault();
+    const result = inputIdCheck(id);
+    if (!result) return;
+    if (!isIdCheck || !isIdAvailable) {
+      alert('아이디 중복 검사를 해주세요.');
       return;
     }
+
+    const passwordRegex = /^[a-z\d!@*&-_]{4,16}$/; // TODO : 테스트용으로 길이 4로 조정 테스트 완료 후 수정 예정
     if (password === '') {
       setPasswordError('비밀번호를 입력해주세요.');
       return;
-    } else if (!passwordCheck.test(password)) {
+    } else if (!passwordRegex.test(password)) {
       setPasswordError('비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
       return;
     }
@@ -72,15 +110,18 @@ function Signup() {
         <form onSubmit={signupHandler}>
           <InputContainer>
             <label htmlFor='id'>아이디</label>
-            <Input
-              onChange={onChangeIdHandelr}
-              type="text"
-              id='id'
-              name='id'
-              value={id}
-              placeholder='아이디 입력'
-              theme='underLine'
-            />
+            <div className='idGroup'>
+              <Input
+                onChange={onChangeIdHandelr}
+                type="text"
+                id='id'
+                name='id'
+                value={id}
+                placeholder='아이디 입력'
+                theme='underLine'
+              />
+              <button type='button' onClick={idCheckHandler}>✔️</button>
+            </div>
             {idError && <small>{idError}</small>}
           </InputContainer>
           <InputContainer>
@@ -123,7 +164,7 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: 100vh;
+  //height: 100vh;
   //border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -143,6 +184,19 @@ const InputContainer = styled.div`
   @media (max-height: 670px) {
     margin-top: 1rem;
     margin-bottom: 2rem;
+  }
+
+  .idGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    width: 90%;
+  }
+
+  button {
+    background: transparent;
+    border: none;
   }
 
   label {
