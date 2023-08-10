@@ -9,7 +9,7 @@ function PostMain() {
   const { id } = useParams();
   useEffect(() => {
     console.log(id);
-    api.get(`group/${id}`).then((res) => {
+    api.get(`group/${id}`,{withCredentials:true}).then((res) => {
       console.log(res);
     });
   }, []);
