@@ -9,26 +9,25 @@ import { getGroupData } from "../../api/groupMainApi";
 function GroupMain() {
   const [groupData, setGroupData] = useState([]);
   const navigate = useNavigate();
-  const writeButtonHandler = (id) => {
-    navigate(`/postmain/${id}`);
+  const writeButtonHandler = () => {
+    navigate(`/groupwrite`);
   };
 
   // groupdata 가져오기
   useEffect(() => {
-      getGroupData()
+    getGroupData()
       .then((data) => {
         setGroupData(data.findMyGroupData);
-        
       })
       .catch((error) => {
         console.error("Error fetching group data:", error);
       });
   }, []);
-console.log(groupData)
+  console.log(groupData);
 
   return (
     <>
-      <StMainContainer>  
+      <StMainContainer>
         <GroupPageHeader />
         <StGroupWrapper datalength={groupData.length}>
           <StButtonWrapper>
@@ -40,7 +39,7 @@ console.log(groupData)
             </StWriteButton>
           </StButtonWrapper>
           {groupData.map((item) => (
-            <StButtonWrapper key={item.groupId} onClick={()=> navigate(`/postmain/${item.groupId}`)}>
+            <StButtonWrapper key={item.groupId} onClick={() => navigate(`/postmain/${item.groupId}`)}>
               <div
                 style={{
                   width: "100%",
@@ -51,7 +50,7 @@ console.log(groupData)
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
-              ></div>
+              > </div>
               <div
                 style={{
                   lineHeight: "1px",
@@ -68,22 +67,22 @@ console.log(groupData)
                   }}
                 >
                   {item.startDate}
-                  <br/>
-                  <br/>
+                  <br />
+                  <br />
 
-                  <br/>
+                  <br />
 
-                  <br/>
+                  <br />
 
-                  <br/>
-                  <br/>
-                  <br/>
-                  <br/>
-                  <br/>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
 
-                  <br/>
+                  <br />
                   {item.endDate}
-                </p> 
+                </p>
               </div>
             </StButtonWrapper>
           ))}
