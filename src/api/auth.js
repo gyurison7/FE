@@ -30,3 +30,14 @@ export const idDuplicateCheck = async (loginId) => {
 
   return response.data.idCheck;
 }
+
+export const userInfoUpload = async (nickname, imageUrl) => {
+  const response = await axios.put(`${process.env.REACT_APP_URL}/signup/update`, {
+    nickname,
+    imageUrl,
+  }, {
+    withCredentials: true
+  });
+
+  return response.data;
+}
