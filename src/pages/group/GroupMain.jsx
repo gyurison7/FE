@@ -99,12 +99,11 @@ const GroupWrapper = styled.div`
   margin-top: 80px;
   overflow-y: auto;
   flex-grow: 1;
-  column-gap: 10vw;
-  margin-left: 33px;
+  column-gap: 2vw;
 `;
 const ButtonWrapper = styled.div`
   margin-top: 12px;
-  width: 40%;
+  width: 37%;
   padding-bottom: 24px;
   cursor: pointer;
 `;
@@ -121,4 +120,6 @@ const WriteButton = styled.button`
   background-color: rgba(88, 115, 254, 1);
 `;
 
-const PlusImage = styled.img``;
+const PlusImage = styled.img`
+  width: 25%;
+`;
