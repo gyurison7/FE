@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserInfoPageHeader from '../../layout/header/UserInfoPageHeader';
 import Input from '../../components/common/input/Input.jsx';
-import { uploadImage } from '../../hooks/upload';
+import { uploadImage } from '../..//hooks/uploadImage';
 import { userInfoUpload } from '../../api/auth';
 
 
