@@ -36,7 +36,7 @@ const Wrap = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 72px;
+  height: 88px;
   background: #fff;
   box-shadow: 8px 4px 23px 0px rgba(0, 0, 0, 0.25);
 `;

@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import Footer from '../../layout/footer/Footer.jsx';
 import api from '../../api/index.jsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function PostMain() {
   const [scrollTop, setScrollTop] = useState(0);
+  const [data, setData] = useState(null);
   const { id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     console.log(id);
-    api.get(`group/${id}`,{withCredentials:true}).then((res) => {
-      console.log(res);
+    api.get(`group/${id}`, { withCredentials: true }).then((res) => {
+      console.log(res.data);
+      setData(res.data);
     });
   }, []);
 
@@ -42,11 +45,7 @@ function PostMain() {
           transition: 'all ease 0.5s 0s',
         }}
       >
-        <Head
-          style={{
-            height: scrollTop >= 307 ? 'none' : 'block',
-          }}
-        >
+        <Head scrollTop={scrollTop} data={data}>
           <Icons>
             <img
               src={`${process.env.PUBLIC_URL}/assets/svgs/VectorLeft.svg`}
@@ -57,7 +56,6 @@ function PostMain() {
               alt="add"
             />
           </Icons>
-          {scrollTop}
         </Head>
         <Side
           style={{
@@ -68,7 +66,7 @@ function PostMain() {
         >
           <MemoryName>
             <MemoryNameLeft>
-              <span>Memory Name</span>
+              <span>{data?.groupName}</span>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/svgs/VectorRight.svg`}
                 alt="left"
@@ -93,19 +91,28 @@ function PostMain() {
             </div>
           </Avatar>
           <Location>
-            <span>강원도 양양군</span>
-            <span>2023.08.01-2023.08.03</span>
+            <span>{data?.place}</span>
+            <span>
+              {data?.startDate.substr(0, 10)}-{data?.endDate.substr(0, 10)}
+            </span>
           </Location>
         </Side>
       </div>
 
       <WrapContent>
-        <Box>
+        <Box onClick={() => navigate(`/postwrite/${id}`)}>
           <img
             src={`${process.env.PUBLIC_URL}/assets/svgs/plus.svg`}
             alt="plus"
           />
         </Box>
+        {data?.memories.map((e) => {
+          return (
+            <Box key={e.memoryId}>
+              <img src={e.imageUrl} alt="rasm" height={130} width={130} />
+            </Box>
+          );
+        })}
       </WrapContent>
       <Foot>
         <Footer />
@@ -121,6 +128,10 @@ const Icons = styled.div`
   justify-content: space-between;
 `;
 const Head = styled.div`
+  height: ${(props) => (props.scrollTop >= 307 ? 'none' : 'block')};
+  background-image: ${(props) => `url(${props.data?.thumbnailUrl})`};
+  background-position: center;
+  background-size: cover;
   height: 60%;
   padding: 57px 23px;
 `;
