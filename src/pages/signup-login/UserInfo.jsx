@@ -14,7 +14,7 @@ const UserInfo = () => {
 
     const navigate = useNavigate();
 
-    const onChangeNicknameHandeler = (e) => {
+    const onChangeNicknameHandler = (e) => {
         const value = e.target.value;
         setNickname(value);
         nicknameCheckHandler(value);
