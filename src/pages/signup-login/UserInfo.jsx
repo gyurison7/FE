@@ -22,10 +22,10 @@ const UserInfo = () => {
 
     const nicknameCheckHandler = (nickname) => {
         const nicknameCheck = /^.{2,10}$/;
-        if(nickname === '') {
+        if (nickname === '') {
             setNicknameError('닉네임을 입력해주세요.');
             return false;
-        } else if(!nicknameCheck.test(nickname)) {
+        } else if (!nicknameCheck.test(nickname)) {
             setNicknameError('닉네임은 2자에서 10자 사이로 입력해주세요.');
             return false;
         } else {
@@ -44,7 +44,7 @@ const UserInfo = () => {
         }
 
         const nicknameCheckResult = nicknameCheckHandler(nickname);
-        if(!nicknameCheckResult) return;
+        if (!nicknameCheckResult) return;
 
         try {
             const loginId = localStorage.getItem('loginId');
@@ -86,7 +86,7 @@ const UserInfo = () => {
                     id="hiddenFileInput"
                 />
                 <Button onClick={() => document.getElementById('hiddenFileInput').click()}>
-                    <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
+                    <img src={profileImage ? profileImage : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
                 </Button>
                 <FormContainer onSubmit={userInfoUploadHandler}>
                     <Input
@@ -145,6 +145,13 @@ const Text = styled.h2`
 const Button = styled.button`
     background: transparent;
     border: none;
+
+    img {
+        height: 20vh;
+        width: 20vh;
+        border-radius: 100%;
+        object-fit: cover;
+    }
 `;
 
 const FormContainer = styled.form`
