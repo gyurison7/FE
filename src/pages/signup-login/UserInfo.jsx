@@ -3,23 +3,70 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserInfoPageHeader from '../../layout/header/UserInfoPageHeader';
 import Input from '../../components/common/input/Input.jsx';
+import { uploadImage } from '../../hooks/upload';
+import { userInfoUpload } from '../../api/auth';
+
 
 const UserInfo = () => {
     const [nickname, setNickname] = useState('');
     const [nicknameError, setNicknameError] = useState('');
+    const [profileImage, setProfileImage] = useState('');
+
     const navigate = useNavigate();
 
     const onChangeNicknameHandler = (e) => {
-        setNickname(e.target.value);
-        setNicknameError('');
+        const value = e.target.value;
+        setNickname(value);
+        nicknameCheckHandler(value);
     };
 
-    const userInfoHandler = (e) => {
-        e.preventDefault();
-        if (nickname === '') {
+    const nicknameCheckHandler = (nickname) => {
+        const nicknameCheck = /^.{2,10}$/;
+        if(nickname === '') {
             setNicknameError('닉네임을 입력해주세요.');
+            return false;
+        } else if(!nicknameCheck.test(nickname)) {
+            setNicknameError('닉네임은 2자에서 10자 사이로 입력해주세요.');
+            return false;
+        } else {
+            setNicknameError('');
+            return true;
+        }
+    };
+
+    const userInfoUploadHandler = async (e) => {
+        e.preventDefault();
+        console.log(profileImage);
+
+        if (profileImage === '') {
+            alert('사진을 등록해주세요.');
+            return;
+        }
+
+        const nicknameCheckResult = nicknameCheckHandler(nickname);
+        if(!nicknameCheckResult) return;
+
+        try {
+            const responseData = await userInfoUpload(nickname, profileImage);
+            if (responseData) {
+                alert('업로드 성공');
+            } else {
+                alert('업로드 실패');
+            }
+        } catch (error) {
+            alert('업로드 실패');
+            console.error(error);
         }
     }
+
+    const imageHandler = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            uploadImage(file).then((url) => {
+                setProfileImage(url);
+            });
+        }
+    };
 
     return (
         <>
@@ -29,8 +76,16 @@ const UserInfo = () => {
                     친구들이 알 수 있도록,<br />
                     사진과 닉네임을 등록해주세요.
                 </Text>
-                <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
-                <FormContainer onSubmit={userInfoHandler}>
+                <input type='file'
+                    accept="image/*"
+                    onChange={imageHandler}
+                    style={{ display: 'none' }}
+                    id="hiddenFileInput"
+                />
+                <Button onClick={() => document.getElementById('hiddenFileInput').click()}>
+                    <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
+                </Button>
+                <FormContainer onSubmit={userInfoUploadHandler}>
                     <Input
                         onChange={onChangeNicknameHandler}
                         name='nickname'
@@ -38,6 +93,7 @@ const UserInfo = () => {
                         value={nickname}
                         placeholder="닉네임 입력"
                         theme='underLine'
+                        maxlength={10}
                     />
                     {nicknameError && <small>{nicknameError}</small>}
                     <p>
@@ -81,6 +137,11 @@ const Text = styled.h2`
     font-style: normal;
     font-weight: 600;
     line-height: 129.336%;
+`;
+
+const Button = styled.button`
+    background: transparent;
+    border: none;
 `;
 
 const FormContainer = styled.form`
