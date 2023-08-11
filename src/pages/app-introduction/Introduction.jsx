@@ -50,6 +50,7 @@ const IMG = styled.img`
   height: 70vh;
 `;
 const CarouselWrap = styled.div`
+  width: 100%;
   height: 70vh;
 `;
 const WrapButton = styled.div`
