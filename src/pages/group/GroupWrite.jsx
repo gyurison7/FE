@@ -150,14 +150,14 @@ function GroupWrite() {
 
   return (
     <>
-    <Form>
+    <Form onSubmit={submitHandler}  >
       <StWriteHeader>
         <div>
-          <button onClick={backButtonHandler}>back</button>
+          <button onClick={backButtonHandler}  >back</button>
         </div>
         <div>구룹 만들기</div>
         <div>
-          <button onClick={submitHandler}>확인</button>
+          <button type="submit">확인</button>
         </div>
       </StWriteHeader>
 
@@ -170,6 +170,7 @@ function GroupWrite() {
             value={groupName}
             placeholder="그룹 이름을 입력해주세요"
             onChange={universalHandler}
+            required
           />
         </div>
    
