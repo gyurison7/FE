@@ -88,10 +88,6 @@ export default Login;
 
 const Wrapper = styled.div`
   background: linear-gradient(#5570FF, #8895F0);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 100%;
   height: 100vh;
   //border-radius: 1.25rem;

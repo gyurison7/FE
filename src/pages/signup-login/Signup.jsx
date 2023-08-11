@@ -121,7 +121,7 @@ function Signup() {
     <>
       <SignupPageHeader />
       <Wrapper>
-        <form onSubmit={signupHandler}>
+        <Form onSubmit={signupHandler}>
           <InputWrapper>
             <InputContainer>
               <label htmlFor='id'>아이디</label>
@@ -166,7 +166,7 @@ function Signup() {
           <ButtonContainer>
             <button type='submit'>가입하기</button>
           </ButtonContainer>
-        </form>
+        </Form>
         {setOpenModal ? openModal && (<SignupModal />) : null}
       </Wrapper>
     </>
@@ -189,13 +189,18 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const Form = styled.form`
+  width: 100%;
+`;
+
 const InputWrapper = styled.div`
+  width: 100%;
   position: relative;
   margin-top: -50%;
 `;
 
 const InputContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

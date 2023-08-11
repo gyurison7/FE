@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { styled } from "styled-components";
-import api from "../../api/index.jsx";
-import { DatePicker } from "antd";
-import moment from "moment";
-import { uploadImage } from "../../hooks/uploadImage.js";
-import WriteImageUpload from "../../components/common/input/WriteImageUpload.jsx";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { styled } from 'styled-components';
+import api from '../../api/index.jsx';
+import { DatePicker } from 'antd';
+import moment from 'moment';
+import { uploadImage } from '../../hooks/uploadImage.js';
+import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 
 function GroupWrite() {
-  const [groupName, setGroupName] = useState("");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [place, setPlace] = useState("");
+  const [groupName, setGroupName] = useState('');
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const [participants, setParticipant] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
 
-console.log("imgurl=>", thumbnailUrl)
+  console.log('imgurl=>', thumbnailUrl);
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -27,7 +27,7 @@ console.log("imgurl=>", thumbnailUrl)
       });
 
       const userData = response.data;
-      console.log("nickname", response);
+      console.log('nickname', response);
       console.log(userData);
       setSearchResult(response.data.findByNicknameData);
     } catch (error) {
@@ -35,11 +35,11 @@ console.log("imgurl=>", thumbnailUrl)
         error &&
         error.response &&
         error.response.data &&
-        error.response.data.message === "로그인이 필요한 기능입니다."
+        error.response.data.message === '로그인이 필요한 기능입니다.'
       ) {
-        console.error("User needs to log in to access this feature.");
+        console.error('User needs to log in to access this feature.');
       } else {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       }
     }
   };
@@ -57,13 +57,13 @@ console.log("imgurl=>", thumbnailUrl)
     };
 
     try {
-      const response = await api.post("/group", payload, {
+      const response = await api.post('/group', payload, {
         withCredentials: true,
       });
       console.log(response.data);
-      navigate("/groupmain");
+      navigate('/groupmain');
     } catch (error) {
-      console.error("Error sending group data:", error);
+      console.error('Error sending group data:', error);
     }
   };
 
@@ -71,19 +71,19 @@ console.log("imgurl=>", thumbnailUrl)
     const { name, value } = e.target;
 
     switch (name) {
-      case "groupName":
+      case 'groupName':
         setGroupName(value);
         break;
-      case "place":
+      case 'place':
         setPlace(value);
         break;
-      case "startDate":
+      case 'startDate':
         setStartDate(value);
         break;
-      case "endDate":
+      case 'endDate':
         setEndDate(value);
         break;
-      case "participants":
+      case 'participants':
         setParticipant(value);
         searchUser(value);
         break;
@@ -111,13 +111,13 @@ console.log("imgurl=>", thumbnailUrl)
 
   const navigate = useNavigate();
   const backButtonHandler = () => {
-    navigate("/groupmain");
+    navigate('/groupmain');
   };
 
   const placeButtonHandler = () => {
     const newPlaces = place;
     setPlaces((prevPlaces) => [...prevPlaces, newPlaces]);
-    setPlace("");
+    setPlace('');
   };
 
   const addFriendHandler = (item) => {
@@ -128,7 +128,7 @@ console.log("imgurl=>", thumbnailUrl)
       profileUrl: item.profileUrl,
     };
     setSelectedFriends((prevFriend) => [...prevFriend, newFriend]);
-    setParticipant("");
+    setParticipant('');
     setSearchResult([]);
   };
 
@@ -184,7 +184,7 @@ console.log("imgurl=>", thumbnailUrl)
             />
             {place && (
               <button className="button" onClick={placeButtonHandler}>
-                {" "}
+                {' '}
                 추가
               </button>
             )}
@@ -209,7 +209,7 @@ console.log("imgurl=>", thumbnailUrl)
                 setStartDate(dateStrings[0]);
                 setEndDate(dateStrings[1]);
               }}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
             />
           </StDateWrapper>
           함께한 친구들
@@ -228,14 +228,14 @@ console.log("imgurl=>", thumbnailUrl)
                     {item.loginId}
                     {item.nickname}
                     <button onClick={() => addFriendHandler(item)}>
-                      {" "}
+                      {' '}
                       추가
                     </button>
                   </div>
                 );
               })}
           </div>
-          <div style={{ display: "flex", gap: "12px" }}>
+          <div style={{ display: 'flex', gap: '12px' }}>
             {selectedFriends &&
               selectedFriends.map((item) => {
                 return (
@@ -244,7 +244,7 @@ console.log("imgurl=>", thumbnailUrl)
                     <div> {item.nickname} </div>
                     <p> {item.loginId}</p>
                     <button onClick={() => removeFriendHandler(item.userId)}>
-                      {" "}
+                      {' '}
                       제거
                     </button>
                   </div>

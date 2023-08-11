@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { styled } from "styled-components";
-import GroupPageHeader from "../../layout/header/GroupPageHeader";
-import Footer from "../../layout/footer/Footer.js";
-import { getGroupData } from "../../api/groupMainApi";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { styled } from 'styled-components';
+import GroupPageHeader from '../../layout/header/GroupPageHeader';
+import Footer from '../../layout/footer/Footer.js';
+import { getGroupData } from '../../api/groupMainApi';
 
 function GroupMain() {
   const [groupData, setGroupData] = useState([]);
@@ -19,7 +19,7 @@ function GroupMain() {
         setGroupData(data.findMyGroupData);
       })
       .catch((error) => {
-        console.error("Error fetching group data:", error);
+        console.error('Error fetching group data:', error);
       });
   }, []);
 
@@ -27,7 +27,7 @@ function GroupMain() {
     <>
       <MainContainer>
         <GroupPageHeader />
-        <GroupWrapper >
+        <GroupWrapper>
           <ButtonWrapper>
             <WriteButton onClick={writeButtonHandler}>
               <PlusImage
@@ -37,8 +37,12 @@ function GroupMain() {
             </WriteButton>
           </ButtonWrapper>
           {groupData.map((item) => {
-               const formattedStartDate = item.startDate ? item.startDate.slice(0, 10) : "";
-               const formattedEndDate = item.endDate ? item.endDate.slice(0, 10) : "";
+            const formattedStartDate = item.startDate
+              ? item.startDate.slice(0, 10)
+              : '';
+            const formattedEndDate = item.endDate
+              ? item.endDate.slice(0, 10)
+              : '';
 
             return (
               <ButtonWrapper
@@ -47,28 +51,28 @@ function GroupMain() {
               >
                 <div
                   style={{
-                    width: "100%",
-                    height: "170px",
-                    border: "none",
-                    borderRadius: "12px",
+                    width: '100%',
+                    height: '170px',
+                    border: 'none',
+                    borderRadius: '12px',
                     backgroundImage: `url(${item.thumbnailUrl})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                   }}
                 ></div>
                 <div
                   style={{
-                    lineHeight: "1px",
-                    paddingLeft: "12px",
-                    marginTop: "12px",
+                    lineHeight: '1px',
+                    paddingLeft: '12px',
+                    marginTop: '12px',
                   }}
                 >
                   <h4> {item.groupName}</h4>
                   <p
                     style={{
-                      fontSize: "12px",
-                      color: "gray",
-                      marginTop: "12px",
+                      fontSize: '12px',
+                      color: 'gray',
+                      marginTop: '12px',
                     }}
                   >
                     {formattedStartDate}~{formattedEndDate}
