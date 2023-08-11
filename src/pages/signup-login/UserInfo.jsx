@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserInfoPageHeader from '../../layout/header/UserInfoPageHeader';
 import Input from '../../components/common/input/Input.jsx';
-import { uploadImage } from '../..//hooks/uploadImage';
+import { uploadImage } from '../../hooks/uploadImage';
 import { userInfoUpload } from '../../api/auth';
 
 
@@ -47,14 +47,17 @@ const UserInfo = () => {
         if(!nicknameCheckResult) return;
 
         try {
-            const responseData = await userInfoUpload(nickname, profileImage);
+            const loginId = localStorage.getItem('loginId');
+            console.log(loginId);
+            const responseData = await userInfoUpload(loginId, nickname, profileImage);
             if (responseData) {
-                alert('업로드 성공');
+                alert('프로필 등록이 완료되었습니다!');
+                navigate('/groupmain');
             } else {
-                alert('업로드 실패');
+                alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
             }
         } catch (error) {
-            alert('업로드 실패');
+            alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
             console.error(error);
         }
     }
@@ -93,7 +96,7 @@ const UserInfo = () => {
                         value={nickname}
                         placeholder="닉네임 입력"
                         theme='underLine'
-                        maxlength={10}
+                        maxLength={10}
                     />
                     {nicknameError && <small>{nicknameError}</small>}
                     <p>

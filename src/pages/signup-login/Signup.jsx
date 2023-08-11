@@ -82,6 +82,7 @@ function Signup() {
       setConfirmError('비밀번호가 일치하지 않습니다.');
       return false;
     } else {
+      setPasswordError('');
       setConfirmError('');
       return true;
     }
@@ -105,6 +106,7 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
+        localStorage.setItem('loginId', id);
         setOpenModal(true);
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
