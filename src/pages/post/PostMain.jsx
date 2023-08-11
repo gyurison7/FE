@@ -5,7 +5,7 @@ import api from '../../api/index.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function PostMain() {
-  const [scrollTop, setScrollTop] = useState(0);
+  const [scrolltop, setScrolltop] = useState(0);
   const [data, setData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function PostMain() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollTop(window.scrollY);
+      setScrolltop(window.scrollY);
     };
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -29,7 +29,7 @@ function PostMain() {
   const Header_Max_Height = 408;
   const Header_Min_Height = 100;
   const animateHeaderHeight =
-    scrollTop >= 307 ? Header_Min_Height : Header_Max_Height;
+    scrolltop >= 307 ? Header_Min_Height : Header_Max_Height;
 
   return (
     <div>
@@ -45,7 +45,7 @@ function PostMain() {
           transition: 'all ease 0.5s 0s',
         }}
       >
-        <Head scrollTop={scrollTop} data={data}>
+        <Head scrolltop={scrolltop} data={data}>
           <Icons>
             <img
               src={`${process.env.PUBLIC_URL}/assets/svgs/VectorLeft.svg`}
@@ -59,7 +59,7 @@ function PostMain() {
         </Head>
         <Side
           style={{
-            display: scrollTop >= 307 ? 'none' : 'block',
+            display: scrolltop >= 307 ? 'none' : 'block',
             background: 'white',
             height: '40%',
           }}
@@ -128,7 +128,7 @@ const Icons = styled.div`
   justify-content: space-between;
 `;
 const Head = styled.div`
-  height: ${(props) => (props.scrollTop >= 307 ? 'none' : 'block')};
+  height: ${(props) => (props.scrolltop >= 307 ? 'none' : 'block')};
   background-image: ${(props) => `url(${props.data?.thumbnailUrl})`};
   background-position: center;
   background-size: cover;
