@@ -128,7 +128,7 @@ function Signup() {
                 value={id}
                 placeholder='아이디 입력'
                 theme='underLine'
-                maxlength='10'
+                maxLength={10}
               />
               {idError && <small className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
             </InputContainer>
@@ -142,7 +142,7 @@ function Signup() {
                 value={password}
                 placeholder='비밀번호 입력'
                 theme='underLine'
-                maxlength='16'
+                maxLength={16}
               />
               {passwordError && <small>{passwordError}</small>}
               <Input
@@ -153,7 +153,7 @@ function Signup() {
                 value={confirm}
                 placeholder='비밀번호 확인'
                 theme='underLine'
-                maxlength='16'
+                maxLength={16}
               />
               {confirmError && <small>{confirmError}</small>}
             </InputContainer>

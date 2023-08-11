@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import PropTypes from "prop-types";
 
-const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolor, maxlength }) => {
+const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolor, maxLength }) => {
   return (
     <InputStyle
       onChange={onChange}
@@ -12,7 +12,7 @@ const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolo
       placeholder={placeholder}
       theme={theme}
       bordercolor={bordercolor}
-      maxlength={maxlength}
+      maxLength={maxLength}
     />
   );
 };
@@ -71,7 +71,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   theme: PropTypes.oneOf(["radius", "underLine"]),
   bordercolor: PropTypes.string,
-  maxlength: PropTypes.number,
+  maxLength: PropTypes.number,
 };
 
 export default Input;
