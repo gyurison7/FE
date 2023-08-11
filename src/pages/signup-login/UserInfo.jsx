@@ -9,7 +9,7 @@ const UserInfo = () => {
     const [nicknameError, setNicknameError] = useState('');
     const navigate = useNavigate();
 
-    const onChangeNicknameHandeler = (e) => {
+    const onChangeNicknameHandler = (e) => {
         setNickname(e.target.value);
         setNicknameError('');
     };
@@ -32,7 +32,7 @@ const UserInfo = () => {
                 <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
                 <FormContainer onSubmit={userInfoHandler}>
                     <Input
-                        onChange={onChangeNicknameHandeler}
+                        onChange={onChangeNicknameHandler}
                         name='nickname'
                         type="text"
                         value={nickname}
