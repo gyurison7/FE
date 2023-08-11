@@ -8,6 +8,7 @@ import Introduction from '../pages/app-introduction/Introduction.jsx';
 import UserInfo from '../pages/signup-login/UserInfo.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
+import KakaoLoginRedirect from '../pages/signup-login/KakaoLoginRedirect.jsx';
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Introduction />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/kakao/callback" element={<KakaoLoginRedirect />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/groupmain" element={<GroupMain />} />
