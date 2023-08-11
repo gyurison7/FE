@@ -17,5 +17,5 @@ const Btn = styled.button`
 `;
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  onClick: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
 };

@@ -4,7 +4,8 @@ import { styled } from "styled-components";
 import api from "../../api/index.jsx";
 import { DatePicker } from "antd";
 import moment from "moment";
-import { uploadImage } from "../../hooks/upload.js";
+import { uploadImage } from "../../hooks/uploadImage.js";
+import WriteImageUpload from "../../components/common/input/WriteImageUpload.jsx";
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState("");
@@ -18,14 +19,7 @@ function GroupWrite() {
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
 
-  console.log("-------------------");
-  console.log("groupName", groupName);
-  console.log("place", places);
-  console.log("startDate", startDate);
-  console.log("endDate", endDate);
-  console.log("participants", selectedFriends);
-  console.log("image", thumbnailUrl);
-  console.log("searchResult", searchResult);
+console.log("imgurl=>", thumbnailUrl)
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -51,7 +45,8 @@ function GroupWrite() {
   };
 
   //데이터 보내는 로직
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     const payload = {
       groupName: groupName,
       thumbnailUrl: thumbnailUrl,
@@ -97,17 +92,16 @@ function GroupWrite() {
     }
   };
 
-  //이미지 처리한는 로직
+  //이미지 처리하는 로직
   const imageHandler = async (e) => {
     const file = e.target.files[0];
-    console.log(file)
+    console.log(file);
     if (file) {
       uploadImage(file).then((url) => {
         setThumbnailUrl(url);
       });
     }
   };
-  
 
   const deletePlaceHandler = (indexToDelete) => {
     setPlaces((prevPlaces) =>
@@ -150,114 +144,115 @@ function GroupWrite() {
 
   return (
     <>
-    <Form onSubmit={submitHandler}  >
-      <StWriteHeader>
-        <div>
-          <button onClick={backButtonHandler}  >back</button>
-        </div>
-        <div>구룹 만들기</div>
-        <div>
-          <button type="submit">확인</button>
-        </div>
-      </StWriteHeader>
+      <Form onSubmit={submitHandler}>
+        <WriteHeader>
+          <div>
+            <button onClick={backButtonHandler}>back</button>
+          </div>
+          <div>앨범 만들기</div>
+          <div>
+            <button type="submit">확인</button>
+          </div>
+        </WriteHeader>
 
-      <StWriteBody>
-        <div>
-          <StGroupInput
-            theme="underLine"
-            name="groupName"
-            type="text"
-            value={groupName}
-            placeholder="그룹 이름을 입력해주세요"
-            onChange={universalHandler}
-            required
-          />
-        </div>
-   
-        <StThumbnailLabel htmlFor="imageUpload">
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/image/photo.png`}
-            alt="thumbnail"
-          />
-          <p> 썸네일 추가하기</p>
-        </StThumbnailLabel>
-        <StThumbNail id="imageUpload" onChange={imageHandler} />
-        함께한 추억 장소
-        <PlaceInputWrapper>
-          <GroupWriteInput
-            name="place"
-            placeholder="장소"
-            value={place}
-            onChange={universalHandler}
-          />
-          {place && (
-            <button className="button" onClick={placeButtonHandler}>
-              {" "}
-              추가
-            </button>
-          )}
-        </PlaceInputWrapper>
-        <ul>
-          {places.map((place, index) => (
-            <li key={index}>
-              {place}
-              <button onClick={() => deletePlaceHandler(index)}>삭제</button>
-            </li>
-          ))}
-        </ul>
-        함께한 추억 기간
-        <StDateWrapper>
-          <DatePicker.RangePicker
-            className="my-picker"
-            value={[
-              startDate ? moment(startDate) : null,
-              endDate ? moment(endDate) : null,
-            ]}
-            onChange={(dates, dateStrings) => {
-              setStartDate(dateStrings[0]);
-              setEndDate(dateStrings[1]);
-            }}
-            style={{ width: "100%" }}
-          />
-        </StDateWrapper>
-        함께한 친구들
-        <div>
-          <GroupWriteInput
-            name="participants"
-            placeholder="친구 아이디"
-            value={participants}
-            onChange={universalHandler}
-          />
-          {searchResult
-            .filter((item) => !isUserSelected(item.loginId))
-            .map((item) => {
-              return (
-                <div key={item.userId}>
-                  {item.loginId}
-                  {item.nickname}
-                  <button onClick={() => addFriendHandler(item)}> 추가</button>
-                </div>
-              );
-            })}
-        </div>
-        <div style={{ display: "flex", gap: "12px" }}>
-          {selectedFriends &&
-            selectedFriends.map((item) => {
-              return (
-                <div key={item.userId}>
-                  <StProfileImage src={item.profileUrl} alt={item.nickname} />
-                  <div> {item.nickname} </div>
-                  <p> {item.loginId}</p>
-                  <button onClick={() => removeFriendHandler(item.userId)}>
-                    {" "}
-                    제거
-                  </button>
-                </div>
-              );
-            })}
-        </div>
-      </StWriteBody>
-    </Form>
+        <WriteBody>
+          <div>
+            <GroupInput
+              theme="underLine"
+              name="groupName"
+              type="text"
+              value={groupName}
+              placeholder="앨범 이름을 입력해주세요"
+              onChange={universalHandler}
+              required
+            />
+          </div>
+          <WriteImageUpload
+            height="20vh"
+            onImageChange={imageHandler}
+            bgcolor="rgba(245, 246, 248, 1)"
+          >
+            썸네일 추가하기
+          </WriteImageUpload>
+          함께한 추억 장소
+          <PlaceInputWrapper>
+            <GroupWriteInput
+              name="place"
+              placeholder="장소"
+              value={place}
+              onChange={universalHandler}
+            />
+            {place && (
+              <button className="button" onClick={placeButtonHandler}>
+                {" "}
+                추가
+              </button>
+            )}
+          </PlaceInputWrapper>
+          <ul>
+            {places.map((place, index) => (
+              <li key={index}>
+                {place}
+                <button onClick={() => deletePlaceHandler(index)}>삭제</button>
+              </li>
+            ))}
+          </ul>
+          함께한 추억 기간
+          <StDateWrapper>
+            <DatePicker.RangePicker
+              className="my-picker"
+              value={[
+                startDate ? moment(startDate) : null,
+                endDate ? moment(endDate) : null,
+              ]}
+              onChange={(dates, dateStrings) => {
+                setStartDate(dateStrings[0]);
+                setEndDate(dateStrings[1]);
+              }}
+              style={{ width: "100%" }}
+            />
+          </StDateWrapper>
+          함께한 친구들
+          <div>
+            <GroupWriteInput
+              name="participants"
+              placeholder="친구 닉네임"
+              value={participants}
+              onChange={universalHandler}
+            />
+            {searchResult
+              .filter((item) => !isUserSelected(item.loginId))
+              .map((item) => {
+                return (
+                  <div key={item.userId}>
+                    {item.loginId}
+                    {item.nickname}
+                    <button onClick={() => addFriendHandler(item)}>
+                      {" "}
+                      추가
+                    </button>
+                  </div>
+                );
+              })}
+          </div>
+          <div style={{ display: "flex", gap: "12px" }}>
+            {selectedFriends &&
+              selectedFriends.map((item) => {
+                return (
+                  <div key={item.userId}>
+                    <ProfileImage src={item.profileUrl} alt={item.nickname} />
+                    <div> {item.nickname} </div>
+                    <p> {item.loginId}</p>
+                    <button onClick={() => removeFriendHandler(item.userId)}>
+                      {" "}
+                      제거
+                    </button>
+                  </div>
+                );
+              })}
+          </div>
+        </WriteBody>
+      </Form>
     </>
   );
 }
@@ -265,10 +260,10 @@ function GroupWrite() {
 export default GroupWrite;
 
 const Form = styled.form`
-  
-`
+  width: 100%;
+`;
 
-const StWriteHeader = styled.div`
+const WriteHeader = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -277,7 +272,7 @@ const StWriteHeader = styled.div`
   align-items: center;
 `;
 
-const StWriteBody = styled.div`
+const WriteBody = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -286,26 +281,13 @@ const StWriteBody = styled.div`
   overflow: scroll;
 `;
 
-const StProfileImage = styled.img`
+const ProfileImage = styled.img`
   height: 40px;
   width: 40px;
   border-radius: 100%;
 `;
 
-const StThumbNail = styled.input.attrs({
-  type: "file",
-  accept: "image/*",
-})`
-  width: 100%;
-  height: 20vh;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  margin-bottom: 12px;
-  display: none;
-`;
-
-const StGroupInput = styled.input`
+const GroupInput = styled.input`
   width: 100%;
   padding: 15px 60px 15px 0px;
   font-size: 20px;
@@ -365,25 +347,3 @@ const PlaceInputWrapper = styled.div`
     background-color: #e0e0e0;
   }
 `;
-
-const StThumbnailLabel = styled.label`
-  width: 100%;
-  height: 20vh;
-  cursor: pointer;
-  display: block;
-  text-align: center;
-  border: none;
-  background-color: rgba(245, 246, 248, 1) ;
-  border-radius: 15px;
-  padding: 50px;
-
-  img {
-    height: 40px;
-    margin-bottom: 5px;
-  }
-
-  p {
-    color: #707070;
-  }
-`;
-

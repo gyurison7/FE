@@ -87,7 +87,7 @@ const UserInfo = () => {
                 </Button>
                 <FormContainer onSubmit={userInfoUploadHandler}>
                     <Input
-                        onChange={onChangeNicknameHandeler}
+                        onChange={onChangeNicknameHandler}
                         name='nickname'
                         type="text"
                         value={nickname}

@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import GroupPageHeader from "../../layout/header/GroupPageHeader";
-import Footer from "../../layout/footer/Footer.jsx";
+import Footer from "../../layout/footer/Footer.js";
 import { getGroupData } from "../../api/groupMainApi";
-// import Footer from "../../layout/footer/Footer";
 
 function GroupMain() {
   const [groupData, setGroupData] = useState([]);
@@ -23,27 +22,26 @@ function GroupMain() {
         console.error("Error fetching group data:", error);
       });
   }, []);
-  console.log(groupData);
 
   return (
     <>
-      <StMainContainer>
+      <MainContainer>
         <GroupPageHeader />
-        <StGroupWrapper >
-          <StButtonWrapper>
-            <StWriteButton onClick={writeButtonHandler}>
+        <GroupWrapper >
+          <ButtonWrapper>
+            <WriteButton onClick={writeButtonHandler}>
               <PlusImage
                 src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
                 alt="logo"
               />
-            </StWriteButton>
-          </StButtonWrapper>
+            </WriteButton>
+          </ButtonWrapper>
           {groupData.map((item) => {
                const formattedStartDate = item.startDate ? item.startDate.slice(0, 10) : "";
                const formattedEndDate = item.endDate ? item.endDate.slice(0, 10) : "";
 
             return (
-              <StButtonWrapper
+              <ButtonWrapper
                 key={item.groupId}
                 onClick={() => navigate(`/postmain/${item.groupId}`)}
               >
@@ -76,12 +74,12 @@ function GroupMain() {
                     {formattedStartDate}~{formattedEndDate}
                   </p>
                 </div>
-              </StButtonWrapper>
+              </ButtonWrapper>
             );
           })}
-        </StGroupWrapper>
+        </GroupWrapper>
         <Footer />
-      </StMainContainer>
+      </MainContainer>
     </>
   );
 }
@@ -89,13 +87,13 @@ function GroupMain() {
 export default GroupMain;
 
 //container and wrapper
-const StMainContainer = styled.div`
+const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
 `;
 
-const StGroupWrapper = styled.div`
+const GroupWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 80px;
@@ -104,7 +102,7 @@ const StGroupWrapper = styled.div`
   column-gap: 10vw;
   margin-left: 33px;
 `;
-const StButtonWrapper = styled.div`
+const ButtonWrapper = styled.div`
   margin-top: 12px;
   width: 40%;
   padding-bottom: 24px;
@@ -112,7 +110,7 @@ const StButtonWrapper = styled.div`
 `;
 
 //styled
-const StWriteButton = styled.button`
+const WriteButton = styled.button`
   width: 100%;
   height: 170px;
   border-radius: 12px;
