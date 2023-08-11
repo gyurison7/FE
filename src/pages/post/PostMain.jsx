@@ -109,7 +109,12 @@ function PostMain() {
         {data?.memories.map((e) => {
           return (
             <Box key={e.memoryId}>
-              <img src={e.imageUrl} alt="rasm" height={130} width={130} />
+              <img
+                src={e.imageUrl}
+                alt="rasm"
+                height={130}
+                style={{ width: '100%' }}
+              />
             </Box>
           );
         })}
