@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { login } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
+import KakaoLogin from './KakaoLogin.jsx';
 
 function Login() {
   const [id, setId] = useState('');
@@ -77,9 +78,7 @@ function Login() {
           <LinkStyle to='/'>비밀번호 찾기</LinkStyle> */}
           <LinkStyle to='/signup'>회원가입</LinkStyle>
         </LinkContainer>
-        <KakaoLoginButton>
-          <img src={`${process.env.PUBLIC_URL}assets/image/kakao_login.png`} alt='kakao_login' />
-        </KakaoLoginButton>
+        <KakaoLogin />
       </form>
     </Wrapper>
   )
@@ -175,17 +174,4 @@ const LinkStyle = styled(Link)`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-`;
-
-const KakaoLoginButton = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
-  @media (max-height: 750px) {
-    margin-top: 2rem;
-  }
-
-  img {
-    width: 90%
-  }
 `;

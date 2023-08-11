@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserInfoPageHeader from '../../layout/header/UserInfoPageHeader';
 import Input from '../../components/common/input/Input.jsx';
@@ -7,6 +7,7 @@ import Input from '../../components/common/input/Input.jsx';
 const UserInfo = () => {
     const [nickname, setNickname] = useState('');
     const [nicknameError, setNicknameError] = useState('');
+    const navigate = useNavigate();
 
     const onChangeNicknameHandeler = (e) => {
         setNickname(e.target.value);
@@ -45,7 +46,7 @@ const UserInfo = () => {
                     </p>
                     <button type='submit'>등록하기</button>
                 </FormContainer>
-                <Link to='/groupmain'>건너뛰기</Link>
+                <SkipButton type='button' onClick={() => navigate('/groupmain')}>건너뛰기</SkipButton>
             </UserInfoContainer>
         </>
     )
@@ -133,3 +134,14 @@ const FormContainer = styled.form`
     }
 `;
 
+const SkipButton = styled.div`
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #4C4C4C;
+    color: #4C4C4C;
+    font-family: Apple SD Gothic Neo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+`;

@@ -55,7 +55,7 @@ function Signup() {
       } else {
         setIdError('이미 사용중인 아이디입니다.');
         setIsIdAvailable(false);
-        return true;
+        return false;
       }
     } catch (error) {
       alert('서버 오류입니다. 관리자에게 문의하세요.');
@@ -66,7 +66,7 @@ function Signup() {
 
   const passwordCheckHandler = (password, confirm) => {
     const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
-    console.log("password", password);
+    console.log("password", password); // TODO : 테스트 완료 후 삭제하기
     console.log("confirm", confirm);
     if (password === '') {
       setPasswordError('비밀번호를 입력해주세요.');
@@ -128,6 +128,7 @@ function Signup() {
                 value={id}
                 placeholder='아이디 입력'
                 theme='underLine'
+                maxlength='10'
               />
               {idError && <small>{idError}</small>}
             </InputContainer>
@@ -141,6 +142,7 @@ function Signup() {
                 value={password}
                 placeholder='비밀번호 입력'
                 theme='underLine'
+                maxlength='16'
               />
               {passwordError && <small>{passwordError}</small>}
               <Input
@@ -151,6 +153,7 @@ function Signup() {
                 value={confirm}
                 placeholder='비밀번호 확인'
                 theme='underLine'
+                maxlength='16'
               />
               {confirmError && <small>{confirmError}</small>}
             </InputContainer>
@@ -195,9 +198,8 @@ const InputContainer = styled.div`
   gap: 0.5rem;
   margin-top: 2rem;
   margin-bottom: 3rem;
-  @media (max-height: 670px) {
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+  @media (max-height: 750px) {
+    margin-bottom: 1rem;
   }
 
   label {
@@ -235,9 +237,9 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  bottom: -25vh;
+  bottom: -30vh;
   @media (max-height: 750px) {
-    bottom: -20vh;
+    bottom: -27vh;
   }
   button {
     width: 90%;

@@ -20,9 +20,11 @@ const HeaderContainer = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 5vw;
+    height: 0;
+    padding-left: 5vw;
+    padding-right: 5vw;
     position: relative;
-    top: 3vh;
+    top: 6.5vh;
 `;
 
 const BackButton = styled.img`
