@@ -17,7 +17,10 @@ const KakaoLoginRedirect = () => {
 
     useEffect(() => {
         const kakaoLogin = async () => {
-            const response = await axios.post(`http://localhost:3001/kakaoLogin?code=${code}`);
+            const response = await axios.get(`${process.env.REACT_APP_REDIRECT_URI}?code=${code}`,
+                {},
+                { withCredentials: true }
+            );
             console.log(response.data);
             navigate('/groupmain');
         }
