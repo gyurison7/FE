@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup, idDuplicateCheck } from '../../api/auth'
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
-import SignupModal from '../../components/SignupModal.jsx';
+
+import SignupModal from '../../components/common/modal/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
 
 function Signup() {
@@ -40,9 +41,11 @@ function Signup() {
     const idRegex = /^[a-z\d]{5,10}$/;
     if (id === '') {
       setIdError('아이디를 입력해주세요.');
+      setIsIdAvailable(false);
       return false;
     } else if (!idRegex.test(id)) {
       setIdError('아이디는 5~10자의 영소문자, 숫자만 입력 가능합니다.');
+      setIsIdAvailable(false);
       return false;
     }
     try {
@@ -79,6 +82,7 @@ function Signup() {
       setConfirmError('비밀번호가 일치하지 않습니다.');
       return false;
     } else {
+      setPasswordError('');
       setConfirmError('');
       return true;
     }
@@ -102,6 +106,7 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
+        localStorage.setItem('loginId', id);
         setOpenModal(true);
       } else {
         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
@@ -116,7 +121,7 @@ function Signup() {
     <>
       <SignupPageHeader />
       <Wrapper>
-        <form onSubmit={signupHandler}>
+        <Form onSubmit={signupHandler}>
           <InputWrapper>
             <InputContainer>
               <label htmlFor='id'>아이디</label>
@@ -128,7 +133,7 @@ function Signup() {
                 value={id}
                 placeholder='아이디 입력'
                 theme='underLine'
-                maxlength='10'
+                maxLength={10}
               />
               {idError && <small className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
             </InputContainer>
@@ -142,7 +147,7 @@ function Signup() {
                 value={password}
                 placeholder='비밀번호 입력'
                 theme='underLine'
-                maxlength='16'
+                maxLength={16}
               />
               {passwordError && <small>{passwordError}</small>}
               <Input
@@ -153,7 +158,7 @@ function Signup() {
                 value={confirm}
                 placeholder='비밀번호 확인'
                 theme='underLine'
-                maxlength='16'
+                maxLength={16}
               />
               {confirmError && <small>{confirmError}</small>}
             </InputContainer>
@@ -161,7 +166,7 @@ function Signup() {
           <ButtonContainer>
             <button type='submit'>가입하기</button>
           </ButtonContainer>
-        </form>
+        </Form>
         {setOpenModal ? openModal && (<SignupModal />) : null}
       </Wrapper>
     </>
@@ -184,13 +189,18 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const Form = styled.form`
+  width: 100%;
+`;
+
 const InputWrapper = styled.div`
+  width: 100%;
   position: relative;
   margin-top: -50%;
 `;
 
 const InputContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

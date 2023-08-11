@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import MyPageHeader from '../../layout/header/MyPageHeader.js';
-import Footer from '../../layout/footer/Footer.jsx';
+import Footer from '../../layout/footer/Footer.js';
 
 const MyPage = () => {
   return (
@@ -12,7 +12,10 @@ const MyPage = () => {
           <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
           <NicknameContainer>
             <span>김밍글</span>
-            <img src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`} alt='닉네임 바꾸기' />
+            <img
+              src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`}
+              alt='닉네임 바꾸기'
+            />
           </NicknameContainer>
         </ProfileContainer>
         <ButtonContainer>
@@ -20,12 +23,10 @@ const MyPage = () => {
           <button className='memberOut'>회원탈퇴</button>
         </ButtonContainer>
       </HeaderContainer>
-      <Foot>
-        <Footer />
-      </Foot>
+      <Footer />
     </>
-  )
-}
+  );
+};
 
 export default MyPage;
 
@@ -57,7 +58,7 @@ const NicknameContainer = styled.div`
   align-items: center;
   gap: 1vw;
   span {
-    color: #4C4C4C;
+    color: #4c4c4c;
     font-family: Apple SD Gothic Neo;
     font-size: 1.5rem;
     font-style: normal;
@@ -87,18 +88,12 @@ const ButtonContainer = styled.div`
     line-height: normal;
   }
   .passwordChange {
-    border-bottom: 1px solid #4C4C4C;
-    color: #4C4C4C;
+    border-bottom: 1px solid #4c4c4c;
+    color: #4c4c4c;
     font-size: 1rem;
   }
   .memberOut {
-    color: #B9B9B9;
+    color: #b9b9b9;
     font-size: 0.875rem;
   }
-`;
-
-const Foot = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 100%;
 `;

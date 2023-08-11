@@ -13,10 +13,6 @@ function Itroduction() {
     <Wrap>
       <CarouselWrap>
         <Carousel autoplay>
-          {/* <IMG
-            src={`${process.env.PUBLIC_URL}/assets/image/img1.png`}
-            alt="rasm"
-          /> */}
           <IMG
             src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`}
             alt="rasm"
@@ -54,6 +50,7 @@ const IMG = styled.img`
   height: 70vh;
 `;
 const CarouselWrap = styled.div`
+  width: 100%;
   height: 70vh;
 `;
 const WrapButton = styled.div`
