@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import MyPageHeader from '../../layout/header/MyPageHeader.js';
-import Footer from '../../layout/footer/Footer.jsx';
+import Footer from '../../layout/footer/Footer.js';
 
 const MyPage = () => {
   return (

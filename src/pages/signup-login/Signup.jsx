@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup, idDuplicateCheck } from '../../api/auth'
 import SignupPageHeader from '../../layout/header/SignupPageHeader';
-import SignupModal from '../../components/SignupModal.jsx';
+
+import SignupModal from '../../components/common/modal/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
 
 function Signup() {

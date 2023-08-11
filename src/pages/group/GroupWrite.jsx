@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 import api from "../../api/index.jsx";
 import { DatePicker } from "antd";
 import moment from "moment";
-import { uploadImage } from "../../hooks/upload.js";
+import { uploadImage } from "../../hooks/uploadImage.js";
 import WriteImageUpload from "../../components/common/input/WriteImageUpload.jsx";
 
 function GroupWrite() {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import GroupPageHeader from "../../layout/header/GroupPageHeader";
-import Footer from "../../layout/footer/Footer.jsx";
+import Footer from "../../layout/footer/Footer.js";
 import { getGroupData } from "../../api/groupMainApi";
 
 function GroupMain() {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { uploadImage } from "../../hooks/upload.js";
+import { uploadImage } from "../../hooks/uploadImage.js";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import WriteImageUpload from "../../components/common/input/WriteImageUpload.jsx";
-import Layout from "../../layout/Layout.js";
+import Layout from "../../layout";
 
 function PostWrite() {
   const { id } = useParams();

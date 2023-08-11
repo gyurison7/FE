@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import Footer from '../../layout/footer/Footer.jsx';
+import Footer from '../../layout/footer/Footer.js';
 import api from '../../api/index.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 
