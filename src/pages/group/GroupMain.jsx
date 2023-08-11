@@ -29,7 +29,7 @@ function GroupMain() {
     <>
       <StMainContainer>
         <GroupPageHeader />
-        <StGroupWrapper datalength={groupData.length}>
+        <StGroupWrapper >
           <StButtonWrapper>
             <StWriteButton onClick={writeButtonHandler}>
               <PlusImage
@@ -39,8 +39,8 @@ function GroupMain() {
             </StWriteButton>
           </StButtonWrapper>
           {groupData.map((item) => {
-            const formattedStartDate = item.startDate.slice(0, 10);
-            const formattedEndDate = item.endDate.slice(0, 10);
+               const formattedStartDate = item.startDate ? item.startDate.slice(0, 10) : "";
+               const formattedEndDate = item.endDate ? item.endDate.slice(0, 10) : "";
 
             return (
               <StButtonWrapper
