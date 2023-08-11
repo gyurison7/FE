@@ -130,7 +130,7 @@ function Signup() {
                 theme='underLine'
                 maxlength='10'
               />
-              {idError && <small>{idError}</small>}
+              {idError && <small className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
             </InputContainer>
             <InputContainer>
               <label htmlFor='id'>비밀번호</label>
@@ -229,6 +229,10 @@ const InputContainer = styled.div`
     word-break: break-all;
     overflow-wrap: break-word;
     white-space: pre-line;
+  }
+
+  .idAvailable {
+    color: #4C4C4C;
   }
 `;
 
