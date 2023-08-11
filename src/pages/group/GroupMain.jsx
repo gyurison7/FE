@@ -73,7 +73,7 @@ function GroupMain() {
                       marginTop: "12px",
                     }}
                   >
-                    <p>{formattedStartDate}~{formattedEndDate}</p>
+                    {formattedStartDate}~{formattedEndDate}
                   </p>
                 </div>
               </StButtonWrapper>
