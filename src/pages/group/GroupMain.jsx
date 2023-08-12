@@ -32,7 +32,7 @@ function GroupMain() {
             <WriteButton onClick={writeButtonHandler}>
               <PlusImage
                 src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
-                alt="logo"
+                alt='logo'
               />
             </WriteButton>
           </ButtonWrapper>
@@ -40,9 +40,7 @@ function GroupMain() {
             const formattedStartDate = item.startDate
               ? item.startDate.slice(0, 10)
               : '';
-            const formattedEndDate = item.endDate
-              ? item.endDate.slice(0, 10)
-              : '';
+            const formattedEndDate = item.endDate ? item.endDate.slice(0, 10) : '';
 
             return (
               <ButtonWrapper
@@ -98,22 +96,28 @@ const MainContainer = styled.div`
 `;
 
 const GroupWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   margin-top: 80px;
   overflow-y: auto;
   flex-grow: 1;
-  column-gap: 2vw;
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 const ButtonWrapper = styled.div`
   margin-top: 12px;
-  width: 37%;
+  width: 40%;
   padding-bottom: 24px;
   cursor: pointer;
+  margin-left: 24px;
 `;
 
 //styled
 const WriteButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 170px;
   border-radius: 12px;
@@ -125,5 +129,5 @@ const WriteButton = styled.button`
 `;
 
 const PlusImage = styled.img`
-  width: 25%;
+  margin: 0;
 `;

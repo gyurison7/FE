@@ -34,7 +34,9 @@ const ThumbnailLabel = styled.label`
   }
 
   p {
-    color: #707070;
+    color:#BDBDBD;
+    font-size: 16px;
+    font-weight: 600;
   }
 `;
 
