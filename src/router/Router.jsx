@@ -8,7 +8,7 @@ import Introduction from '../pages/app-introduction/Introduction.jsx';
 import UserInfo from '../pages/signup-login/UserInfo.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
-import KakaoLoginRedirect from '../pages/signup-login/KakaoLoginRedirect.jsx';
+import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 
 const Router = () => {
   return (
