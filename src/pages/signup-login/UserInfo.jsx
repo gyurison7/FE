@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import UserInfoPageHeader from '../../layout/header/UserInfoPageHeader';
-import Input from '../../components/common/input/Input.jsx';
 import { uploadImage } from '../../hooks/uploadImage';
 import { userInfoUpload } from '../../api/auth';
+import Input from '../../components/common/input/Input.jsx';
+import Header from '../../components/common/header/Header.jsx';
 
 
 const UserInfo = () => {
@@ -73,7 +73,7 @@ const UserInfo = () => {
 
     return (
         <>
-            <UserInfoPageHeader />
+            <Header title='프로필 등록' />
             <UserInfoContainer>
                 <Text>
                     친구들이 알 수 있도록,<br />

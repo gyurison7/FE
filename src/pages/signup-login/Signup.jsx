@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { signup, idDuplicateCheck } from '../../api/auth'
-import SignupPageHeader from '../../layout/header/SignupPageHeader';
-
 import SignupModal from '../../components/common/modal/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
+import Header from '../../components/common/header/Header.jsx';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -90,7 +89,7 @@ function Signup() {
 
   const signupHandler = async (e) => {
     e.preventDefault();
-    // setOpenModal(true); // TODO : 테스트 완료 후 삭제하기
+    //setOpenModal(true); // TODO : 테스트 완료 후 삭제하기
     const idCheckresult = await idCheckHandler(id);
     if (idCheckresult) setIdError('');
     else return;
@@ -119,7 +118,7 @@ function Signup() {
 
   return (
     <>
-      <SignupPageHeader />
+      <Header title='회원가입' />
       <Wrapper>
         <Form onSubmit={signupHandler}>
           <InputWrapper>
@@ -167,8 +166,8 @@ function Signup() {
             <button type='submit'>가입하기</button>
           </ButtonContainer>
         </Form>
-        {setOpenModal ? openModal && (<SignupModal />) : null}
       </Wrapper>
+      {setOpenModal ? openModal && (<SignupModal />) : null}
     </>
   )
 }
@@ -177,11 +176,10 @@ export default Signup;
 
 const Wrapper = styled.div`
   position: relative;
-  top: 50%;
+  top: 43%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  //height: 100vh;
   //border-radius: 1.25rem;
   display: flex;
   flex-direction: column;

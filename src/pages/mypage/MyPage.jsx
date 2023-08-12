@@ -1,12 +1,12 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import MyPageHeader from '../../layout/header/MyPageHeader.js';
 import Footer from '../../layout/footer/Footer.js';
+import Header from '../../components/common/header/Header.jsx';
 
 const MyPage = () => {
   return (
     <>
-      <MyPageHeader />
+      <Header title='마이페이지' />
       <HeaderContainer>
         <ProfileContainer>
           <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
