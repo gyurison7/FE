@@ -39,4 +39,5 @@ const Wrap = styled.div`
   height: 17vh;
   background: #fff;
   box-shadow: 8px 4px 23px 0px rgba(0, 0, 0, 0.25);
+  margin-top: auto;
 `;

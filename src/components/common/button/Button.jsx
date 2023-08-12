@@ -15,6 +15,7 @@ const Btn = styled.button`
   font-weight: 500;
   outline: none;
 `;
+
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,

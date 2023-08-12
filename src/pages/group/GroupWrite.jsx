@@ -6,6 +6,7 @@ import { DatePicker } from 'antd';
 import moment from 'moment';
 import { uploadImage } from '../../hooks/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
+import PropTypes from 'prop-types';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -19,7 +20,8 @@ function GroupWrite() {
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
 
-  console.log('imgurl=>', thumbnailUrl);
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -231,7 +233,9 @@ function GroupWrite() {
               placeholder='친구 닉네임'
               value={participants}
               onChange={universalHandler}
+              onClick={() => setModalOpen(!isModalOpen)}
             />
+            {isModalOpen && <FriendSearchModal onClose={() => setModalOpen(false)} />}
             {searchResult
               .filter((item) => !isUserSelected(item.loginId))
               .map((item) => {
@@ -394,10 +398,9 @@ const PlaceResult = styled.div`
   background-color: #5873fe;
   border-radius: 20px;
   color: #fff;
-  padding: 8px 8px 8px 10px;
-  font-size: 14px;
+  padding: 8px 4px 8px 10px;
+  font-size: 13px;
   align-items: center;
-  gap: 4px;
 `;
 
 const PlaceRemoveButton = styled.button`
@@ -416,3 +419,31 @@ const PlaceAddButton = styled.button`
   border: none;
   cursor: pointer;
 `;
+
+// Modal Logic
+
+function FriendSearchModal({ onClose }) {
+  return (
+    <ModalContainer>
+      <div>
+        <input/>
+      </div>
+      <button onClick={onClose}>Close</button>  {/* Close button to dismiss modal */}
+    </ModalContainer>
+  );
+}
+
+const ModalContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 1rem;
+  z-index: 10;  // Ensuring modal appears above other content
+  // Add more styling or components as needed
+`;
+
+FriendSearchModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
