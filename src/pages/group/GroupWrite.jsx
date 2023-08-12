@@ -490,6 +490,7 @@ const ResultProfileImage = styled.img`
   width: 54px;
   height: 54px;
   border-radius: 100%;
+  object-fit: cover;
 `;
 
 const ResultAddButton = styled.button`
