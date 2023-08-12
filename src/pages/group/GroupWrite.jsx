@@ -133,9 +133,7 @@ function GroupWrite() {
   };
 
   const removeFriendHandler = (id) => {
-    setSelectedFriends((prevfri) =>
-      prevfri.filter((item) => item.userId !== id)
-    );
+    setSelectedFriends((prevfri) => prevfri.filter((item) => item.userId !== id));
   };
 
   const isUserSelected = (loginId) => {
@@ -147,60 +145,49 @@ function GroupWrite() {
       <Form onSubmit={submitHandler}>
         <WriteHeader>
           <div>
-            <button onClick={backButtonHandler}>back</button>
+            <BackButton onClick={backButtonHandler}>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/svgs/VectorLeft.svg`}
+                alt='left'
+              />
+            </BackButton>
           </div>
           <div>앨범 만들기</div>
           <div>
-            <button type="submit">확인</button>
+            <SubmitButton type='submit'>확인</SubmitButton>
           </div>
         </WriteHeader>
 
         <WriteBody>
-          <div>
-            <GroupInput
-              theme="underLine"
-              name="groupName"
-              type="text"
-              value={groupName}
-              placeholder="앨범 이름을 입력해주세요"
-              onChange={universalHandler}
-              required
-            />
-          </div>
-          <WriteImageUpload
-            height="20vh"
-            onImageChange={imageHandler}
-            bgcolor="rgba(245, 246, 248, 1)"
-          >
-            썸네일 추가하기
-          </WriteImageUpload>
-          함께한 추억 장소
-          <PlaceInputWrapper>
-            <GroupWriteInput
-              name="place"
-              placeholder="장소"
-              value={place}
-              onChange={universalHandler}
-            />
-            {place && (
-              <button className="button" onClick={placeButtonHandler}>
-                {' '}
-                추가
-              </button>
+          <GroupInput
+            theme='underLine'
+            name='groupName'
+            type='text'
+            value={groupName}
+            placeholder='앨범 이름을 입력해주세요'
+            onChange={universalHandler}
+            required
+          />
+          <WriteImageWrapper>
+            {thumbnailUrl ? (
+              <ThumbnailWrapper>
+                <ThumbedImage src={thumbnailUrl} alt='Uploaded Thumbnail' />
+                <ImageInput type='file' accept='image/*' onChange={imageHandler} />
+              </ThumbnailWrapper>
+            ) : (
+              <WriteImageUpload
+                height='20vh'
+                onImageChange={imageHandler}
+                bgcolor='rgba(245, 246, 248, 1)'
+              >
+                썸네일 추가하기
+              </WriteImageUpload>
             )}
-          </PlaceInputWrapper>
-          <ul>
-            {places.map((place, index) => (
-              <li key={index}>
-                {place}
-                <button onClick={() => deletePlaceHandler(index)}>삭제</button>
-              </li>
-            ))}
-          </ul>
+          </WriteImageWrapper>
           함께한 추억 기간
           <StDateWrapper>
             <DatePicker.RangePicker
-              className="my-picker"
+              className='my-picker'
               value={[
                 startDate ? moment(startDate) : null,
                 endDate ? moment(endDate) : null,
@@ -212,11 +199,36 @@ function GroupWrite() {
               style={{ width: '100%' }}
             />
           </StDateWrapper>
-          함께한 친구들
-          <div>
+          함께한 추억 장소
+          <PlaceInputWrapper>
             <GroupWriteInput
-              name="participants"
-              placeholder="친구 닉네임"
+              name='place'
+              placeholder='장소'
+              value={place}
+              onChange={universalHandler}
+            />
+            {place && (
+              <PlaceAddButton className='button' onClick={placeButtonHandler}>
+                추가
+              </PlaceAddButton>
+            )}
+            {places.map((place, index) => (
+              <PlaceResult key={index}>
+                {place}
+                <PlaceRemoveButton onClick={() => deletePlaceHandler(index)}>
+                <img
+                src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
+                alt='left'
+              />
+                </PlaceRemoveButton>
+              </PlaceResult>
+            ))}
+          </PlaceInputWrapper>
+          함께한 친구들
+          <div style={{ width: '100%' }}>
+            <GroupWriteInput
+              name='participants'
+              placeholder='친구 닉네임'
               value={participants}
               onChange={universalHandler}
             />
@@ -227,10 +239,7 @@ function GroupWrite() {
                   <div key={item.userId}>
                     {item.loginId}
                     {item.nickname}
-                    <button onClick={() => addFriendHandler(item)}>
-                      {' '}
-                      추가
-                    </button>
+                    <button onClick={() => addFriendHandler(item)}> 추가</button>
                   </div>
                 );
               })}
@@ -267,8 +276,8 @@ const WriteHeader = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  height: 50px;
-  background-color: #f8f8f8;
+  height: 80px;
+  background-color: #fff;
   align-items: center;
 `;
 
@@ -295,11 +304,12 @@ const GroupInput = styled.input`
   border: none;
   color: rgb(41, 41, 41);
   font-weight: bold;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgba(88, 115, 254, 1);
   background-color: transparent;
 
   &::placeholder {
     color: rgba(119, 116, 116, 0.786);
+    font-size: 16px;
     font-weight: 600;
   }
 
@@ -332,18 +342,77 @@ const GroupWriteInput = styled.input`
 const PlaceInputWrapper = styled.div`
   position: relative;
   width: 100%;
+`;
 
-  .button {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    background-color: #f5f5f5;
-    border: none;
-    cursor: pointer;
-  }
+const SubmitButton = styled.button`
+  border: none;
+  background-color: transparent;
+  color: rgba(88, 115, 254, 1);
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: normal;
+  margin-right: 20px;
+`;
 
-  .button:hover {
-    background-color: #e0e0e0;
-  }
+const BackButton = styled.button`
+  margin-left: 20px;
+`;
+
+const WriteImageWrapper = styled.div`
+  width: 100%;
+`;
+
+const ThumbedImage = styled.img`
+  width: 100%;
+  height: 20vh;
+  object-fit: cover;
+  border-radius: 7px;
+`;
+
+const ImageInput = styled.input`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+`;
+
+const ThumbnailWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 20vh;
+`;
+
+const PlaceResult = styled.div`
+  margin-left: 5px;
+  margin-top: 15px;
+  height: 30px;
+  display: inline-flex;
+  background-color: #5873fe;
+  border-radius: 20px;
+  color: #fff;
+  padding: 8px 8px 8px 10px;
+  font-size: 14px;
+  align-items: center;
+  gap: 4px;
+`;
+
+const PlaceRemoveButton = styled.button`
+  padding-top: 2px;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+`;
+
+const PlaceAddButton = styled.button`
+  position: absolute;
+  top: 30%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: #f5f5f5;
+  border: none;
+  cursor: pointer;
 `;

@@ -21,7 +21,7 @@ const KakaoLoginRedirect = () => {
                 {},
                 { withCredentials: true }
             );
-            console.log(response.data);
+            console.log("response.data",response.data);
             navigate('/groupmain');
         }
         kakaoLogin();
