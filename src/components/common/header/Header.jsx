@@ -1,23 +1,22 @@
 import React from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const UserInfoPageHeader = () => {
+const Header = ({ icon, title }) => {
     const navigate = useNavigate();
 
     return (
         <HeaderContainer>
-            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/icon_back.svg`} alt='back' onClick={() => navigate(-1)} />
-            <Title>프로필 등록</Title>
+            <BackButton src={`${process.env.PUBLIC_URL}assets/svgs/${icon || 'icon_back'}.svg`} alt='back' onClick={() => navigate(-1)} />
+            <Title>{title}</Title>
         </HeaderContainer>
     )
 }
 
-export default UserInfoPageHeader;
-
 const HeaderContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     width: 100%;
     padding: 5vw;
@@ -27,8 +26,8 @@ const HeaderContainer = styled.div`
 
 const BackButton = styled.img`
     display: flex;
-    width: 0.53763rem;
-    height: 1.10906rem;
+    width: 8.602px;
+    height: 17.745px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -39,10 +38,16 @@ const Title = styled.h1`
     width: 100%;
     text-align: center;
     color: #4C4C4C;
-    text-align: center;
     font-family: Apple SD Gothic Neo;
     font-size: 1rem;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
 `;
+
+Header.propTypes = {
+    icon: PropTypes.string,
+    title: PropTypes.string,
+}
+
+export default Header;
