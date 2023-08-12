@@ -149,7 +149,7 @@ function GroupWrite() {
           <div>
             <BackButton onClick={backButtonHandler}>
               <img
-                src={`${process.env.PUBLIC_URL}/assets/svgs/VectorLeft.svg`}
+                src={`${process.env.PUBLIC_URL}/assets/svgs/icon_back.svg`}
                 alt='left'
               />
             </BackButton>
@@ -356,6 +356,8 @@ const SubmitButton = styled.button`
 
 const BackButton = styled.button`
   margin-left: 20px;
+  background-color: transparent;
+  border: none;
 `;
 
 const WriteImageWrapper = styled.div`
