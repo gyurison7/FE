@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { login } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
-import KakaoLogin from './KakaoLogin.jsx';
+import KakaoLogin from '../kakao-login/KakaoLogin.jsx';
 
 function Login() {
   const [id, setId] = useState('');
