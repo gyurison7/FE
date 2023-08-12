@@ -12,7 +12,7 @@ const SignupModal = () => {
                 <img src={`${process.env.PUBLIC_URL}assets/svgs/signup_check.svg`} alt='회원가입 확인' />
                 <TextContainer>
                     <h2>회원가입 완료</h2>
-                    <p>지금 바로 메모리 밍글을<br />만들어보세요</p>
+                    <p>지금 바로 나만의 추억 앨범을<br />만들어보세요!</p>
                 </TextContainer>
                 <ButtonContainer>
                     <button onClick={() => navigate('/userinfo')}>확인</button>
