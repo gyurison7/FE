@@ -116,25 +116,15 @@ const UserInfo = () => {
 export default UserInfo;
 
 const UserInfoContainer = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 2vw;
-    img {
-        margin-bottom: 8vw;
-        @media (max-height: 750px) {
-            margin-bottom: 3vw;
-        }
-    }
+    margin-top: 9vh;
 `;
 
 const Text = styled.h2`
-    margin-top: 7vh;
-    margin-bottom: 10vw;
-    @media (max-height: 750px) {
-        margin-bottom: 7vw;
-    }
     text-align: left;
     color: #4C4C4C;
     font-family: Apple SD Gothic Neo;
@@ -145,6 +135,7 @@ const Text = styled.h2`
 `;
 
 const Button = styled.button`
+    margin-top: 5vh;
     background: transparent;
     border: none;
 
@@ -157,6 +148,7 @@ const Button = styled.button`
 `;
 
 const FormContainer = styled.form`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,13 +176,11 @@ const FormContainer = styled.form`
         font-style: normal;
         font-weight: 400;
         line-height: normal;
-        margin-bottom: 10vw;
-        @media (max-height: 750px) {
-            margin-bottom: 5vw;
-        }
     }
 
     button {
+        position: relative;
+        bottom: -4vh;
         width: 90%;
         height: 3.5625rem;
         flex-shrink: 0;
@@ -217,6 +207,8 @@ const InputContainer = styled.div`
 `;
 
 const SkipButton = styled.div`
+    position: relative;
+    bottom: -6vh;
     background: transparent;
     border: none;
     border-bottom: 1px solid #4C4C4C;
