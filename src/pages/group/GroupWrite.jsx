@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { css, keyframes, styled } from 'styled-components';
 import api from '../../api/index.jsx';
-import { DatePicker } from 'antd';
-import moment from 'moment';
 import { uploadImage } from '../../hooks/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import PropTypes from 'prop-types';
+import { DatePicker, Space } from 'antd';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -21,6 +20,15 @@ function GroupWrite() {
   const [selectedFriends, setSelectedFriends] = useState([]);
 
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const { RangePicker } = DatePicker;
+  const onChange = (value, dateString) => {
+    setStartDate(dateString[0]);
+    setEndDate(dateString[1]);
+  };
+
+  console.log('starDate', startDate);
+  console.log('endDate', endDate);
 
   const searchUser = async (nickname) => {
     try {
@@ -78,12 +86,6 @@ function GroupWrite() {
         break;
       case 'place':
         setPlace(value);
-        break;
-      case 'startDate':
-        setStartDate(value);
-        break;
-      case 'endDate':
-        setEndDate(value);
         break;
       case 'participants':
         setParticipant(value);
@@ -188,24 +190,37 @@ function GroupWrite() {
           </WriteImageWrapper>
           함께한 추억 기간
           <StDateWrapper>
-            <DatePicker.RangePicker
-              className='my-picker'
-              value={[
-                startDate ? moment(startDate) : null,
-                endDate ? moment(endDate) : null,
-              ]}
-              onChange={(dates, dateStrings) => {
-                setStartDate(dateStrings[0]);
-                setEndDate(dateStrings[1]);
+            <Space
+              direction='vertical'
+              size={12}
+              style={{
+                width: '100%',
               }}
-              style={{ width: '100%' }}
-            />
+            >
+              <RangePicker
+                showTime={{}}
+                format='YYYY-MM-DD'
+                onChange={onChange}
+                style={{ 
+                  width: '100%',
+                  height:'44px',
+                  backgroundColor:'#F5F5F5',
+                  border:'none'
+               }}
+              />
+            </Space>
           </StDateWrapper>
           함께한 추억 장소
-          <PlaceInputWrapper>
+          <PlaceContainer>
+            <PlaceInputWrapper>
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
+              alt='placeicon'
+              className='inputIcon'
+            />
             <GroupWriteInput
               name='place'
-              placeholder='장소'
+              placeholder='추억을 나눈 장소를 입력해주세요'
               value={place}
               onChange={universalHandler}
             />
@@ -214,6 +229,7 @@ function GroupWrite() {
                 추가
               </PlaceAddButton>
             )}
+             </PlaceInputWrapper>
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
@@ -225,7 +241,7 @@ function GroupWrite() {
                 </PlaceRemoveButton>
               </PlaceResult>
             ))}
-          </PlaceInputWrapper>
+          </PlaceContainer>
           함께한 친구들
           <div style={{ width: '100%' }}>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
@@ -250,7 +266,7 @@ function GroupWrite() {
                 return (
                   <div key={item.userId}>
                     <ProfileImage src={item.profileUrl} alt={item.nickname} />
-                    <div> {item.nickname} </div>               
+                    <div> {item.nickname} </div>
                     <button onClick={() => removeFriendHandler(item.userId)}>
                       {' '}
                       제거
@@ -319,10 +335,6 @@ const GroupInput = styled.input`
 
 const StDateWrapper = styled.div`
   width: 100%;
-
-  &&.ant-picker-dropdown .ant-picker-panels > .ant-picker-panel:nth-of-type(1) {
-    display: none !important;
-  }
 `;
 
 const GroupWriteInput = styled.input`
@@ -337,10 +349,24 @@ const GroupWriteInput = styled.input`
     outline: none;
   }
 `;
-
+const PlaceContainer = styled.div`
+  position: relative;
+  width: 100%;
+`
 const PlaceInputWrapper = styled.div`
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 7px;
+
+  .inputIcon {
+    margin-right: 8px;
+    margin-left: 10px;
+    margin-top: 7px;
+  }
+  
 `;
 
 const SubmitButton = styled.button`
@@ -409,7 +435,7 @@ const PlaceRemoveButton = styled.button`
 
 const PlaceAddButton = styled.button`
   position: absolute;
-  top: 30%;
+  top: 50%;
   right: 10px;
   transform: translateY(-50%);
   background-color: #f5f5f5;
