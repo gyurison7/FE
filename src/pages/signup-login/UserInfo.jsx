@@ -89,15 +89,17 @@ const UserInfo = () => {
                     <img src={profileImage ? profileImage : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
                 </Button>
                 <FormContainer onSubmit={userInfoUploadHandler}>
-                    <Input
-                        onChange={onChangeNicknameHandler}
-                        name='nickname'
-                        type="text"
-                        value={nickname}
-                        placeholder="닉네임 입력"
-                        theme='underLine'
-                        maxLength={10}
-                    />
+                    <InputContainer>
+                        <Input
+                            onChange={onChangeNicknameHandler}
+                            name='nickname'
+                            type="text"
+                            value={nickname}
+                            placeholder="닉네임 입력"
+                            theme='underLine'
+                            maxLength={10}
+                        />
+                    </InputContainer>
                     {nicknameError && <small>{nicknameError}</small>}
                     <p>
                         프로필 정보(사진, 닉네임)는 회원 식별, 친구간 커뮤니케이션
@@ -203,6 +205,15 @@ const FormContainer = styled.form`
         line-height: normal;
         border: none;
     }
+`;
+
+const InputContainer = styled.div`
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const SkipButton = styled.div`

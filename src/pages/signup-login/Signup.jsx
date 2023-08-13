@@ -99,8 +99,7 @@ function Signup() {
     }
 
     const passwordCheckResult = passwordCheckHandler(password, confirm);
-    if (passwordCheckResult) { setPasswordError(''); setConfirmError(''); }
-    else return;
+    if (!passwordCheckResult) return;
 
     try {
       const responseData = await signup(id, password, confirm);
@@ -175,16 +174,13 @@ function Signup() {
 export default Signup;
 
 const Wrapper = styled.div`
-  position: relative;
-  top: 43%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 100%;
-  //border-radius: 1.25rem;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  margin-top: 12vh;
 `;
 
 const Form = styled.form`
@@ -193,27 +189,27 @@ const Form = styled.form`
 
 const InputWrapper = styled.div`
   width: 100%;
-  position: relative;
-  margin-top: -50%;
-`;
-
-const InputContainer = styled.div`
-  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
-  margin-bottom: 3rem;
-  @media (max-height: 750px) {
-    margin-bottom: 1rem;
-  }
+  gap: 8vh;
+`;
+
+const InputContainer = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+  
 
   label {
+    width: 90%;
     align-self: flex-start;
     text-align: left;
-    margin-left: 5vw;
     color: #5873FE;
     font-family: Apple SD Gothic Neo;
     font-size: 1rem;
@@ -225,18 +221,12 @@ const InputContainer = styled.div`
   small {
     align-self: flex-start;
     text-align: left;
-    margin-left: 5vw;
-    margin-right: 5vw;
     font-size: 0.8rem;
     color: #FF7E62;
     font-family: Apple SD Gothic Neo;
-    font-size: 0.8125rem;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    word-break: break-all;
-    overflow-wrap: break-word;
-    white-space: pre-line;
   }
 
   .idAvailable {
@@ -245,14 +235,13 @@ const InputContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  width: 100%;
   position: fixed;
   display: flex;
   justify-content: center;
-  width: 100%;
-  bottom: -30vh;
-  @media (max-height: 750px) {
-    bottom: -27vh;
-  }
+  align-items: center;
+  bottom: 8vh;
+  
   button {
     width: 90%;
     height: 3.5625rem;
