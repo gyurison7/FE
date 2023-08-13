@@ -9,6 +9,7 @@ import UserInfo from '../pages/signup-login/UserInfo.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
 import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
+import PasswordChange from '../pages/mypage/PasswordChange.jsx';
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
         <Route path="/postmain/:id" element={<PostMain />} />
         <Route path="/postwrite/:id" element={<PostWrite />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/pwchange" element={<PasswordChange />} />
       </Routes>
     </BrowserRouter>
   );
