@@ -18,7 +18,7 @@ const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolo
 };
 
 const InputStyle = styled.input`
-  width: 90%;
+  width: 100%;
   height: 3.5625rem;
   flex-shrink: 0;
   background-color: transparent;
