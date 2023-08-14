@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import GroupPageHeader from '../../layout/header/GroupPageHeader';
 import Footer from '../../layout/footer/Footer.js';
 import { getGroupData } from '../../api/groupMainApi';
+import {useQuery} from 'react-query'
 
 function GroupMain() {
-  const [groupData, setGroupData] = useState([]);
   const navigate = useNavigate();
   const writeButtonHandler = () => {
     navigate(`/groupwrite`);
   };
 
   // groupdata 가져오기
-  useEffect(() => {
-    getGroupData()
-      .then((data) => {
-        setGroupData(data.findMyGroupData);
-      })
-      .catch((error) => {
-        console.error('Error fetching group data:', error);
-      });
-  }, []);
+  const { data: groupData, isError, isLoading } = useQuery('groupData', getGroupData);
 
   return (
     <>
@@ -29,7 +21,11 @@ function GroupMain() {
         <GroupPageHeader />
 
         <GroupWrapper>
-          {groupData.length === 0 ? (
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : isError ? (
+            <div>Error fetching group data</div>
+          ) : groupData && groupData.length === 0 ?  (
             <PreMainContainer>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/3dhand.png`}

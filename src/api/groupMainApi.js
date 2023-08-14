@@ -1,11 +1,14 @@
-import api from './index.jsx'
+import api from './index.jsx';
 
-const getGroupData = () => {
-    return api.get('/group', { withCredentials: true })
-    .then(response => response.data)
-    .catch(error => {
-        throw error;
-    });
+const getGroupData = async () => {
+    try {
+        const response = await api.get('/group', { withCredentials: true });
+        console.log('API Response:', response.data);
+        return response.data.findMyGroupData || []; 
+    } catch (error) {
+        console.error("Error fetching group data:", error);
+        return []; 
+    }
 };
 
-export { getGroupData}
+export { getGroupData };
