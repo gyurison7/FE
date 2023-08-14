@@ -46,9 +46,7 @@ const StLogoContainer = styled.div`
   height: 80px;
   display: flex;
   justify-content: center;
-  position: fixed;
   width: 100%;
-  max-width: 428px;
 `;
 
 const StLogoImage = styled.img`
