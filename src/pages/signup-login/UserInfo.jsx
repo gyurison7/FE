@@ -5,6 +5,7 @@ import { uploadImage } from '../../hooks/uploadImage';
 import { userInfoUpload } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
+import Button from '../../components/common/button/Button.jsx';
 import {
     nicknameCheckHandler,
     onChangeNicknameHandler,
@@ -34,7 +35,7 @@ const UserInfo = () => {
         }
 
         if (profileImage === '') {
-            alert('사진을 등록해주세요.');
+            alert('프로필 사진을 등록해주세요.');
             return;
         }
 
@@ -76,11 +77,11 @@ const UserInfo = () => {
                     style={{ display: 'none' }}
                     id="hiddenFileInput"
                 />
-                <Button onClick={() => document.getElementById('hiddenFileInput').click()}>
+                <ImageButton onClick={() => document.getElementById('hiddenFileInput').click()}>
                     <img src={profileImage
                         ? profileImage
                         : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
-                </Button>
+                </ImageButton>
                 <FormContainer onSubmit={userInfoUploadHandler}>
                     <InputContainer>
                         <Input
@@ -97,7 +98,13 @@ const UserInfo = () => {
                         프로필 정보(사진, 닉네임)는 회원 식별, 친구간 커뮤니케이션
                         등의 목적으로 활용되며, Memory Mingle 이용기간 동안 보관됩니다.
                     </p>
-                    <button type='submit'>등록하기</button>
+                    <Button
+                        type='submit'
+                        size='large'
+                        background='#5873FE'
+                        color='#FFF'
+                    >등록하기
+                    </Button>
                 </FormContainer>
                 <SkipButton type='button' onClick={() => navigate('/groupmain')}>건너뛰기</SkipButton>
             </UserInfoContainer>
@@ -126,7 +133,7 @@ const Text = styled.h2`
     line-height: 129.336%;
 `;
 
-const Button = styled.button`
+const ImageButton = styled.button`
     margin-top: 5vh;
     background: transparent;
     border: none;
@@ -173,19 +180,11 @@ const FormContainer = styled.form`
     button {
         position: relative;
         bottom: -4vh;
-        width: 90%;
-        height: 3.5625rem;
-        flex-shrink: 0;
-        border-radius: 1.75rem;
-        background: #5873FE;
-        color: #FFF;
-        text-align: center;
         font-family: Apple SD Gothic Neo;
-        font-size: 1rem;
+        font-size: 16px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
-        border: none;
     }
 `;
 

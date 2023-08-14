@@ -1,9 +1,12 @@
 import React from 'react';
 import { styled } from 'styled-components';
+import { useNavigate } from 'react-router';
 import Footer from '../../layout/footer/Footer.js';
 import Header from '../../components/common/header/Header.jsx';
 
 const MyPage = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <Header title='마이페이지' />
@@ -20,7 +23,7 @@ const MyPage = () => {
           <span>memorymingle</span>
         </ProfileContainer>
         <ButtonContainer>
-          <button className='passwordChange'>비밀번호 변경</button>
+          <button className='passwordChange' onClick={() => navigate('/pwchange')}>비밀번호 변경</button>
           <div>
             <button className='memberOut'>회원탈퇴</button>
             <span>|</span>
