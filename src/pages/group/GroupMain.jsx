@@ -64,21 +64,21 @@ function GroupMain() {
                   : '';
 
                 return (
-                  <ButtonWrapper
-                    key={item.groupId}
-                    onClick={() => navigate(`/postmain/${item.groupId}`)}
-                  >
-                    <div
+                  <ButtonWrapper key={item.groupId}>
+                    <button onClick={() => navigate(`/groupedit/${item.groupId}`)}>수정하기</button>
+                    <button
+                      onClick={() => navigate(`/postmain/${item.groupId}`)}
                       style={{
                         width: '100%',
                         height: '170px',
                         border: 'none',
                         borderRadius: '12px',
-                        backgroundImage: `url(${item.thumbnailUrl})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
                       }}
-                    ></div>
+                    > <img src={item.thumbnailUrl} alt='cover'
+                    style={{
+                      width:'100%'
+                    }}
+                    /></button>
                     <div
                       style={{
                         lineHeight: '1px',
@@ -103,8 +103,8 @@ function GroupMain() {
             </>
           )}
         </GroupWrapper>
-        <footer style={{marginTop:'auto'}}>
-        <Footer />
+        <footer style={{ marginTop: 'auto' }}>
+          <Footer />
         </footer>
       </MainContainer>
     </>
