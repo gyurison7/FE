@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import GroupPageHeader from '../../layout/header/GroupPageHeader';
 import Footer from '../../layout/footer/Footer.js';
 import { getGroupData } from '../../api/groupMainApi';
-import {useQuery} from 'react-query'
+import { useQuery } from 'react-query';
 
 function GroupMain() {
   const navigate = useNavigate();
@@ -13,19 +13,22 @@ function GroupMain() {
   };
 
   // groupdata 가져오기
-  const { data: groupData, isError, isLoading } = useQuery('groupData', getGroupData);
+  const {
+    data: groupData,
+    isError,
+    isLoading,
+  } = useQuery('groupData', getGroupData);
 
   return (
     <>
       <MainContainer>
         <GroupPageHeader />
-
         <GroupWrapper>
           {isLoading ? (
             <div>Loading...</div>
           ) : isError ? (
             <div>Error fetching group data</div>
-          ) : groupData && groupData.length === 0 ?  (
+          ) : groupData && groupData.length === 0 ? (
             <PreMainContainer>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/3dhand.png`}
@@ -100,8 +103,9 @@ function GroupMain() {
             </>
           )}
         </GroupWrapper>
-
+        <footer style={{marginTop:'auto'}}>
         <Footer />
+        </footer>
       </MainContainer>
     </>
   );
@@ -120,7 +124,6 @@ const GroupWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 80px;
   overflow-y: auto;
   align-items: flex-start;
   justify-content: flex-start;
@@ -161,7 +164,7 @@ const PreMainContainer = styled.div`
 `;
 
 const PreMainContentWrapper = styled.div`
-width: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -180,12 +183,12 @@ const PreMainButton = styled.button`
 `;
 
 const PreMainText = styled.p`
-color: #4C4C4C;
-text-align: center;
-font-size: 18px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+  color: #4c4c4c;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 `;
 
 const PreMainPlus = styled.img`
