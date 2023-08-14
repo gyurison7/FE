@@ -1,24 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router';
 import Footer from '../../layout/footer/Footer.js';
 import Header from '../../components/common/header/Header.jsx';
+import { uploadImage } from '../../hooks/uploadImage.js';
+import { nicknameCheckHandler, onChangeNicknameHandler } from '../../hooks/userProfileUpload';
 
 const MyPage = () => {
+  const [nickname, setNickname] = useState('');
+  const [nicknameError, setNicknameError] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
+
   const navigate = useNavigate();
+
+  const nicknameSubmitHandler = () => {
+    if (!isEditing) {
+      setIsEditing(true);
+      return;
+    }
+    if (isEditing) {
+      const result = nicknameCheckHandler(nickname, setNicknameError);
+      if (result) {
+        setNickname(nickname);
+        setIsEditing(false);
+      }
+    }
+  }
+  const nicknameHandlerHooks = (e) => onChangeNicknameHandler(e, setNickname, setNicknameError);
+
+  const imageHandler = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      uploadImage(file).then((url) => {
+        setProfileImage(url);
+      });
+    }
+  };
 
   return (
     <Wrapper>
       <Header title='마이페이지' />
       <MypageContainer>
         <ProfileContainer>
-          <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
+          <input type='file'
+            accept="image/*"
+            onChange={imageHandler}
+            style={{ display: 'none' }}
+            id="hiddenFileInput"
+          />
+          <ImageButton onClick={() => document.getElementById('hiddenFileInput').click()}>
+            <img className='profileImage' src={profileImage || `${process.env.PUBLIC_URL}assets/image/big_user.png`} alt='user' />
+          </ImageButton>
           <NicknameContainer>
-            <span>김밍글</span>
-            <img
-              src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`}
-              alt='닉네임 바꾸기'
-            />
+            {isEditing
+              ? (
+                <div>
+                  <input type='text' value={nickname} onChange={nicknameHandlerHooks} />
+                  {nicknameError && <small>{nicknameError}</small>}
+                </div>
+              )
+              : <span>{nickname || '닉네임'}</span>
+            }
+            <ImageButton onClick={nicknameSubmitHandler}>
+              <img className='pencileButton' src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`} alt='닉네임 바꾸기' />
+            </ImageButton>
           </NicknameContainer>
           <span>memorymingle</span>
         </ProfileContainer>
@@ -59,18 +105,33 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 3vh;
-  margin-top: 15vh;
+  gap: 2vh;
+  margin-top: 10vh;
 
   span {
     color: #959595;
-    font-family: Apple SD Gothic Neo;
     font-size: 16px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
   }
 `;
+
+const ImageButton = styled.button`
+    background: transparent;
+    border: none;
+
+    .profileImage {
+      width: 31vh;
+      height: 31vh;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+
+    .pencileButton {
+      width: 1.125rem;
+      height: 1.125rem;
+      flex-shrink: 0;
+    }
+  `;
 
 const NicknameContainer = styled.div`
   display: flex;
@@ -78,19 +139,35 @@ const NicknameContainer = styled.div`
   align-items: center;
   gap: 1vw;
 
+  div {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 50vw;
+      background: transparent;
+      border: none;
+      color: #4c4c4c;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 0 1px;
+      outline: none;
+      box-shadow: 8px 4px 23px 0px rgba(0, 0, 0, 0.25);
+    }
+    small {
+      width: 90%;
+      color: #FF7E62;
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+  }
+  
   span {
     color: #4c4c4c;
-    font-family: Apple SD Gothic Neo;
-    font-size: 1.5rem;
-    font-style: normal;
+    font-size: 24px;
     font-weight: 700;
-    line-height: normal;
   }
-  img {
-    width: 1.125rem;
-    height: 1.125rem;
-    flex-shrink: 0;
-  }
+  
 `;
 
 const ButtonContainer = styled.div`
@@ -99,23 +176,15 @@ const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 3vh;
-  margin-top: 24vh;
+  margin-top: 20vh;
+  @media (max-height : 750px) {
+    margin-top: 15vh;
+  }
 
   button {
     background: transparent;
     border: none;
-    font-family: Apple SD Gothic Neo;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
-  }
-
-  div {
-    display: flex;
-    gap: 2vw;
-    span {
-      color: #b9b9b9;
-    }
   }
 
   .passwordChange {
@@ -123,8 +192,17 @@ const ButtonContainer = styled.div`
     color: #4c4c4c;
     font-size: 1rem;
   }
-  .memberOut, .logout {
-    color: #b9b9b9;
-    font-size: 0.875rem;
+
+  div {
+    display: flex;
+    gap: 2vw;
+
+    .memberOut, .logout {
+      color: #b9b9b9;
+      font-size: 0.875rem;
+    }
+    span {
+      color: #b9b9b9;
+    }
   }
 `;
