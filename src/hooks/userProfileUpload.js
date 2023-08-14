@@ -10,7 +10,7 @@ export const nicknameCheckHandler = (nickname, setNicknameError) => {
         setNicknameError('닉네임을 입력해주세요.');
         return false;
     } else if (!nicknameCheck.test(nickname)) {
-        setNicknameError('닉네임은 1자에서 10자 사이로 입력해주세요.');
+        setNicknameError('닉네임은 10자 이하로 입력해주세요.');
         return false;
     } else {
         setNicknameError('');

@@ -31,16 +31,12 @@ const Input = ({
 
 const InputStyle = styled.input`
   width: 100%;
-  height: 3.5625rem;
   flex-shrink: 0;
   background-color: transparent;
-  font-family: Apple SD Gothic Neo;
-  font-size: 1rem;
-  font-style: normal;
+  font-size: 16px;
   font-weight: 500;
-  line-height: normal;
   &::placeholder {
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   ${({ theme, bordercolor, color }) => themeHandler(theme, bordercolor, color)};
@@ -50,6 +46,7 @@ const themeHandler = (theme, bordercolor, color) => {
   switch (theme) {
     case 'radius':
       return `
+                height: 57px;
                 padding: 0 1.25rem;
                 border-radius: 1.75rem;
                 border: 1px solid #FFF;
@@ -61,6 +58,7 @@ const themeHandler = (theme, bordercolor, color) => {
             `;
     case 'underLine':
       return `
+                padding: 36px 0px 7px 0px;
                 border: none;
                 border-bottom: 1px solid ${bordercolor || '#5873FE'};
                 outline: none;
