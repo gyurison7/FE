@@ -13,26 +13,19 @@ function Itroduction() {
     <Wrap>
       <CarouselWrap>
         <Carousel autoplay>
-          <IMG
-            src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`}
-            alt="rasm"
-          />
-          <IMG
-            src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`}
-            alt="rasm"
-          />
-          <IMG
-            src={`${process.env.PUBLIC_URL}/assets/image/img3.jpeg`}
-            alt="rasm"
-          />
-          <IMG
-            src={`${process.env.PUBLIC_URL}/assets/image/img4.jpeg`}
-            alt="rasm"
-          />
+          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`} alt='rasm' />
+          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`} alt='rasm' />
+          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img3.jpeg`} alt='rasm' />
+          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img4.jpeg`} alt='rasm' />
         </Carousel>
       </CarouselWrap>
       <WrapButton>
-        <Button onClick={onClickHandler}>시작하기</Button>
+        {/* <Button size='large' bg='#555' onClick={onClickHandler}>
+          시작하기
+        </Button> */}
+        <Button size='small' bg='blue' color='white' onClick={onClickHandler}>
+          시작하기
+        </Button>
       </WrapButton>
     </Wrap>
   );

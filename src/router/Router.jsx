@@ -10,6 +10,7 @@ import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
 import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 import Post from '../pages/post/Post.jsx';
+import Footer from '../layout/footer/Footer.js';
 
 const Router = () => {
   return (
@@ -26,6 +27,7 @@ const Router = () => {
         <Route path='/postwrite/:id' element={<PostWrite />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/post' element={<Post />} />
+        <Route path='/foter' element={<Footer />} />
       </Routes>
     </BrowserRouter>
   );

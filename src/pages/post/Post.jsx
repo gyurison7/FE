@@ -41,9 +41,8 @@ export default function Post() {
           <div>Side</div>
         </Side>
       </div>
-
       <Content>
-        {Array.from({ length: 9 }, (_, index) => (
+        {Array.from({ length: 4 }, (_, index) => (
           <Box key={index} />
         ))}
       </Content>
@@ -73,8 +72,8 @@ const Content = styled.div`
 `;
 
 const Box = styled.div`
-  min-height: 130px;
-  border: 1px solid black;
+  height: 130px;
+  background: #b5b5b5;
 `;
 
 const Head = styled.div`
