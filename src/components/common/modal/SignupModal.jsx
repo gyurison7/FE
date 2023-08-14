@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import Button from '../button/Button.jsx';
 
 const SignupModal = () => {
     const navigate = useNavigate();
@@ -12,10 +13,16 @@ const SignupModal = () => {
                 <img src={`${process.env.PUBLIC_URL}assets/svgs/signup_check.svg`} alt='회원가입 확인' />
                 <TextContainer>
                     <h2>회원가입 완료</h2>
-                    <p>지금 바로 나만의 추억 앨범을<br />만들어보세요!</p>
+                    <p>지금 바로 우리들의 추억을<br />만들어보세요!</p>
                 </TextContainer>
                 <ButtonContainer>
-                    <button onClick={() => navigate('/userinfo')}>확인</button>
+                    <Button
+                        onClick={() => navigate('/userinfo')}
+                        size='large'
+                        background='#5873FE'
+                        color='#FFF'
+                    >확인
+                    </Button>
                 </ButtonContainer>
             </ModalBody>
         </ModalWrapper>
@@ -85,7 +92,7 @@ const TextContainer = styled.div`
         font-size: 1.5rem;
         font-weight: 700;
     }
-    p{
+    p {
         font-size: 1rem;
         font-weight: 500;
     }
@@ -99,11 +106,10 @@ const ButtonContainer = styled.div`
     width: 100%;
     button {
         width: 100%;
-        height: 3.5625rem;
-        flex-shrink: 0;
-        border: none;
-        border-radius: 1.75rem;
-        background: #5873FE;
-        color: #FFF;
+        font-family: Apple SD Gothic Neo;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
     }
 `;
