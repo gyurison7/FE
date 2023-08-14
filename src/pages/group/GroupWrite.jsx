@@ -6,6 +6,7 @@ import { uploadImage } from '../../hooks/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import PropTypes from 'prop-types';
 import { DatePicker, Space } from 'antd';
+import Input from '../../components/common/input/Input.jsx';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -173,7 +174,8 @@ function GroupWrite() {
         </WriteHeader>
 
         <WriteBody>
-          <GroupInput
+          <Input
+          color='#4C4C4C'
             theme='underLine'
             name='groupName'
             type='text'
@@ -326,27 +328,27 @@ const ProfileImage = styled.img`
   border-radius: 100%;
 `;
 
-const GroupInput = styled.input`
-  width: 100%;
-  padding: 15px 60px 15px 0px;
-  font-size: 20px;
-  line-height: 21px;
-  border: none;
-  color: rgb(41, 41, 41);
-  font-weight: bold;
-  border-bottom: 1px solid rgba(88, 115, 254, 1);
-  background-color: transparent;
+// const GroupInput = styled.input`
+//   width: 100%;
+//   padding: 15px 60px 15px 0px;
+//   font-size: 20px;
+//   line-height: 21px;
+//   border: none;
+//   color: rgb(41, 41, 41);
+//   font-weight: bold;
+//   border-bottom: 1px solid rgba(88, 115, 254, 1);
+//   background-color: transparent;
 
-  &::placeholder {
-    color: rgba(119, 116, 116, 0.786);
-    font-size: 16px;
-    font-weight: 600;
-  }
+//   &::placeholder {
+//     color: rgba(119, 116, 116, 0.786);
+//     font-size: 16px;
+//     font-weight: 600;
+//   }
 
-  &:focus {
-    outline: none;
-  }
-`;
+//   &:focus {
+//     outline: none;
+//   }
+// `;
 
 const StDateWrapper = styled.div`
   width: 100%;
