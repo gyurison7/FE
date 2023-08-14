@@ -22,18 +22,20 @@ const KakaoLogin = () => {
 export default KakaoLogin;
 
 const KakaoLoginButtonContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
-  @media (max-height: 750px) {
-    margin-top: 2rem;
-  }
+  position: relative;
+  bottom: -15vh;
+
   button {
+    display: flex;
+    justify-content: center;
     background: transparent;
     border: none;
   }
   img {
-    width: 90%
+    width: 90%;
   }
 `;

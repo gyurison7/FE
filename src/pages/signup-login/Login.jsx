@@ -87,34 +87,34 @@ function Login() {
 export default Login;
 
 const Wrapper = styled.div`
-  background: linear-gradient(#5570FF, #8895F0);
   width: 100%;
   height: 100vh;
-  //border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  background: linear-gradient(#5570FF, #8895F0);
 `;
 
 const LogoImage = styled.img`
+  width: 50%;
+  height: auto;
+  position: relative;
+  top: 11vh;
   margin: 0 auto;
-  display: block;
+  display: flex;
+  object-fit: cover;
 `;
 
 const InputContainer = styled.div`
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 3rem;
-  margin-bottom: 4rem;
-  @media (max-height: 750px) {
-    margin-top: 0;
-    margin-bottom: 2rem;
-  }
+  gap: 1vh;
+  margin-top: 18vh;
 
   small {
     align-self: flex-start;
@@ -127,15 +127,17 @@ const InputContainer = styled.div`
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    word-break: break-all;
-    overflow-wrap: break-word;
-    white-space: pre-line;
   }
 `;
 
 const ButtonContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: -6vh;
+  
   button {
     width: 90%;
     height: 3.5625rem;
@@ -154,10 +156,12 @@ const ButtonContainer = styled.div`
 `;
 
 const LinkContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;  
-  margin-top: 1rem;
+  position: relative;
+  bottom: -9vh;
 `;
 
 const LinkStyle = styled(Link)`

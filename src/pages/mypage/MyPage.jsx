@@ -1,13 +1,13 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import MyPageHeader from '../../layout/header/MyPageHeader.js';
 import Footer from '../../layout/footer/Footer.js';
+import Header from '../../components/common/header/Header.jsx';
 
 const MyPage = () => {
   return (
-    <>
-      <MyPageHeader />
-      <HeaderContainer>
+    <Wrapper>
+      <Header title='마이페이지' />
+      <MypageContainer>
         <ProfileContainer>
           <img src={`${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
           <NicknameContainer>
@@ -22,34 +22,37 @@ const MyPage = () => {
           <button className='passwordChange'>비밀번호 변경</button>
           <button className='memberOut'>회원탈퇴</button>
         </ButtonContainer>
-      </HeaderContainer>
+      </MypageContainer>
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 
 export default MyPage;
 
-const HeaderContainer = styled.div`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+`;
+
+const MypageContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2vw;
-  margin-top: 8vh;
+  margin-bottom: auto;
 `;
 
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 3vh;
-  margin-bottom: 37vh;
-  @media (max-height: 750px) {
-    margin-bottom: 30vh;
-  }
-  @media (max-height: 670px) {
-    margin-bottom: 25vh;
-  }
+  margin-top: 15vh;
 `;
 
 const NicknameContainer = styled.div`
@@ -57,6 +60,7 @@ const NicknameContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1vw;
+
   span {
     color: #4c4c4c;
     font-family: Apple SD Gothic Neo;
@@ -75,10 +79,11 @@ const NicknameContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0.375rem 0.25rem;
   justify-content: center;
   align-items: center;
   gap: 3vh;
+  margin-top: 24vh;
+
   button {
     background: transparent;
     border: none;
