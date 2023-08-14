@@ -17,10 +17,15 @@ const MyPage = () => {
               alt='닉네임 바꾸기'
             />
           </NicknameContainer>
+          <span>memorymingle</span>
         </ProfileContainer>
         <ButtonContainer>
           <button className='passwordChange'>비밀번호 변경</button>
-          <button className='memberOut'>회원탈퇴</button>
+          <div>
+            <button className='memberOut'>회원탈퇴</button>
+            <span>|</span>
+            <button className='logout'>로그아웃</button>
+          </div>
         </ButtonContainer>
       </MypageContainer>
       <Footer />
@@ -53,6 +58,15 @@ const ProfileContainer = styled.div`
   align-items: center;
   gap: 3vh;
   margin-top: 15vh;
+
+  span {
+    color: #959595;
+    font-family: Apple SD Gothic Neo;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
 `;
 
 const NicknameContainer = styled.div`
@@ -92,12 +106,21 @@ const ButtonContainer = styled.div`
     font-weight: 600;
     line-height: normal;
   }
+
+  div {
+    display: flex;
+    gap: 2vw;
+    span {
+      color: #b9b9b9;
+    }
+  }
+
   .passwordChange {
     border-bottom: 1px solid #4c4c4c;
     color: #4c4c4c;
     font-size: 1rem;
   }
-  .memberOut {
+  .memberOut, .logout {
     color: #b9b9b9;
     font-size: 0.875rem;
   }
