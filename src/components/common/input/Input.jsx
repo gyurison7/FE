@@ -11,6 +11,7 @@ const Input = ({
   theme,
   bordercolor,
   maxLength,
+  color,
 }) => {
   return (
     <InputStyle

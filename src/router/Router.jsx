@@ -29,6 +29,7 @@ const Router = () => {
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/pwchange' element={<PasswordChange />} />
         <Route path='/post' element={<Post />} />
+        <Route path='/groupedit/:id' element={<GroupEdit />} />
       </Routes>
     </BrowserRouter>
   );
