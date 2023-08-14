@@ -58,6 +58,7 @@ const ButtonStyle = styled.button`
       color: ${(props) => props.color};
     `}
 `;
+
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,

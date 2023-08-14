@@ -1,86 +1,111 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import GroupPageHeader from '../../layout/header/GroupPageHeader';
 import Footer from '../../layout/footer/Footer.js';
 import { getGroupData } from '../../api/groupMainApi';
+import { useQuery } from 'react-query';
 
 function GroupMain() {
-  const [groupData, setGroupData] = useState([]);
   const navigate = useNavigate();
   const writeButtonHandler = () => {
     navigate(`/groupwrite`);
   };
 
   // groupdata 가져오기
-  useEffect(() => {
-    getGroupData()
-      .then((data) => {
-        setGroupData(data.findMyGroupData);
-      })
-      .catch((error) => {
-        console.error('Error fetching group data:', error);
-      });
-  }, []);
+  const {
+    data: groupData,
+    isError,
+    isLoading,
+  } = useQuery('groupData', getGroupData);
 
   return (
     <>
       <MainContainer>
         <GroupPageHeader />
         <GroupWrapper>
-          <ButtonWrapper>
-            <WriteButton onClick={writeButtonHandler}>
-              <PlusImage
-                src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
-                alt='logo'
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : isError ? (
+            <div>Error fetching group data</div>
+          ) : groupData && groupData.length === 0 ? (
+            <PreMainContainer>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/3dhand.png`}
+                alt='handicon'
               />
-            </WriteButton>
-          </ButtonWrapper>
-          {groupData.map((item) => {
-            const formattedStartDate = item.startDate
-              ? item.startDate.slice(0, 10)
-              : '';
-            const formattedEndDate = item.endDate ? item.endDate.slice(0, 10) : '';
-
-            return (
-              <ButtonWrapper
-                key={item.groupId}
-                onClick={() => navigate(`/postmain/${item.groupId}`)}
-              >
-                <div
-                  style={{
-                    width: '100%',
-                    height: '170px',
-                    border: 'none',
-                    borderRadius: '12px',
-                    backgroundImage: `url(${item.thumbnailUrl})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                ></div>
-                <div
-                  style={{
-                    lineHeight: '1px',
-                    paddingLeft: '12px',
-                    marginTop: '12px',
-                  }}
-                >
-                  <h4> {item.groupName}</h4>
-                  <p
-                    style={{
-                      fontSize: '12px',
-                      color: 'gray',
-                      marginTop: '12px',
-                    }}
-                  >
-                    {formattedStartDate}~{formattedEndDate}
-                  </p>
-                </div>
+              <PreMainContentWrapper>
+                <PreMainText>지금 추억을 추가해보세요 </PreMainText>
+                <PreMainButton onClick={writeButtonHandler}>
+                  <PreMainPlus
+                    src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
+                    alt='logo'
+                  />
+                  추억 만들기
+                </PreMainButton>
+              </PreMainContentWrapper>
+            </PreMainContainer>
+          ) : (
+            <>
+              <ButtonWrapper>
+                <WriteButton onClick={writeButtonHandler}>
+                  <PlusImage
+                    src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
+                    alt='logo'
+                  />
+                </WriteButton>
               </ButtonWrapper>
-            );
-          })}
+              {groupData.map((item) => {
+                const formattedStartDate = item.startDate
+                  ? item.startDate.slice(0, 10)
+                  : '';
+                const formattedEndDate = item.endDate
+                  ? item.endDate.slice(0, 10)
+                  : '';
+
+                return (
+                  <ButtonWrapper key={item.groupId}>
+                    <button onClick={() => navigate(`/groupedit/${item.groupId}`)}>수정하기</button>
+                    <button
+                      onClick={() => navigate(`/postmain/${item.groupId}`)}
+                      style={{
+                        width: '100%',
+                        height: '170px',
+                        border: 'none',
+                        borderRadius: '12px',
+                      }}
+                    > <img src={item.thumbnailUrl} alt='cover'
+                    style={{
+                      width:'100%'
+                    }}
+                    /></button>
+                    <div
+                      style={{
+                        lineHeight: '1px',
+                        paddingLeft: '12px',
+                        marginTop: '12px',
+                      }}
+                    >
+                      <h4> {item.groupName}</h4>
+                      <p
+                        style={{
+                          fontSize: '12px',
+                          color: 'gray',
+                          marginTop: '12px',
+                        }}
+                      >
+                        {formattedStartDate}~{formattedEndDate}
+                      </p>
+                    </div>
+                  </ButtonWrapper>
+                );
+              })}
+            </>
+          )}
         </GroupWrapper>
-        <Footer />
+        <footer style={{ marginTop: 'auto' }}>
+          <Footer />
+        </footer>
       </MainContainer>
     </>
   );
@@ -99,9 +124,7 @@ const GroupWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 80px;
   overflow-y: auto;
-  flex-grow: 1;
   align-items: flex-start;
   justify-content: flex-start;
 `;
@@ -130,4 +153,44 @@ const WriteButton = styled.button`
 
 const PlusImage = styled.img`
   margin: 0;
+`;
+
+const PreMainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+`;
+
+const PreMainContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 1rem;
+  align-items: center;
+`;
+
+const PreMainButton = styled.button`
+  border: none;
+  width: 167px;
+  height: 52px;
+  border-radius: 26.321px;
+  background: #5873fe;
+  color: #fff;
+`;
+
+const PreMainText = styled.p`
+  color: #4c4c4c;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
+
+const PreMainPlus = styled.img`
+  width: 12px;
 `;

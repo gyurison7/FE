@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import { login } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import KakaoLogin from '../kakao-login/KakaoLogin.jsx';
+import Button from '../../components/common/button/Button.jsx';
 
 function Login() {
   const [id, setId] = useState('');
@@ -71,7 +72,13 @@ function Login() {
           {passwordError && <small>{passwordError}</small>}
         </InputContainer>
         <ButtonContainer>
-          <button type='submit'>로그인</button>
+          <Button
+            type='submit'
+            size='large'
+            background='#FFF'
+            color='#5873FE'
+          >로그인
+          </Button>
         </ButtonContainer>
         <LinkContainer>
           {/* <LinkStyle to='/'>아이디 찾기</LinkStyle>
@@ -139,16 +146,8 @@ const ButtonContainer = styled.div`
   bottom: -6vh;
   
   button {
-    width: 90%;
-    height: 3.5625rem;
-    flex-shrink: 0;
-    border: none;
-    border-radius: 1.78125rem;
-    background: #FFF;
-    color: #5873FE;
-    text-align: center;
     font-family: Apple SD Gothic Neo;
-    font-size: 1rem;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;

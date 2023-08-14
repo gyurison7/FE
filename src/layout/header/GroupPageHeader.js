@@ -23,7 +23,17 @@ function GroupPageHeader() {
             top: "10px",
           }}
         >
-          <button style={{ height: "42px" }}> search</button>
+          <button style={{ 
+            height: "42px",
+            border:"none",
+            backgroundColor:"transparent"
+            }}> 
+          <img style={{
+            width:"30px",
+            marginTop:"18px"
+          }}
+          src={`${process.env.PUBLIC_URL}/assets/image/searchicon.png`}
+                alt='search'/></button>
         </div>
       </StLogoContainer>
     </StLogoWrapper>
@@ -36,13 +46,11 @@ const StLogoContainer = styled.div`
   height: 80px;
   display: flex;
   justify-content: center;
-  position: fixed;
   width: 100%;
-  max-width: 428px;
 `;
 
 const StLogoImage = styled.img`
-  width: 43px;
+  width: 32px;
   height: auto;
 `;
 

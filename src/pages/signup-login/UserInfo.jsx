@@ -5,51 +5,50 @@ import { uploadImage } from '../../hooks/uploadImage';
 import { userInfoUpload } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
-
+import Button from '../../components/common/button/Button.jsx';
+import {
+    nicknameCheckHandler,
+    onChangeNicknameHandler,
+    imageHandler
+}
+    from '../../hooks/userProfileUpload';
 
 const UserInfo = () => {
     const [nickname, setNickname] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [profileImage, setProfileImage] = useState('');
+    const [chosenFile, setChosenFile] = useState(null);
 
     const navigate = useNavigate();
 
-    const onChangeNicknameHandler = (e) => {
-        const value = e.target.value;
-        setNickname(value);
-        nicknameCheckHandler(value);
-    };
-
-    const nicknameCheckHandler = (nickname) => {
-        const nicknameCheck = /^.{2,10}$/;
-        if (nickname === '') {
-            setNicknameError('닉네임을 입력해주세요.');
-            return false;
-        } else if (!nicknameCheck.test(nickname)) {
-            setNicknameError('닉네임은 2자에서 10자 사이로 입력해주세요.');
-            return false;
-        } else {
-            setNicknameError('');
-            return true;
-        }
-    };
+    const nicknameHandlerHooks = (e) => onChangeNicknameHandler(e, setNickname, setNicknameError);
 
     const userInfoUploadHandler = async (e) => {
         e.preventDefault();
-        console.log(profileImage);
 
-        if (profileImage === '') {
-            alert('사진을 등록해주세요.');
+        const loginId = localStorage.getItem('loginId');
+        console.log(loginId);
+        if (loginId === null || loginId === '') {
+            alert('회원 정보가 존재하지 않습니다.');
+            navigate('/login');
             return;
         }
 
-        const nicknameCheckResult = nicknameCheckHandler(nickname);
-        if (!nicknameCheckResult) return;
+        if (profileImage === '') {
+            alert('프로필 사진을 등록해주세요.');
+            return;
+        }
+
+        if (!nicknameCheckHandler(nickname, setNicknameError)) return;
+
+        let imageUrlFromCloud = '';
+        if (chosenFile) {
+            imageUrlFromCloud = await uploadImage(chosenFile);
+        }
+        console.log('imageUrlFromCloud', imageUrlFromCloud);
 
         try {
-            const loginId = localStorage.getItem('loginId');
-            console.log(loginId);
-            const responseData = await userInfoUpload(loginId, nickname, profileImage);
+            const responseData = await userInfoUpload(loginId, nickname, imageUrlFromCloud);
             if (responseData) {
                 alert('프로필 등록이 완료되었습니다!');
                 navigate('/groupmain');
@@ -62,14 +61,7 @@ const UserInfo = () => {
         }
     }
 
-    const imageHandler = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            uploadImage(file).then((url) => {
-                setProfileImage(url);
-            });
-        }
-    };
+    const imageHandlerHooks = (e) => imageHandler(e, setChosenFile, setProfileImage);
 
     return (
         <>
@@ -81,23 +73,24 @@ const UserInfo = () => {
                 </Text>
                 <input type='file'
                     accept="image/*"
-                    onChange={imageHandler}
+                    onChange={imageHandlerHooks}
                     style={{ display: 'none' }}
                     id="hiddenFileInput"
                 />
-                <Button onClick={() => document.getElementById('hiddenFileInput').click()}>
-                    <img src={profileImage ? profileImage : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
-                </Button>
+                <ImageButton onClick={() => document.getElementById('hiddenFileInput').click()}>
+                    <img src={profileImage
+                        ? profileImage
+                        : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
+                </ImageButton>
                 <FormContainer onSubmit={userInfoUploadHandler}>
                     <InputContainer>
                         <Input
-                            onChange={onChangeNicknameHandler}
+                            onChange={nicknameHandlerHooks}
                             name='nickname'
                             type="text"
                             value={nickname}
                             placeholder="닉네임 입력"
                             theme='underLine'
-                            maxLength={10}
                         />
                     </InputContainer>
                     {nicknameError && <small>{nicknameError}</small>}
@@ -105,7 +98,13 @@ const UserInfo = () => {
                         프로필 정보(사진, 닉네임)는 회원 식별, 친구간 커뮤니케이션
                         등의 목적으로 활용되며, Memory Mingle 이용기간 동안 보관됩니다.
                     </p>
-                    <button type='submit'>등록하기</button>
+                    <Button
+                        type='submit'
+                        size='large'
+                        background='#5873FE'
+                        color='#FFF'
+                    >등록하기
+                    </Button>
                 </FormContainer>
                 <SkipButton type='button' onClick={() => navigate('/groupmain')}>건너뛰기</SkipButton>
             </UserInfoContainer>
@@ -134,7 +133,7 @@ const Text = styled.h2`
     line-height: 129.336%;
 `;
 
-const Button = styled.button`
+const ImageButton = styled.button`
     margin-top: 5vh;
     background: transparent;
     border: none;
@@ -181,19 +180,11 @@ const FormContainer = styled.form`
     button {
         position: relative;
         bottom: -4vh;
-        width: 90%;
-        height: 3.5625rem;
-        flex-shrink: 0;
-        border-radius: 1.75rem;
-        background: #5873FE;
-        color: #FFF;
-        text-align: center;
         font-family: Apple SD Gothic Neo;
-        font-size: 1rem;
+        font-size: 16px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
-        border: none;
     }
 `;
 
