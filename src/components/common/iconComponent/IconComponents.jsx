@@ -102,6 +102,24 @@ const icons = {
       </defs>
     </>
   ),
+  back: (
+    <>
+      <path
+        d='M18.6429 1L1 18.6429'
+        stroke='#787878'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M1 1L18.6429 18.6429'
+        stroke='#787878'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </>
+  ),
 };
 
 export default function IconComponents({ iconType, ...props }) {

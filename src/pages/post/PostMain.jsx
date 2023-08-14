@@ -102,7 +102,10 @@ function PostMain() {
         </Box>
         {data?.memories.map((e) => {
           return (
-            <Box key={e.memoryId}>
+            <Box
+              onClick={() => navigate(`/postdetail/${e.memoryId}`)}
+              key={e.memoryId}
+            >
               <img
                 src={e.imageUrl}
                 alt='rasm'
