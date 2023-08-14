@@ -1,23 +1,35 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import Footer from '../../layout/footer/Footer';
+import api from '../../api/index.jsx';
+import { useParams } from 'react-router-dom';
 
 export default function Post() {
   const headref = useRef(null);
-
+  const [data, setData] = useState(null);
+  const { id } = useParams();
+  useEffect(() => {
+    console.log(id);
+    api.get(`group/${id}`, { withCredentials: true }).then((res) => {
+      console.log(res.data);
+      setData(res.data);
+    });
+  }, []);
   const handleScroll = () => {
     const style = headref.current.style;
+    console.log(window.scrollY);
 
     if (window.scrollY > 113 && style) {
       style.height = '93px';
       style.maxWidth = '428px';
       style.position = 'fixed';
       style.top = '0';
-      style.backgroundColor = 'red';
+      style.backgroundColor = '#555';
     } else if (style) {
       style.position = '';
       style.height = '206px';
       style.backgroundColor = '';
+      style.backgroundImage = 'none';
     }
   };
   useEffect(() => {
@@ -34,7 +46,7 @@ export default function Post() {
           position: 'sticky',
         }}
       >
-        <Head ref={headref}>
+        <Head ref={headref} data={data}>
           <div>Head</div>
         </Head>
         <Side>
@@ -42,9 +54,18 @@ export default function Post() {
         </Side>
       </div>
       <Content>
-        {Array.from({ length: 4 }, (_, index) => (
-          <Box key={index} />
-        ))}
+        {data?.memories.map((e) => {
+          return (
+            <Box key={e.memoryId}>
+              <img
+                src={e.imageUrl}
+                alt='rasm'
+                height={130}
+                style={{ width: '100%' }}
+              />
+            </Box>
+          );
+        })}
       </Content>
       <Foot>
         <Footer />
@@ -68,19 +89,24 @@ const Content = styled.div`
   background: wheat;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(100, 130px);
+
   gap: 2px;
 `;
 
 const Box = styled.div`
+  float: right;
   height: 130px;
   background: #b5b5b5;
 `;
 
 const Head = styled.div`
-  background: blue;
   width: 100%;
   height: 22vh;
+  background-image: ${(props) => `url(${props.data?.thumbnailUrl})`};
   transition: 0.5s;
+  background-position: center;
+  background-size: cover;
   div {
     text-align: center;
     color: white;

@@ -20,10 +20,12 @@ function Itroduction() {
         </Carousel>
       </CarouselWrap>
       <WrapButton>
-        {/* <Button size='large' bg='#555' onClick={onClickHandler}>
-          시작하기
-        </Button> */}
-        <Button size='small' bg='blue' color='white' onClick={onClickHandler}>
+        <Button
+          size='large'
+          background='#9A9A9A'
+          color='white'
+          onClick={onClickHandler}
+        >
           시작하기
         </Button>
       </WrapButton>

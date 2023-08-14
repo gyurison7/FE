@@ -1,7 +1,18 @@
-import { styled } from "styled-components";
-import PropTypes from "prop-types";
+import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
-const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolor, maxLength , color}) => {
+const Input = ({
+  onChange,
+  type,
+  id,
+  name,
+  value,
+  placeholder,
+  theme,
+  bordercolor,
+  maxLength,
+  color,
+}) => {
   return (
     <InputStyle
       onChange={onChange}
@@ -29,7 +40,7 @@ const InputStyle = styled.input`
   font-weight: 500;
   line-height: normal;
   &::placeholder {
-      font-size: 1rem;
+    font-size: 1rem;
   }
 
   ${({ theme, bordercolor, color }) => themeHandler(theme, bordercolor, color)};
@@ -37,7 +48,7 @@ const InputStyle = styled.input`
 
 const themeHandler = (theme, bordercolor, color) => {
   switch (theme) {
-    case "radius":
+    case 'radius':
       return `
                 padding: 0 1.25rem;
                 border-radius: 1.75rem;
@@ -48,7 +59,7 @@ const themeHandler = (theme, bordercolor, color) => {
                     color: rgba(255, 255, 255, 0.80);
                 }
             `;
-    case "underLine":
+    case 'underLine':
       return `
                 border: none;
                 border-bottom: 1px solid ${bordercolor || '#5873FE'};
@@ -70,7 +81,7 @@ Input.propTypes = {
   name: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
-  theme: PropTypes.oneOf(["radius", "underLine"]),
+  theme: PropTypes.oneOf(['radius', 'underLine']),
   bordercolor: PropTypes.string,
   maxLength: PropTypes.number,
   color: PropTypes.string,
