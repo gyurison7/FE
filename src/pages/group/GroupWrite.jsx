@@ -10,6 +10,7 @@ import { DatePicker, Space } from 'antd';
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [chosenFile, setChosenFile] = useState(null);
   const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
   const [startDate, setStartDate] = useState('');
@@ -57,9 +58,14 @@ function GroupWrite() {
   //데이터 보내는 로직
   const submitHandler = async (e) => {
     e.preventDefault();
+    let imageUrlFromCloud = '';
+    if (chosenFile) {
+      imageUrlFromCloud = await uploadImage(chosenFile);
+    }
+    console.log('url', imageUrlFromCloud);
     const payload = {
       groupName: groupName,
-      thumbnailUrl: thumbnailUrl,
+      thumbnailUrl: imageUrlFromCloud,
       place: places,
       participant: selectedFriends.map((friend) => friend.userId.toString()),
       startDate: startDate,
@@ -74,6 +80,21 @@ function GroupWrite() {
       navigate('/groupmain');
     } catch (error) {
       console.error('Error sending group data:', error);
+    }
+  };
+
+  //이미지 처리하는 로직
+  const imageHandler = (e) => {
+    const file = e.target.files[0];
+    setChosenFile(file);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setThumbnailUrl(reader.result);
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
@@ -93,17 +114,6 @@ function GroupWrite() {
         break;
       default:
         break;
-    }
-  };
-
-  //이미지 처리하는 로직
-  const imageHandler = async (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (file) {
-      uploadImage(file).then((url) => {
-        setThumbnailUrl(url);
-      });
     }
   };
 
@@ -201,35 +211,35 @@ function GroupWrite() {
                 showTime={{}}
                 format='YYYY-MM-DD'
                 onChange={onChange}
-                style={{ 
+                style={{
                   width: '100%',
-                  height:'44px',
-                  backgroundColor:'#F5F5F5',
-                  border:'none'
-               }}
+                  height: '44px',
+                  backgroundColor: '#F5F5F5',
+                  border: 'none',
+                }}
               />
             </Space>
           </StDateWrapper>
           함께한 추억 장소
           <PlaceContainer>
             <PlaceInputWrapper>
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
-              alt='placeicon'
-              className='inputIcon'
-            />
-            <GroupWriteInput
-              name='place'
-              placeholder='추억을 나눈 장소를 입력해주세요'
-              value={place}
-              onChange={universalHandler}
-            />
-            {place && (
-              <PlaceAddButton className='button' onClick={placeButtonHandler}>
-                추가
-              </PlaceAddButton>
-            )}
-             </PlaceInputWrapper>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
+                alt='placeicon'
+                className='inputIcon'
+              />
+              <GroupWriteInput
+                name='place'
+                placeholder='추억을 나눈 장소를 입력해주세요'
+                value={place}
+                onChange={universalHandler}
+              />
+              {place && (
+                <PlaceAddButton className='button' onClick={placeButtonHandler}>
+                  추가
+                </PlaceAddButton>
+              )}
+            </PlaceInputWrapper>
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
@@ -245,12 +255,17 @@ function GroupWrite() {
           함께한 친구들
           <div style={{ width: '100%' }}>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
-              {' '}
-              추억을 나눈 친구를 검색해주세요
+              <FriendContentWrap>
+                <FriendSearchImage
+                  src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
+                  alt='search'
+                />
+                <FriendSearchText> 추억을 나눈 친구를 검색해주세요 </FriendSearchText>
+              </FriendContentWrap>
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
-                isOpen={isModalOpen}
+                isopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
                 isUserSelected={isUserSelected}
@@ -352,7 +367,7 @@ const GroupWriteInput = styled.input`
 const PlaceContainer = styled.div`
   position: relative;
   width: 100%;
-`
+`;
 const PlaceInputWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -366,7 +381,6 @@ const PlaceInputWrapper = styled.div`
     margin-left: 10px;
     margin-top: 7px;
   }
-  
 `;
 
 const SubmitButton = styled.button`
@@ -443,19 +457,41 @@ const PlaceAddButton = styled.button`
   cursor: pointer;
 `;
 
-const FriendSearchButton = styled.button`
-  width: 100%;
-  border: none;
+// FriendSearch Button styledcomponent
+const FriendSearchButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 44px;
-  border-radius: 7px;
   background-color: rgba(245, 245, 245, 1);
 `;
+
+const FriendSearchImage = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
+const FriendContentWrap = styled.div`
+  display: flex;
+  position: absolute;
+  left: 30px;
+  gap: 9px;
+
+`;
+
+const FriendSearchText = styled.p`
+  font-size: 15px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+color: #C2C2C2;
+`
 
 // Modal Logic
 
 function FriendSearchModal({
   onClose,
-  isOpen,
+  isopen,
   universalHandler,
   searchResult,
   addFriendHandler,
@@ -463,7 +499,7 @@ function FriendSearchModal({
   participants,
 }) {
   return (
-    <ModalContainer isOpen={isOpen}>
+    <ModalContainer isOpen={isopen}>
       <ModalButtonWrapper>
         <ModalButton onClick={onClose}>
           <img src={`${process.env.PUBLIC_URL}/assets/image/line.png`} alt='line' />
@@ -600,11 +636,11 @@ const ModalWriteInput = styled.input`
 `;
 
 FriendSearchModal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  universalHandler: PropTypes.func.isRequired,
-  searchResult: PropTypes.array.isRequired,
-  addFriendHandler: PropTypes.func.isRequired,
-  isUserSelected: PropTypes.func.isRequired,
-  participants: PropTypes.string,
+  onClose: PropTypes.func,
+  isopen: PropTypes.bool,
+  universalHandler: PropTypes.func,
+  searchResult: PropTypes.array,
+  addFriendHandler: PropTypes.func,
+  isUserSelected: PropTypes.func,
+  participants: PropTypes.array,
 };
