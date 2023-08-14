@@ -10,7 +10,7 @@ export default function Button({
   type,
 }) {
   return (
-    <Btn
+    <ButtonStyle
       size={size}
       type={type}
       background={background}
@@ -18,10 +18,10 @@ export default function Button({
       onClick={onClick}
     >
       {children}
-    </Btn>
+    </ButtonStyle>
   );
 }
-const Btn = styled.button`
+const ButtonStyle = styled.button`
   border-radius: 28px;
   flex-shrink: 0;
   display: flex;
