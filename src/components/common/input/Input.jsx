@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import PropTypes from "prop-types";
 
-const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolor, maxLength }) => {
+const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolor, maxLength , color}) => {
   return (
     <InputStyle
       onChange={onChange}
@@ -13,6 +13,7 @@ const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolo
       theme={theme}
       bordercolor={bordercolor}
       maxLength={maxLength}
+      color={color}
     />
   );
 };
@@ -31,10 +32,10 @@ const InputStyle = styled.input`
       font-size: 1rem;
   }
 
-  ${({ theme, bordercolor }) => themeHandler(theme, bordercolor)};
+  ${({ theme, bordercolor, color }) => themeHandler(theme, bordercolor, color)};
 `;
 
-const themeHandler = (theme, bordercolor) => {
+const themeHandler = (theme, bordercolor, color) => {
   switch (theme) {
     case "radius":
       return `
@@ -52,7 +53,7 @@ const themeHandler = (theme, bordercolor) => {
                 border: none;
                 border-bottom: 1px solid ${bordercolor || '#5873FE'};
                 outline: none;
-                color: #8B8B8B;
+                color: ${color || '#8B8B8B'};
                 &::placeholder {
                     color: #8B8B8B;
                 }
@@ -72,6 +73,7 @@ Input.propTypes = {
   theme: PropTypes.oneOf(["radius", "underLine"]),
   bordercolor: PropTypes.string,
   maxLength: PropTypes.number,
+  color: PropTypes.string,
 };
 
 export default Input;
