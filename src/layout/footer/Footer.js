@@ -7,7 +7,7 @@ function Footer() {
   return (
     <Wrap>
       <div>
-        <StyledNavLink to='/foter'>
+        <StyledNavLink to='/groupmain'>
           <IconComponents iconType='home' stroke='black' />
         </StyledNavLink>
       </div>

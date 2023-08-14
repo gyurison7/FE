@@ -27,7 +27,7 @@ const Router = () => {
         <Route path='/postwrite/:id' element={<PostWrite />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/pwchange' element={<PasswordChange />} />
-        <Route path='/post' element={<Post />} />
+        <Route path='/post/:id' element={<Post />} />
       </Routes>
     </BrowserRouter>
   );

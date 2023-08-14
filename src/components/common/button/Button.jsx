@@ -28,13 +28,12 @@ const ButtonStyle = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
-  font-size: 14px;
-
   ${(props) =>
     props.size === 'large' &&
     css`
       width: 90%;
       height: 57px;
+      font-size: 16px;
       background: ${(props) => props.background};
       color: ${(props) => props.color};
     `}
@@ -42,16 +41,20 @@ const ButtonStyle = styled.button`
     props.size === 'medium' &&
     css`
       width: 45%;
+      font-size: 14px;
       height: 57px;
-      background: ${(props) => props.bg};
+      font-size: 16px;
+      background: ${(props) => props.background};
       color: ${(props) => props.color};
     `}
     ${(props) =>
     props.size === 'small' &&
     css`
       width: 75px;
+      font-size: 12px;
       height: 28px;
-      background: ${(props) => props.bg};
+      padding: 5px 10px;
+      background: ${(props) => props.background};
       color: ${(props) => props.color};
     `}
 `;

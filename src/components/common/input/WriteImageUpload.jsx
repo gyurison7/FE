@@ -1,18 +1,18 @@
-import React from "react";
-import { styled } from "styled-components";
-import PropTypes from "prop-types";
+import React from 'react';
+import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
 function WriteImageUpload({ height, bgcolor, children, onImageChange }) {
   return (
     <>
-      <ThumbnailLabel htmlFor="imageUpload" height={height} bgcolor={bgcolor}>
+      <ThumbnailLabel htmlFor='imageUpload' height={height} bgcolor={bgcolor}>
         <img
           src={`${process.env.PUBLIC_URL}/assets/image/photo.png`}
-          alt="thumbnail"
+          alt='thumbnail'
         />
         <p>{children}</p>
       </ThumbnailLabel>
-      <ThumbNail id="imageUpload" onChange={onImageChange} />
+      <ThumbNail id='imageUpload' onChange={onImageChange} />
     </>
   );
 }
@@ -23,6 +23,10 @@ const ThumbnailLabel = styled.label`
   cursor: pointer;
   display: block;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border: none;
   background-color: ${(prop) => prop.bgcolor};
   border-radius: 15px;
@@ -34,15 +38,15 @@ const ThumbnailLabel = styled.label`
   }
 
   p {
-    color:#BDBDBD;
+    color: white;
     font-size: 16px;
     font-weight: 600;
   }
 `;
 
 const ThumbNail = styled.input.attrs({
-  type: "file",
-  accept: "image/*",
+  type: 'file',
+  accept: 'image/*',
 })`
   width: 100%;
   height: 20vh;
@@ -56,7 +60,10 @@ const ThumbNail = styled.input.attrs({
 WriteImageUpload.propTypes = {
   height: PropTypes.string,
   bgcolor: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node),PropTypes.string]),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.string,
+  ]),
   onImageChange: PropTypes.func,
 };
 
