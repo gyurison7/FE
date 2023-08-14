@@ -32,13 +32,13 @@ function PostMain() {
     scrolltop >= 307 ? Header_Min_Height : Header_Max_Height;
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <div
         style={{
           height: animateHeaderHeight,
           position: 'fixed',
           background: '#C2C2C2',
-          width: '100%',
+          width: '428px',
           top: '0',
           display: 'flex',
           flexDirection: 'column',
@@ -49,12 +49,9 @@ function PostMain() {
           <Icons>
             <img
               src={`${process.env.PUBLIC_URL}/assets/svgs/VectorLeft.svg`}
-              alt="left"
+              alt='left'
             />
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/svgs/Add.svg`}
-              alt="add"
-            />
+            <img src={`${process.env.PUBLIC_URL}/assets/svgs/Add.svg`} alt='add' />
           </Icons>
         </Head>
         <Side
@@ -69,24 +66,24 @@ function PostMain() {
               <span>{data?.groupName}</span>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/svgs/VectorRight.svg`}
-                alt="left"
+                alt='left'
               />
             </MemoryNameLeft>
             <MemoryNameRight>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/svgs/AddFriend.svg`}
-                alt="left"
+                alt='left'
               />
               <span>친구초대</span>
             </MemoryNameRight>
           </MemoryName>
           <Avatar>
             <div>
-              <img src="" alt="" />
+              <img src='' alt='' />
               <span>Name</span>
             </div>
             <div>
-              <img src="" alt="" />
+              <img src='' alt='' />
               <span>Name</span>
             </div>
           </Avatar>
@@ -101,15 +98,17 @@ function PostMain() {
 
       <WrapContent>
         <Box onClick={() => navigate(`/postwrite/${id}`)}>
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/svgs/plus.svg`}
-            alt="plus"
-          />
+          <img src={`${process.env.PUBLIC_URL}/assets/svgs/plus.svg`} alt='plus' />
         </Box>
         {data?.memories.map((e) => {
           return (
             <Box key={e.memoryId}>
-              <img src={e.imageUrl} alt="rasm" height={130} width={130} />
+              <img
+                src={e.imageUrl}
+                alt='rasm'
+                height={130}
+                style={{ width: '100%' }}
+              />
             </Box>
           );
         })}
@@ -122,6 +121,11 @@ function PostMain() {
 }
 
 export default PostMain;
+const Foot = styled.div`
+  position: fixed;
+  width: 428px;
+  bottom: 0;
+`;
 
 const Icons = styled.div`
   display: flex;
@@ -132,6 +136,7 @@ const Head = styled.div`
   background-image: ${(props) => `url(${props.data?.thumbnailUrl})`};
   background-position: center;
   background-size: cover;
+
   height: 60%;
   padding: 57px 23px;
 `;
@@ -148,12 +153,6 @@ const WrapContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2px;
-`;
-
-const Foot = styled.div`
-  width: 100%;
-  position: fixed;
-  bottom: 0;
 `;
 
 const Side = styled.div`
