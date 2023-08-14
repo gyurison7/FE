@@ -1,29 +1,30 @@
 import React from 'react';
 import { styled } from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Footer() {
   return (
     <Wrap>
       <div>
-        <img src={`${process.env.PUBLIC_URL}/assets/svgs/home.svg`} alt="svg" />
+        <StyledNavLink to='/foter'>
+          <IconComponents iconType='home' stroke='black' />
+        </StyledNavLink>
       </div>
       <div>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/svgs/group.svg`}
-          alt="svg"
-        />
+        <StyledNavLink to='/your-link'>
+          <IconComponents iconType='group' stroke='black' />
+        </StyledNavLink>
       </div>
       <div>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/svgs/alarm.svg`}
-          alt="svg"
-        />
+        <StyledNavLink to='/your-link'>
+          <IconComponents iconType='inbox' stroke='black' />
+        </StyledNavLink>
       </div>
       <div>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/svgs/person.svg`}
-          alt="svg"
-        />
+        <StyledNavLink to='/mypage'>
+          <IconComponents iconType='user' stroke='black' />
+        </StyledNavLink>
       </div>
     </Wrap>
   );
@@ -32,11 +33,18 @@ function Footer() {
 export default Footer;
 
 const Wrap = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 17vh;
+  height: 72px;
   background: #fff;
   box-shadow: 8px 4px 23px 0px rgba(0, 0, 0, 0.25);
+`;
+
+const StyledNavLink = styled(NavLink)`
+  &.active {
+    & svg {
+      stroke: #5873fe;
+    }
+  }
 `;

@@ -1,21 +1,65 @@
 import React from 'react';
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import PropTypes from 'prop-types';
-export default function Button({ children, onClick }) {
-  return <Btn onClick={onClick}>{children}</Btn>;
+export default function Button({
+  children,
+  onClick,
+  size,
+  background,
+  color,
+  type,
+}) {
+  return (
+    <ButtonStyle
+      size={size}
+      type={type}
+      background={background}
+      color={color}
+      onClick={onClick}
+    >
+      {children}
+    </ButtonStyle>
+  );
 }
-const Btn = styled.button`
-  width: 342px;
-  height: 57px;
-  color: white;
+const ButtonStyle = styled.button`
   border-radius: 28px;
-  background: #9a9a9a;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
-  font-size: 20px;
-  font-weight: 500;
-  outline: none;
+  font-size: 14px;
+
+  ${(props) =>
+    props.size === 'large' &&
+    css`
+      width: 90%;
+      height: 57px;
+      background: ${(props) => props.background};
+      color: ${(props) => props.color};
+    `}
+  ${(props) =>
+    props.size === 'medium' &&
+    css`
+      width: 45%;
+      height: 57px;
+      background: ${(props) => props.bg};
+      color: ${(props) => props.color};
+    `}
+    ${(props) =>
+    props.size === 'small' &&
+    css`
+      width: 75px;
+      height: 28px;
+      background: ${(props) => props.bg};
+      color: ${(props) => props.color};
+    `}
 `;
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
+  size: PropTypes.oneOf(['large', 'medium', 'small']),
+  background: PropTypes.string,
+  color: PropTypes.string,
+  type: PropTypes.string,
 };
