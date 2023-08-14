@@ -4,6 +4,7 @@ import { signup, idDuplicateCheck } from '../../api/auth'
 import SignupModal from '../../components/common/modal/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
+import Button from '../../components/common/button/Button.jsx';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -162,7 +163,13 @@ function Signup() {
             </InputContainer>
           </InputWrapper>
           <ButtonContainer>
-            <button type='submit'>가입하기</button>
+            <Button
+              type='submit'
+              size='large'
+              background='#5873FE'
+              color='#FFF'
+            >가입하기
+            </Button>
           </ButtonContainer>
         </Form>
       </Wrapper>
@@ -242,16 +249,8 @@ const ButtonContainer = styled.div`
   bottom: 8vh;
   
   button {
-    width: 90%;
-    height: 3.5625rem;
-    flex-shrink: 0;
-    border: none;
-    border-radius: 1.78125rem;
-    background: #5873FE;
-    color: #FFF;
-    text-align: center;
     font-family: Apple SD Gothic Neo;
-    font-size: 1rem;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
