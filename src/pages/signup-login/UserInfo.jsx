@@ -5,51 +5,49 @@ import { uploadImage } from '../../hooks/uploadImage';
 import { userInfoUpload } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
-
+import {
+    nicknameCheckHandler,
+    onChangeNicknameHandler,
+    imageHandler
+}
+    from '../../hooks/userProfileUpload';
 
 const UserInfo = () => {
     const [nickname, setNickname] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [profileImage, setProfileImage] = useState('');
+    const [chosenFile, setChosenFile] = useState(null);
 
     const navigate = useNavigate();
 
-    const onChangeNicknameHandler = (e) => {
-        const value = e.target.value;
-        setNickname(value);
-        nicknameCheckHandler(value);
-    };
-
-    const nicknameCheckHandler = (nickname) => {
-        const nicknameCheck = /^.{2,10}$/;
-        if (nickname === '') {
-            setNicknameError('닉네임을 입력해주세요.');
-            return false;
-        } else if (!nicknameCheck.test(nickname)) {
-            setNicknameError('닉네임은 2자에서 10자 사이로 입력해주세요.');
-            return false;
-        } else {
-            setNicknameError('');
-            return true;
-        }
-    };
+    const nicknameHandlerHooks = (e) => onChangeNicknameHandler(e, setNickname, setNicknameError);
 
     const userInfoUploadHandler = async (e) => {
         e.preventDefault();
-        console.log(profileImage);
+
+        const loginId = localStorage.getItem('loginId');
+        console.log(loginId);
+        if (loginId === null || loginId === '') {
+            alert('회원 정보가 존재하지 않습니다.');
+            navigate('/login');
+            return;
+        }
 
         if (profileImage === '') {
             alert('사진을 등록해주세요.');
             return;
         }
 
-        const nicknameCheckResult = nicknameCheckHandler(nickname);
-        if (!nicknameCheckResult) return;
+        if (!nicknameCheckHandler(nickname, setNicknameError)) return;
+
+        let imageUrlFromCloud = '';
+        if (chosenFile) {
+            imageUrlFromCloud = await uploadImage(chosenFile);
+        }
+        console.log('imageUrlFromCloud', imageUrlFromCloud);
 
         try {
-            const loginId = localStorage.getItem('loginId');
-            console.log(loginId);
-            const responseData = await userInfoUpload(loginId, nickname, profileImage);
+            const responseData = await userInfoUpload(loginId, nickname, imageUrlFromCloud);
             if (responseData) {
                 alert('프로필 등록이 완료되었습니다!');
                 navigate('/groupmain');
@@ -62,14 +60,7 @@ const UserInfo = () => {
         }
     }
 
-    const imageHandler = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            uploadImage(file).then((url) => {
-                setProfileImage(url);
-            });
-        }
-    };
+    const imageHandlerHooks = (e) => imageHandler(e, setChosenFile, setProfileImage);
 
     return (
         <>
@@ -81,23 +72,24 @@ const UserInfo = () => {
                 </Text>
                 <input type='file'
                     accept="image/*"
-                    onChange={imageHandler}
+                    onChange={imageHandlerHooks}
                     style={{ display: 'none' }}
                     id="hiddenFileInput"
                 />
                 <Button onClick={() => document.getElementById('hiddenFileInput').click()}>
-                    <img src={profileImage ? profileImage : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
+                    <img src={profileImage
+                        ? profileImage
+                        : `${process.env.PUBLIC_URL}assets/image/user.png`} alt='user' />
                 </Button>
                 <FormContainer onSubmit={userInfoUploadHandler}>
                     <InputContainer>
                         <Input
-                            onChange={onChangeNicknameHandler}
+                            onChange={nicknameHandlerHooks}
                             name='nickname'
                             type="text"
                             value={nickname}
                             placeholder="닉네임 입력"
                             theme='underLine'
-                            maxLength={10}
                         />
                     </InputContainer>
                     {nicknameError && <small>{nicknameError}</small>}
