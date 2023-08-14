@@ -1,7 +1,17 @@
-import { styled } from "styled-components";
-import PropTypes from "prop-types";
+import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
-const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolor, maxLength }) => {
+const Input = ({
+  onChange,
+  type,
+  id,
+  name,
+  value,
+  placeholder,
+  theme,
+  bordercolor,
+  maxLength,
+}) => {
   return (
     <InputStyle
       onChange={onChange}
@@ -19,16 +29,12 @@ const Input = ({ onChange, type, id, name, value, placeholder, theme, bordercolo
 
 const InputStyle = styled.input`
   width: 100%;
-  height: 3.5625rem;
   flex-shrink: 0;
   background-color: transparent;
-  font-family: Apple SD Gothic Neo;
-  font-size: 1rem;
-  font-style: normal;
+  font-size: 16px;
   font-weight: 500;
-  line-height: normal;
   &::placeholder {
-      font-size: 1rem;
+    font-size: 16px;
   }
 
   ${({ theme, bordercolor }) => themeHandler(theme, bordercolor)};
@@ -36,8 +42,9 @@ const InputStyle = styled.input`
 
 const themeHandler = (theme, bordercolor) => {
   switch (theme) {
-    case "radius":
+    case 'radius':
       return `
+                height: 57px;
                 padding: 0 1.25rem;
                 border-radius: 1.75rem;
                 border: 1px solid #FFF;
@@ -47,8 +54,9 @@ const themeHandler = (theme, bordercolor) => {
                     color: rgba(255, 255, 255, 0.80);
                 }
             `;
-    case "underLine":
+    case 'underLine':
       return `
+                padding: 36px 0px 7px 0px;
                 border: none;
                 border-bottom: 1px solid ${bordercolor || '#5873FE'};
                 outline: none;
@@ -69,7 +77,7 @@ Input.propTypes = {
   name: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
-  theme: PropTypes.oneOf(["radius", "underLine"]),
+  theme: PropTypes.oneOf(['radius', 'underLine']),
   bordercolor: PropTypes.string,
   maxLength: PropTypes.number,
 };
