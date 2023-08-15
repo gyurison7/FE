@@ -9,8 +9,7 @@ import Button from '../../components/common/button/Button.jsx';
 import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
-  imageHandler,
-} from '../../hooks/userProfileUpload';
+} from '../../utils/nicknameValidation';
 
 const UserInfo = () => {
   const [nickname, setNickname] = useState('');
@@ -20,8 +19,20 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
 
-  const nicknameHandlerHooks = (e) =>
+  const nicknameChangeUtil = (e) =>
     onChangeNicknameHandler(e, setNickname, setNicknameError);
+
+  const imageHandler = (e) => {
+    const file = e.target.files[0];
+    setChosenFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const userInfoUploadHandler = async (e) => {
     e.preventDefault();
@@ -65,8 +76,6 @@ const UserInfo = () => {
     }
   };
 
-  const imageHandlerHooks = (e) => imageHandler(e, setChosenFile, setProfileImage);
-
   return (
     <>
       <Header title='프로필 등록' />
@@ -79,7 +88,7 @@ const UserInfo = () => {
         <input
           type='file'
           accept='image/*'
-          onChange={imageHandlerHooks}
+          onChange={imageHandler}
           style={{ display: 'none' }}
           id='hiddenFileInput'
         />
@@ -94,7 +103,7 @@ const UserInfo = () => {
         <FormContainer onSubmit={userInfoUploadHandler}>
           <InputContainer>
             <Input
-              onChange={nicknameHandlerHooks}
+              onChange={nicknameChangeUtil}
               name='nickname'
               type='text'
               value={nickname}
