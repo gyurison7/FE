@@ -61,7 +61,7 @@ const SearchButton = styled.button`
 `;
 
 const SearchIcon = styled.img`
-       width: 21px;
-    margin-top: 35px;
-    margin-right: 23px;
+  width: 21px;
+  margin-top: 35px;
+  margin-right: 23px;
 `;

@@ -193,7 +193,7 @@ function GroupWrite() {
           </div>
           <div>앨범 수정하기</div>
           <div>
-            <SubmitButton type='submit'>수정하기</SubmitButton>
+            <SubmitButton type='submit'>완료</SubmitButton>
           </div>
         </WriteHeader>
 
