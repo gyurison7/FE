@@ -195,13 +195,14 @@ function GroupWrite() {
                 height='20vh'
                 onImageChange={imageHandler}
                 bgcolor='rgba(245, 246, 248, 1)'
+                color="#BDBDBD"
               >
                 썸네일 추가하기
               </WriteImageUpload>
             )}
           </WriteImageWrapper>
           <StDateWrapper>
-          <DivHeaderText>함께한 추억 기간 </DivHeaderText>
+            <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <Space
               direction='vertical'
               size={12}
@@ -255,7 +256,7 @@ function GroupWrite() {
             ))}
           </PlaceContainer>
           <div style={{ width: '100%' }}>
-          <DivHeaderText>함께한 친구들 </DivHeaderText>
+            <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
               <FriendContentWrap>
                 <FriendSearchImage
@@ -313,7 +314,7 @@ const DivHeaderText = styled.p`
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  color: #4C4C4C;
+  color: #4c4c4c;
 `;
 
 const SelectFrindWrapper = styled.div`
@@ -379,6 +380,12 @@ const GroupWriteInput = styled.input`
 
   &:focus {
     outline: none;
+  }
+  &::placeholder {
+    color: #c2c2c2;
+    font-size: 15px;
+    font-style: normal;
+    line-height: normal;
   }
 `;
 const PlaceContainer = styled.div`
@@ -537,10 +544,10 @@ function FriendSearchModal({
           return (
             <ResultWrapper key={item.userId}>
               <ResultProfileImage src={item.profileUrl} alt='profileImg' />
-              <div>
-                <p>{item.loginId} </p>
-                <p>{item.nickname} </p>
-              </div>
+              <ModalTextContainer>
+                <NickNameText>{item.nickname} </NickNameText>
+                <IdText>{item.loginId} </IdText>
+              </ModalTextContainer>
               <ResultAddButton
                 onClick={() => {
                   addFriendHandler(item);
@@ -548,7 +555,7 @@ function FriendSearchModal({
                 }}
               >
                 {' '}
-                추가
+                추가하기
               </ResultAddButton>
             </ResultWrapper>
           );
@@ -636,6 +643,7 @@ const ModalButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
 `;
 
 const ModalWriteInput = styled.input`
@@ -645,11 +653,28 @@ const ModalWriteInput = styled.input`
   border-radius: 7px;
   background-color: #f5f5f5;
   border: none;
-  margin-top: 25px;
+`;
 
-  &:focus {
-    outline: none;
-  }
+const ModalTextContainer = styled.div`
+  position: absolute;
+  left: 94px;
+`;
+
+const NickNameText = styled.p`
+  color: #171616;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
+
+const IdText = styled.p`
+  color: #959595;
+  margin-left: 2px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 
 FriendSearchModal.propTypes = {

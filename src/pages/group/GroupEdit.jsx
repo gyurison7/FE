@@ -7,16 +7,26 @@ import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx
 import PropTypes from 'prop-types';
 import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
+import moment from 'moment';
+
 
 function GroupWrite() {
-  const [groupName, setGroupName] = useState('');
+
+    // const updateGroup = async (groupId, dataToUpdate) => {
+    //     const response = await api.put(`/group/${groupId}`, dataToUpdate);
+    //     return response.data;
+    //     console.log(response)
+    //   };
+
+
+
+  const [groupName, setGroupName] = useState('asdf');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [chosenFile, setChosenFile] = useState(null);
   const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-
+  const [startDate, setStartDate] = useState('2023-01-12');
+  const [endDate, setEndDate] = useState('2023-01-16');
   const [participants, setParticipant] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
@@ -63,7 +73,6 @@ function GroupWrite() {
     if (chosenFile) {
       imageUrlFromCloud = await uploadImage(chosenFile);
     }
-    console.log('url', imageUrlFromCloud);
     const payload = {
       groupName: groupName,
       thumbnailUrl: imageUrlFromCloud,
@@ -74,7 +83,7 @@ function GroupWrite() {
     };
 
     try {
-      const response = await api.post('/group', payload, {
+      const response = await api.post('/', payload, {
         withCredentials: true,
       });
       console.log(response.data);
@@ -155,6 +164,8 @@ function GroupWrite() {
     return selectedFriends.some((friend) => friend.loginId === loginId);
   };
 
+  
+
   return (
     <>
       <Form onSubmit={submitHandler}>
@@ -182,7 +193,6 @@ function GroupWrite() {
             value={groupName}
             placeholder='앨범 이름을 입력해주세요'
             onChange={universalHandler}
-            required
           />
           <WriteImageWrapper>
             {thumbnailUrl ? (
@@ -202,25 +212,29 @@ function GroupWrite() {
           </WriteImageWrapper>
           <StDateWrapper>
           <DivHeaderText>함께한 추억 기간 </DivHeaderText>
-            <Space
-              direction='vertical'
-              size={12}
-              style={{
-                width: '100%',
-              }}
-            >
-              <RangePicker
-                showTime={{}}
-                format='YYYY-MM-DD'
-                onChange={onChange}
-                style={{
-                  width: '100%',
-                  height: '44px',
-                  backgroundColor: '#F5F5F5',
-                  border: 'none',
-                }}
-              />
-            </Space>
+          <Space
+      direction='vertical'
+      size={12}
+      style={{
+        width: '100%',
+      }}
+    >
+     <RangePicker
+      showTime={{}}
+      format='YYYY-MM-DD'
+      onChange={onChange}
+      style={{
+        width: '100%',
+        height: '44px',
+        backgroundColor: '#F5F5F5',
+        border: 'none',
+      }}
+      placeholder={[
+        moment(startDate).format('YYYY-MM-DD'), 
+        moment(endDate).format('YYYY-MM-DD')
+      ]}
+    />
+    </Space>
           </StDateWrapper>
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
