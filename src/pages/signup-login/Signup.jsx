@@ -217,22 +217,16 @@ const InputContainer = styled.div`
     align-self: flex-start;
     text-align: left;
     color: #5873FE;
-    font-family: Apple SD Gothic Neo;
-    font-size: 1rem;
-    font-style: normal;
+    font-size: 16px;
     font-weight: 700;
-    line-height: normal;
   }
 
   small {
     align-self: flex-start;
     text-align: left;
-    font-size: 0.8rem;
+    font-size: 13px;
     color: #FF7E62;
-    font-family: Apple SD Gothic Neo;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
   }
 
   .idAvailable {
@@ -249,10 +243,6 @@ const ButtonContainer = styled.div`
   bottom: 8vh;
   
   button {
-    font-family: Apple SD Gothic Neo;
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
   }
 `;

@@ -142,11 +142,8 @@ const UserInfoContainer = styled.div`
 const Text = styled.h2`
   text-align: left;
   color: #4c4c4c;
-  font-family: Apple SD Gothic Neo;
-  font-size: 1.5rem;
-  font-style: normal;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 129.336%;
 `;
 
 const ImageButton = styled.button`
@@ -173,34 +170,21 @@ const FormContainer = styled.form`
   small {
     width: 90%;
     color: #ff7e62;
-    font-family: Apple SD Gothic Neo;
-    font-size: 0.8125rem;
-    font-style: normal;
+    font-size: 13px;
     font-weight: 600;
-    line-height: normal;
-    word-break: break-all;
-    overflow-wrap: break-word;
-    white-space: pre-line;
   }
 
   p {
     width: 90%;
     color: #959595;
-    font-family: Apple SD Gothic Neo;
-    font-size: 0.8125rem;
-    font-style: normal;
+    font-size: 13px;
     font-weight: 400;
-    line-height: normal;
   }
 
   button {
     position: relative;
     bottom: -4vh;
-    font-family: Apple SD Gothic Neo;
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
   }
 `;
 
@@ -220,9 +204,6 @@ const SkipButton = styled.div`
   border: none;
   border-bottom: 1px solid #4c4c4c;
   color: #4c4c4c;
-  font-family: Apple SD Gothic Neo;
-  font-size: 1rem;
-  font-style: normal;
+  font-size: 16px;
   font-weight: 600;
-  line-height: normal;
 `;
