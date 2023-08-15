@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { css, keyframes, styled } from 'styled-components';
 import api from '../../api/index.jsx';
 import { uploadImage } from '../../hooks/uploadImage.js';
@@ -12,27 +12,41 @@ import moment from 'moment';
 
 function GroupWrite() {
 
-    // const updateGroup = async (groupId, dataToUpdate) => {
-    //     const response = await api.put(`/group/${groupId}`, dataToUpdate);
-    //     return response.data;
-    //     console.log(response)
-    //   };
+    const { id } = useParams();
+    const navigate = useNavigate();
+    useEffect(() => {
+        console.log(id);
+        api.get(`group/${id}`, { withCredentials: true }).then((res) => {
+            console.log(res.data);
+            setGroupName(res.data.groupName);
+            setStartDate(res.data.startDate);
+            setEndDate(res.data.endDate);
+            setSelectedFriends(res.data.participants);
+            setThumbnailUrl(res.data.thumbnailUrl);
+            if(res.data.place) {
+                const placesArray = JSON.parse(res.data.place);
+                setPlaces(placesArray); 
+            }
+        });
+    }, []);
+    
 
 
 
-  const [groupName, setGroupName] = useState('asdf');
+  const [groupName, setGroupName] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
-  const [chosenFile, setChosenFile] = useState(null);
   const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
-  const [startDate, setStartDate] = useState('2023-01-12');
-  const [endDate, setEndDate] = useState('2023-01-16');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [participants, setParticipant] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
-
+  
+  const [chosenFile, setChosenFile] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  console.log(places)
   const { RangePicker } = DatePicker;
   const onChange = (value, dateString) => {
     setStartDate(dateString[0]);
@@ -133,7 +147,6 @@ function GroupWrite() {
     );
   };
 
-  const navigate = useNavigate();
   const backButtonHandler = () => {
     navigate('/groupmain');
   };
@@ -178,9 +191,9 @@ function GroupWrite() {
               />
             </BackButton>
           </div>
-          <div>앨범 만들기</div>
+          <div>앨범 수정하기</div>
           <div>
-            <SubmitButton type='submit'>확인</SubmitButton>
+            <SubmitButton type='submit'>수정하기</SubmitButton>
           </div>
         </WriteHeader>
 
