@@ -1,8 +1,8 @@
-import axios from 'axios';
+import api from './index.jsx';
 
 export const login = async (loginId, password) => {
-  const response = await axios.post(
-    `${process.env.REACT_APP_URL}/auth/login`,
+  const response = await api.post(
+    `/auth/login`,
     {
       loginId,
       password,
@@ -16,8 +16,8 @@ export const login = async (loginId, password) => {
 };
 
 export const signup = async (loginId, password, confirm) => {
-  const response = await axios.post(
-    `${process.env.REACT_APP_URL}/auth/signup`,
+  const response = await api.post(
+    `/auth/signup`,
     {
       loginId,
       password,
@@ -32,19 +32,16 @@ export const signup = async (loginId, password, confirm) => {
 };
 
 export const idDuplicateCheck = async (loginId) => {
-  const response = await axios.post(
-    `${process.env.REACT_APP_URL}/auth/signup/check`,
-    {
-      loginId,
-    }
-  );
+  const response = await api.post(`/auth/signup/check`, {
+    loginId,
+  });
 
   return response.data.idCheck;
 };
 
 export const userInfoUpload = async (loginId, nickname, profileUrl) => {
-  const response = await axios.put(
-    `${process.env.REACT_APP_URL}/auth/signup/update`,
+  const response = await api.put(
+    `/auth/signup/update`,
     {
       loginId,
       nickname,
@@ -59,7 +56,7 @@ export const userInfoUpload = async (loginId, nickname, profileUrl) => {
 };
 
 export const logout = async () => {
-  const response = await axios.post(`${process.env.REACT_APP_URL}/auth/logout`, {
+  const response = await api.post(`/auth/logout`, {
     withCredentials: true,
   });
 
