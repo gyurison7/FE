@@ -39,11 +39,34 @@ export const idDuplicateCheck = async (loginId) => {
   return response.data.idCheck;
 };
 
-export const userInfoUpload = async (loginId, nickname, profileUrl) => {
+export const updateUserProfile = async (loginId, nickname, profileUrl) => {
   const response = await api.put(
     '/auth/signup/update',
     {
       loginId,
+      nickname,
+      profileUrl,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};
+
+export const getUserProfile = async () => {
+  const response = await api.get('/userInfo', {
+    withCredentials: true,
+  });
+
+  return response.data.userInfoData;
+};
+
+export const updateMyPageProfile = async (nickname, profileUrl) => {
+  const response = await api.put(
+    '/auth/me/profile',
+    {
       nickname,
       profileUrl,
     },

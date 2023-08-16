@@ -1,26 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router';
-import Footer from '../../layout/footer/Footer.js';
-import Header from '../../components/common/header/Header.jsx';
 import { uploadImage } from '../../hooks/uploadImage.js';
+import { getUserProfile, updateMyPageProfile, logout } from '../../api/auth.js';
 import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation.js';
-import { logout } from '../../api/auth.js';
+import Header from '../../components/common/header/Header.jsx';
+import Footer from '../../layout/footer/Footer.js';
 
 const MyPage = () => {
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(''); // 원래 닉네임
+  const [inputNickname, setInputNickname] = useState(); // 유저가 입력한 닉네임
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState('');
+  const [loginId, setLoginId] = useState('');
 
   const navigate = useNavigate();
+  const imageUploadInput = useRef(null);
 
-  const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setNickname);
+  useEffect(() => {
+    const getUserProfilefromApi = async () => {
+      try {
+        const responseData = await getUserProfile();
+        setNickname(responseData.nickname);
+        setInputNickname(responseData.nickname);
+        setProfileImage(responseData.profileUrl);
+        setLoginId(responseData.loginId);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserProfilefromApi();
+  }, []);
+
+  const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setInputNickname);
 
   const blurHandler = () => {
-    setNickname('');
+    setInputNickname(nickname);
     setIsEditing(false);
   };
 
@@ -33,16 +51,26 @@ const MyPage = () => {
     }
   };
 
-  const nicknameSubmitHandler = () => {
+  const nicknameSubmitHandler = async () => {
     if (!isEditing) {
       setIsEditing(true);
       return;
     }
     if (isEditing) {
-      const result = nicknameCheckHandler(nickname);
+      const result = nicknameCheckHandler(inputNickname);
       if (result) {
-        setNickname(nickname);
-        setIsEditing(false);
+        try {
+          const responseData = await updateMyPageProfile(
+            inputNickname,
+            profileImage
+          );
+          if (responseData) {
+            setNickname(inputNickname);
+            setIsEditing(false);
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   };
@@ -67,13 +95,13 @@ const MyPage = () => {
         <ProfileContainer>
           <input
             type='file'
+            ref={imageUploadInput}
             accept='image/*'
             onChange={imageHandler}
             style={{ display: 'none' }}
-            id='hiddenFileInput'
           />
           <ImageButton
-            onClick={() => document.getElementById('hiddenFileInput').click()}
+            onClick={() => imageUploadInput.current.click()}
           >
             <img
               className='profileImage'
@@ -88,7 +116,7 @@ const MyPage = () => {
               <div>
                 <input
                   type='text'
-                  value={nickname}
+                  value={inputNickname}
                   onChange={nicknameChangeUtil}
                   onBlur={blurHandler}
                   placeholder='10자 이하로 입력해주세요!'
@@ -96,7 +124,7 @@ const MyPage = () => {
                 />
               </div>
             ) : (
-              <span>{nickname || '닉네임'}</span>
+              <span>{nickname}</span>
             )}
             <ImageButton onTouchStart={nicknameSubmitHandler}>
               {isEditing ? (
@@ -113,7 +141,7 @@ const MyPage = () => {
               )}
             </ImageButton>
           </NicknameContainer>
-          <span>memorymingle</span>
+          <span>{loginId}</span>
         </ProfileContainer>
         <ButtonContainer>
           <button className='passwordChange' onClick={() => navigate('/pwchange')}>
@@ -128,7 +156,9 @@ const MyPage = () => {
           </div>
         </ButtonContainer>
       </MypageContainer>
-      <Footer />
+      <Foot>
+        <Footer />
+      </Foot>
     </Wrapper>
   );
 };
@@ -252,5 +282,16 @@ const ButtonContainer = styled.div`
     span {
       color: #b9b9b9;
     }
+  }
+`;
+
+const Foot = styled.div`
+  position: fixed;
+  bottom: 0;
+  @media (max-width: 428px) {
+    width: 100%;
+  }
+  @media (min-width: 429px) {
+    width: 428px;
   }
 `;

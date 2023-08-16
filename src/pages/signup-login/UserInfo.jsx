@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { uploadImage } from '../../hooks/uploadImage';
-import { userInfoUpload } from '../../api/auth';
+import { updateUserProfile } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
 import Button from '../../components/common/button/Button.jsx';
@@ -64,7 +64,7 @@ const UserInfo = () => {
     console.log('imageUrlFromCloud', imageUrlFromCloud);
 
     try {
-      const responseData = await userInfoUpload(
+      const responseData = await updateUserProfile(
         loginId,
         nickname,
         imageUrlFromCloud
