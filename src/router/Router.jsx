@@ -5,7 +5,7 @@ import Signup from '../pages/signup-login/Signup.jsx';
 import GroupWrite from '../pages/group/GroupWrite.jsx';
 import MyPage from '../pages/mypage/MyPage.jsx';
 import Introduction from '../pages/app-introduction/Introduction.jsx';
-import UserInfo from '../pages/signup-login/UserInfo.jsx';
+import UserProfile from '../pages/signup-login/UserProfile.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
 import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
@@ -21,7 +21,7 @@ const Router = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/api/login/kakao/callback' element={<KakaoLoginRedirect />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/userinfo' element={<UserInfo />} />
+        <Route path='/userprofile' element={<UserProfile />} />
         <Route path='/groupmain' element={<ProtectedRoute />}>
           <Route index element={<GroupMain />} />
         </Route>

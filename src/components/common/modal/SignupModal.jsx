@@ -17,7 +17,7 @@ const SignupModal = () => {
                 </TextContainer>
                 <ButtonContainer>
                     <Button
-                        onClick={() => navigate('/userinfo')}
+                        onClick={() => navigate('/userprofile')}
                         size='large'
                         background='#5873FE'
                         color='#FFF'

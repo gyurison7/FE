@@ -39,7 +39,7 @@ export const idDuplicateCheck = async (loginId) => {
   return response.data.idCheck;
 };
 
-export const updateUserProfile = async (loginId, nickname, profileUrl) => {
+export const uploadUserProfile = async (loginId, nickname, profileUrl) => {
   const response = await api.put(
     '/auth/signup/update',
     {
