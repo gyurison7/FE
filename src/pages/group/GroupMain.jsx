@@ -81,15 +81,15 @@ function GroupMain() {
                     </GroupDetailButton>
                     <div
                       style={{
-                        lineHeight: '1px',
+                        lineHeight: '7px',
                         paddingLeft: '2px',
                         marginTop: '12px',
                       }}
                     >
-                      <h4> {item.groupName}</h4>
+                      <h5> {item.groupName}</h5>
                       <p
                         style={{
-                          fontSize: '12px',
+                          fontSize: '10px',
                           color: 'gray',
                           marginTop: '12px',
                         }}
