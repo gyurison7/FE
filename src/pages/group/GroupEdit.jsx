@@ -97,7 +97,7 @@ function GroupWrite() {
     };
 
     try {
-      const response = await api.post('/', payload, {
+      const response = await api.put(`group/${id}`, payload, {
         withCredentials: true,
       });
       console.log(response.data);
@@ -530,6 +530,3 @@ const FriendSearchText = styled.p`
   line-height: normal;
   color: #c2c2c2;
 `;
-
-// Modal Logic
-
