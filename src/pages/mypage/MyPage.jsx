@@ -8,6 +8,7 @@ import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation.js';
+import { logout } from '../../api/auth.js';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState('');
@@ -43,6 +44,19 @@ const MyPage = () => {
         setNickname(nickname);
         setIsEditing(false);
       }
+    }
+  };
+
+  const logoutHandler = async () => {
+    try {
+      const responseData = await logout();
+      console.log('responseData', responseData);
+      if (responseData) {
+        alert('로그아웃되었습니다.');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -108,7 +122,9 @@ const MyPage = () => {
           <div>
             <button className='memberOut'>회원탈퇴</button>
             <span>|</span>
-            <button className='logout'>로그아웃</button>
+            <button className='logout' onClick={logoutHandler}>
+              로그아웃
+            </button>
           </div>
         </ButtonContainer>
       </MypageContainer>
