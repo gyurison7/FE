@@ -1,7 +1,17 @@
+@font-face {
+  font-family: 'PretendardVariable';
+  src: url('./assets/fonts/PretendardVariable.woff2') format('woff2');
+  font-style: normal;
+  font-weight: normal;
+}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+body, button, input {
+  font-family: 'PretendardVariable', sans-serif;
+
 }
 .App {
   max-width: 428px;

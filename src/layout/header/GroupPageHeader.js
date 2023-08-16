@@ -35,7 +35,6 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 14px;
 `;
 
 const LogoImage = styled.img`
@@ -62,6 +61,6 @@ const SearchButton = styled.button`
 
 const SearchIcon = styled.img`
   width: 21px;
-  margin-top: 35px;
+  margin-top: 21px;
   margin-right: 23px;
 `;
