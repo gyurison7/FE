@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { uploadImage } from '../../hooks/uploadImage';
@@ -18,6 +18,7 @@ const UserProfile = () => {
   const [chosenFile, setChosenFile] = useState(null);
 
   const navigate = useNavigate();
+  const imageUploadInput = useRef(null);
 
   const nicknameChangeUtil = (e) =>
     onChangeNicknameHandler(e, setNickname, setNicknameError);
@@ -93,13 +94,13 @@ const UserProfile = () => {
         </Text>
         <input
           type='file'
+          ref={imageUploadInput}
           accept='image/*'
           onChange={imageHandler}
           style={{ display: 'none' }}
-          id='hiddenFileInput'
         />
         <ImageButton
-          onClick={() => document.getElementById('hiddenFileInput').click()}
+          onClick={() => imageUploadInput.current.click()}
         >
           <img
             src={profileImage || `${process.env.PUBLIC_URL}assets/image/user.png`}
