@@ -236,6 +236,7 @@ const InputContainer = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
+  max-width: 428px;
   position: fixed;
   display: flex;
   justify-content: center;
