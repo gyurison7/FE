@@ -22,7 +22,7 @@ function GroupMain() {
   return (
     <>
       <MainContainer>
-        <GroupPageHeader />
+        <FixedHeader />
         <GroupWrapper>
           {isLoading ? (
             <div>Loading...</div>
@@ -81,15 +81,15 @@ function GroupMain() {
                     </GroupDetailButton>
                     <div
                       style={{
-                        lineHeight: '1px',
+                        lineHeight: '7px',
                         paddingLeft: '2px',
                         marginTop: '12px',
                       }}
                     >
-                      <h4> {item.groupName}</h4>
+                      <h5> {item.groupName}</h5>
                       <p
                         style={{
-                          fontSize: '12px',
+                          fontSize: '10px',
                           color: 'gray',
                           marginTop: '12px',
                         }}
@@ -102,16 +102,26 @@ function GroupMain() {
               })}
             </>
           )}
+          <div style={{ height: '72px' }}></div>
         </GroupWrapper>
-        <footer style={{ marginTop: 'auto' }}>
+        <Foot>
           <Footer />
-        </footer>
+        </Foot>
       </MainContainer>
     </>
   );
 }
 
 export default GroupMain;
+
+const FixedHeader = styled(GroupPageHeader)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10; 
+`;
+
 
 const GroupEditButton = styled.button`
   position: absolute;
@@ -154,6 +164,7 @@ const GroupWrapper = styled.div`
   overflow-y: auto;
   align-items: flex-start;
   justify-content: flex-start;
+  padding-bottom: 72px;
 `;
 const ButtonWrapper = styled.div`
   margin-top: 12px;
@@ -221,4 +232,15 @@ const PreMainText = styled.p`
 
 const PreMainPlus = styled.img`
   width: 12px;
+`;
+
+const Foot = styled.div`
+  position: fixed;
+  bottom: 0;
+  @media (max-width: 428px) {
+    width: 100%;
+  }
+  @media (min-width: 429px) {
+    width: 428px;
+  }
 `;
