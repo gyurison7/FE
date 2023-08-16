@@ -9,8 +9,7 @@ import Button from '../../components/common/button/Button.jsx';
 import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
-  imageHandler,
-} from '../../hooks/userProfileUpload';
+} from '../../utils/nicknameValidation';
 
 const UserInfo = () => {
   const [nickname, setNickname] = useState('');
@@ -20,8 +19,25 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
 
-  const nicknameHandlerHooks = (e) =>
+  const nicknameChangeUtil = (e) =>
     onChangeNicknameHandler(e, setNickname, setNicknameError);
+
+  const imageHandler = (e) => {
+    const file = e.target.files[0];
+    setChosenFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const alertAndNavigate = (message) => {
+    alert(message);
+    navigate('/login');
+  };
 
   const userInfoUploadHandler = async (e) => {
     e.preventDefault();
@@ -54,8 +70,7 @@ const UserInfo = () => {
         imageUrlFromCloud
       );
       if (responseData) {
-        alert('프로필 등록이 완료되었습니다!');
-        navigate('/groupmain');
+        alertAndNavigate('프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)');
       } else {
         alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
       }
@@ -64,8 +79,6 @@ const UserInfo = () => {
       console.error(error);
     }
   };
-
-  const imageHandlerHooks = (e) => imageHandler(e, setChosenFile, setProfileImage);
 
   return (
     <>
@@ -79,7 +92,7 @@ const UserInfo = () => {
         <input
           type='file'
           accept='image/*'
-          onChange={imageHandlerHooks}
+          onChange={imageHandler}
           style={{ display: 'none' }}
           id='hiddenFileInput'
         />
@@ -94,7 +107,7 @@ const UserInfo = () => {
         <FormContainer onSubmit={userInfoUploadHandler}>
           <InputContainer>
             <Input
-              onChange={nicknameHandlerHooks}
+              onChange={nicknameChangeUtil}
               name='nickname'
               type='text'
               value={nickname}
@@ -111,7 +124,7 @@ const UserInfo = () => {
             등록하기
           </Button>
         </FormContainer>
-        <SkipButton type='button' onClick={() => navigate('/groupmain')}>
+        <SkipButton type='button' onClick={() => alertAndNavigate('회원가입은 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)')}>
           건너뛰기
         </SkipButton>
       </UserInfoContainer>
@@ -133,11 +146,8 @@ const UserInfoContainer = styled.div`
 const Text = styled.h2`
   text-align: left;
   color: #4c4c4c;
-  font-family: Apple SD Gothic Neo;
-  font-size: 1.5rem;
-  font-style: normal;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 129.336%;
 `;
 
 const ImageButton = styled.button`
@@ -164,34 +174,21 @@ const FormContainer = styled.form`
   small {
     width: 90%;
     color: #ff7e62;
-    font-family: Apple SD Gothic Neo;
-    font-size: 0.8125rem;
-    font-style: normal;
+    font-size: 13px;
     font-weight: 600;
-    line-height: normal;
-    word-break: break-all;
-    overflow-wrap: break-word;
-    white-space: pre-line;
   }
 
   p {
     width: 90%;
     color: #959595;
-    font-family: Apple SD Gothic Neo;
-    font-size: 0.8125rem;
-    font-style: normal;
+    font-size: 13px;
     font-weight: 400;
-    line-height: normal;
   }
 
   button {
     position: relative;
     bottom: -4vh;
-    font-family: Apple SD Gothic Neo;
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
   }
 `;
 
@@ -211,9 +208,6 @@ const SkipButton = styled.div`
   border: none;
   border-bottom: 1px solid #4c4c4c;
   color: #4c4c4c;
-  font-family: Apple SD Gothic Neo;
-  font-size: 1rem;
-  font-style: normal;
+  font-size: 16px;
   font-weight: 600;
-  line-height: normal;
 `;

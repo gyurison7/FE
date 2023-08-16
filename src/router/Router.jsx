@@ -10,8 +10,8 @@ import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
 import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 import PasswordChange from '../pages/mypage/PasswordChange.jsx';
-import Post from '../pages/post/Post.jsx';
 import GroupEdit from '../pages/group/GroupEdit.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
 
 const Router = () => {
   return (
@@ -22,14 +22,27 @@ const Router = () => {
         <Route path='/api/login/kakao/callback' element={<KakaoLoginRedirect />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/userinfo' element={<UserInfo />} />
-        <Route path='/groupmain' element={<GroupMain />} />
-        <Route path='/groupwrite' element={<GroupWrite />} />
-        <Route path='/postmain/:id' element={<PostMain />} />
-        <Route path='/postwrite/:id' element={<PostWrite />} />
-        <Route path='/mypage' element={<MyPage />} />
-        <Route path='/pwchange' element={<PasswordChange />} />
-        <Route path='/post' element={<Post />} />
-        <Route path='/groupedit/:id' element={<GroupEdit />} />
+        <Route path='/groupmain' element={<ProtectedRoute />}>
+          <Route index element={<GroupMain />} />
+        </Route>
+        <Route path='/groupwrite' element={<ProtectedRoute />}>
+          <Route index element={<GroupWrite />} />
+        </Route>
+        <Route path='/postmain/:id' element={<ProtectedRoute />}>
+          <Route index element={<PostMain />} />
+        </Route>
+        <Route path='/postwrite/:id' element={<ProtectedRoute />}>
+          <Route index element={<PostWrite />} />
+        </Route>
+        <Route path='/mypage' element={<ProtectedRoute />}>
+          <Route index element={<MyPage />} />
+        </Route>
+        <Route path='/pwchange' element={<ProtectedRoute />}>
+          <Route index element={<PasswordChange />} />
+        </Route>
+        <Route path='/groupedit/:id' element={<ProtectedRoute />}>
+          <Route index element={<GroupEdit />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
