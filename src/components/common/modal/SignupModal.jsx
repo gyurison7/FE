@@ -17,7 +17,7 @@ const SignupModal = () => {
                 </TextContainer>
                 <ButtonContainer>
                     <Button
-                        onClick={() => navigate('/userinfo')}
+                        onClick={() => navigate('/userprofile')}
                         size='large'
                         background='#5873FE'
                         color='#FFF'
@@ -40,7 +40,8 @@ const ModalWrapper = styled.div`
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
+    max-width: 428px;
 `;
 
 const ModalBackground = styled.div`

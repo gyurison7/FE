@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { uploadImage } from '../../hooks/uploadImage';
-import { userInfoUpload } from '../../api/auth';
+import { uploadUserProfile } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
 import Button from '../../components/common/button/Button.jsx';
@@ -11,13 +11,14 @@ import {
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation';
 
-const UserInfo = () => {
+const UserProfile = () => {
   const [nickname, setNickname] = useState('');
   const [nicknameError, setNicknameError] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const [chosenFile, setChosenFile] = useState(null);
 
   const navigate = useNavigate();
+  const imageUploadInput = useRef(null);
 
   const nicknameChangeUtil = (e) =>
     onChangeNicknameHandler(e, setNickname, setNicknameError);
@@ -39,7 +40,7 @@ const UserInfo = () => {
     navigate('/login');
   };
 
-  const userInfoUploadHandler = async (e) => {
+  const userProfileUploadHandler = async (e) => {
     e.preventDefault();
 
     const loginId = localStorage.getItem('loginId');
@@ -64,13 +65,15 @@ const UserInfo = () => {
     console.log('imageUrlFromCloud', imageUrlFromCloud);
 
     try {
-      const responseData = await userInfoUpload(
+      const responseData = await uploadUserProfile(
         loginId,
         nickname,
         imageUrlFromCloud
       );
       if (responseData) {
-        alertAndNavigate('프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)');
+        alertAndNavigate(
+          '프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)'
+        );
       } else {
         alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
       }
@@ -83,7 +86,7 @@ const UserInfo = () => {
   return (
     <>
       <Header title='프로필 등록' />
-      <UserInfoContainer>
+      <UserProfileContainer>
         <Text>
           친구들이 알 수 있도록,
           <br />
@@ -91,20 +94,20 @@ const UserInfo = () => {
         </Text>
         <input
           type='file'
+          ref={imageUploadInput}
           accept='image/*'
           onChange={imageHandler}
           style={{ display: 'none' }}
-          id='hiddenFileInput'
         />
         <ImageButton
-          onClick={() => document.getElementById('hiddenFileInput').click()}
+          onClick={() => imageUploadInput.current.click()}
         >
           <img
             src={profileImage || `${process.env.PUBLIC_URL}assets/image/user.png`}
             alt='user'
           />
         </ImageButton>
-        <FormContainer onSubmit={userInfoUploadHandler}>
+        <FormContainer onSubmit={userProfileUploadHandler}>
           <InputContainer>
             <Input
               onChange={nicknameChangeUtil}
@@ -124,17 +127,24 @@ const UserInfo = () => {
             등록하기
           </Button>
         </FormContainer>
-        <SkipButton type='button' onClick={() => alertAndNavigate('회원가입은 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)')}>
+        <SkipButton
+          type='button'
+          onClick={() =>
+            alertAndNavigate(
+              '회원가입은 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)'
+            )
+          }
+        >
           건너뛰기
         </SkipButton>
-      </UserInfoContainer>
+      </UserProfileContainer>
     </>
   );
 };
 
-export default UserInfo;
+export default UserProfile;
 
-const UserInfoContainer = styled.div`
+const UserProfileContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
