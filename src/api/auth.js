@@ -78,6 +78,24 @@ export const updateMyPageProfile = async (nickname, profileUrl) => {
   return response.data;
 };
 
+export const changePassword = async (
+  originalPassword,
+  changedPassword,
+  changedConfirm
+) => {
+  const response = await api.put(
+    '/auth/me/password',
+    {
+      originalPassword,
+      changedPassword,
+      changedConfirm,
+    },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
 export const logout = async () => {
   const response = await api.post('/auth/logout', {
     withCredentials: true,

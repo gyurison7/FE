@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import Input from '../../components/common/input/Input.jsx';
-import Header from '../../components/common/header/Header.jsx';
-import Button from '../../components/common/button/Button.jsx';
 import {
   onChangePasswordHandler,
   passwordCheckHandler,
 } from '../../utils/passwordValidation.js';
+import { changePassword } from '../../api/auth.js';
+import Header from '../../components/common/header/Header.jsx';
+import Input from '../../components/common/input/Input.jsx';
+import Button from '../../components/common/button/Button.jsx';
 
 const PasswordChange = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -17,13 +19,13 @@ const PasswordChange = () => {
   const [passwordError, setPasswordError] = useState();
   const [confirmError, setConfirmError] = useState();
 
+  const navigate = useNavigate();
+
   const onChangeOldPasswordHandler = (e) => {
     const value = e.target.value;
     setOldPassword(value);
     oldPasswordCheckHandler(value);
   };
-
-  const passwordChangeUtil = (e) => onChangePasswordHandler(e, password, confirm, setPassword, setConfirm, setPasswordError, setConfirmError);
 
   const oldPasswordCheckHandler = (oldPassword) => {
     if (oldPassword === '') {
@@ -35,13 +37,42 @@ const PasswordChange = () => {
     }
   };
 
-  const passwordSubmitHandler = (e) => {
-    e.preventDefault();
-    const oldResult = oldPasswordCheckHandler(oldPassword);
-    if (oldResult) setOldPasswordError('');
-    else return;
+  const passwordChangeUtil = (e) =>
+    onChangePasswordHandler(
+      e,
+      password,
+      confirm,
+      setPassword,
+      setConfirm,
+      setPasswordError,
+      setConfirmError
+    );
 
-    if(!passwordCheckHandler(password, confirm, setPasswordError, setConfirmError)) return;
+  const passwordSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    if (!oldPasswordCheckHandler(oldPassword)) return;
+
+    if (!passwordCheckHandler(password, confirm, setPasswordError, setConfirmError))
+      return;
+
+    if (oldPassword === password) {
+      alert('새로운 비밀번호는 기존 비밀번호와 다르게 설정해주세요!');
+      return;
+    }
+
+    try {
+      const responseData = await changePassword(oldPassword, password, confirm);
+      if (responseData) {
+        alert('비밀번호이 변경이 완료되었습니다!');
+        navigate('/mypage');
+      } else {
+        alert('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.');
+      }
+    } catch (error) {
+      alert('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.');
+      console.error(error);
+    }
   };
 
   return (
