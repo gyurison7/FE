@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { signup, idDuplicateCheck } from '../../api/auth'
+import { signup, idDuplicateCheck } from '../../api/auth';
 import SignupModal from '../../components/common/modal/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
@@ -24,7 +24,7 @@ function Signup() {
     const idValue = e.target.value;
     setId(idValue);
     idCheckHandler(idValue);
-  }
+  };
 
   const onChangePasswordHandler = (e) => {
     const { name, value } = e.target;
@@ -35,7 +35,7 @@ function Signup() {
       setConfirm(value);
       passwordCheckHandler(password, value);
     }
-  }
+  };
 
   const idCheckHandler = async (id) => {
     const idRegex = /^[a-zA-Z\d]{5,20}$/;
@@ -65,17 +65,20 @@ function Signup() {
       console.error(error);
       return false;
     }
-  }
+  };
 
   const passwordCheckHandler = (password, confirm) => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*\s)(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
-    console.log("password", password); // TODO : 테스트 완료 후 삭제하기
-    console.log("confirm", confirm);
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*\s)(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
+    console.log('password', password); // TODO : 테스트 완료 후 삭제하기
+    console.log('confirm', confirm);
     if (password === '') {
       setPasswordError('비밀번호를 입력해주세요.');
       return false;
     } else if (!passwordRegex.test(password)) {
-      setPasswordError('비밀번호는 8~16자의 영문, 숫자, 특수문자(!@#$%^&*)를 모두 포함하여야 합니다.');
+      setPasswordError(
+        '비밀번호는 8~16자의 영문, 숫자, 특수문자(!@#$%^&*)를 모두 포함하여야 합니다.'
+      );
       return false;
     } else if (confirm !== password) {
       setPasswordError('');
@@ -86,7 +89,7 @@ function Signup() {
       setConfirmError('');
       return true;
     }
-  }
+  };
 
   const signupHandler = async (e) => {
     e.preventDefault();
@@ -114,7 +117,7 @@ function Signup() {
       alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
       console.error(error);
     }
-  }
+  };
 
   return (
     <>
@@ -126,7 +129,7 @@ function Signup() {
               <label htmlFor='id'>아이디</label>
               <Input
                 onChange={onChangeIdHandler}
-                type="text"
+                type='text'
                 id='id'
                 name='id'
                 value={id}
@@ -134,13 +137,17 @@ function Signup() {
                 theme='underLine'
                 maxLength={20}
               />
-              {idError && <small className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
+              {idError && (
+                <small className={isIdAvailable ? 'idAvailable' : ''}>
+                  {idError}
+                </small>
+              )}
             </InputContainer>
             <InputContainer>
               <label htmlFor='id'>비밀번호</label>
               <Input
                 onChange={onChangePasswordHandler}
-                type="password"
+                type='password'
                 id='password'
                 name='password'
                 value={password}
@@ -151,7 +158,7 @@ function Signup() {
               {passwordError && <small>{passwordError}</small>}
               <Input
                 onChange={onChangePasswordHandler}
-                type="password"
+                type='password'
                 id='confirm'
                 name='confirm'
                 value={confirm}
@@ -163,19 +170,15 @@ function Signup() {
             </InputContainer>
           </InputWrapper>
           <ButtonContainer>
-            <Button
-              type='submit'
-              size='large'
-              background='#5873FE'
-              color='#FFF'
-            >가입하기
+            <Button type='submit' size='large' background='#5873FE' color='#FFF'>
+              가입하기
             </Button>
           </ButtonContainer>
         </Form>
       </Wrapper>
-      {setOpenModal ? openModal && (<SignupModal />) : null}
+      {setOpenModal ? openModal && <SignupModal /> : null}
     </>
-  )
+  );
 }
 
 export default Signup;
@@ -210,13 +213,12 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1vh;
-  
 
   label {
     width: 90%;
     align-self: flex-start;
     text-align: left;
-    color: #5873FE;
+    color: #5873fe;
     font-size: 16px;
     font-weight: 700;
   }
@@ -225,23 +227,27 @@ const InputContainer = styled.div`
     align-self: flex-start;
     text-align: left;
     font-size: 13px;
-    color: #FF7E62;
+    color: #ff7e62;
     font-weight: 600;
   }
 
   .idAvailable {
-    color: #4C4C4C;
+    color: #4c4c4c;
   }
 `;
 
 const ButtonContainer = styled.div`
   width: 100%;
-  position: fixed;
+  max-width: 428px;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 8vh;
-  
+  bottom: -27vh;
+  @media (max-height: 750px) {
+    bottom: -17vh;
+  }
+
   button {
     font-weight: 700;
   }
