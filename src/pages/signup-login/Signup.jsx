@@ -56,7 +56,7 @@ function Signup() {
         return false;
       }
     } catch (error) {
-      alert('서버 오류입니다. 관리자에게 문의하세요.');
+      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
       return false;
     }
@@ -81,10 +81,10 @@ function Signup() {
         localStorage.setItem('loginId', id);
         setOpenModal(true);
       } else {
-        alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
+        alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
+      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };
