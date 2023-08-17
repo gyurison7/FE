@@ -3,32 +3,27 @@ import { styled } from 'styled-components';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
 import Button from '../../components/common/button/Button.jsx';
+import {
+  onChangePasswordHandler,
+  passwordCheckHandler,
+} from '../../utils/passwordValidation.js';
 
 const PasswordChange = () => {
   const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
 
   const [oldPasswordError, setOldPasswordError] = useState();
-  const [newPasswordError, setNewPasswordError] = useState();
+  const [passwordError, setPasswordError] = useState();
   const [confirmError, setConfirmError] = useState();
 
-  const onChangeOldPwHandler = (e) => {
+  const onChangeOldPasswordHandler = (e) => {
     const value = e.target.value;
     setOldPassword(value);
     oldPasswordCheckHandler(value);
   };
 
-  const onChangeNewPwHandler = (e) => {
-    const { name, value } = e.target;
-    if (name === 'newPassword') {
-      setNewPassword(value);
-      newPasswordCheckHandler(value, confirm);
-    } else {
-      setConfirm(value);
-      newPasswordCheckHandler(newPassword, value);
-    }
-  };
+  const passwordChangeUtil = (e) => onChangePasswordHandler(e, password, confirm, setPassword, setConfirm, setPasswordError, setConfirmError);
 
   const oldPasswordCheckHandler = (oldPassword) => {
     if (oldPassword === '') {
@@ -40,84 +35,60 @@ const PasswordChange = () => {
     }
   };
 
-  const newPasswordCheckHandler = (newPassword, confirm) => {
-    const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
-    console.log('newPassword', newPassword); // TODO : 테스트 완료 후 삭제하기
-    console.log('confirm', confirm);
-    if (newPassword === '') {
-      setNewPasswordError('비밀번호를 입력해주세요.');
-      return false;
-    } else if (!passwordRegex.test(newPassword)) {
-      setNewPasswordError(
-        '비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.'
-      );
-      return false;
-    } else if (confirm !== newPassword) {
-      setNewPasswordError('');
-      setConfirmError('비밀번호가 일치하지 않습니다.');
-      return false;
-    } else {
-      setNewPasswordError('');
-      setConfirmError('');
-      return true;
-    }
-  };
-
-  const passwordChangeHandler = (e) => {
+  const passwordSubmitHandler = (e) => {
     e.preventDefault();
     const oldResult = oldPasswordCheckHandler(oldPassword);
     if (oldResult) setOldPasswordError('');
     else return;
 
-    const newResult = newPasswordCheckHandler(newPassword);
-    if (newResult) {
-      setNewPasswordError('');
-      setConfirmError('');
-    } else return;
+    if(!passwordCheckHandler(password, confirm, setPasswordError, setConfirmError)) return;
   };
 
   return (
     <>
       <Header title={'비밀번호 변경'} />
       <Wrapper>
-        <Form onSubmit={passwordChangeHandler}>
+        <Form onSubmit={passwordSubmitHandler}>
           <InputWrapper>
             <InputContainer>
               <label htmlFor='oldPassword'>현재 비밀번호</label>
               <Input
-                onChange={onChangeOldPwHandler}
+                onChange={onChangeOldPasswordHandler}
                 type='password'
                 id='oldPassword'
                 name='oldPassword'
                 value={oldPassword}
                 placeholder='현재 비밀번호 입력'
                 theme='underLine'
+                maxLength={16}
               />
               {oldPasswordError && <small>{oldPasswordError}</small>}
             </InputContainer>
             <InputContainer>
-              <label htmlFor='newPassword'>새 비밀번호</label>
+              <label htmlFor='password'>새 비밀번호</label>
               <Input
-                onChange={onChangeNewPwHandler}
+                onChange={passwordChangeUtil}
                 type='password'
-                id='newPassword'
-                name='newPassword'
-                value={newPassword}
+                id='password'
+                name='password'
+                value={password}
                 placeholder='새 비밀번호 입력'
                 theme='underLine'
+                maxLength={16}
               />
-              {newPasswordError && <small>{newPasswordError}</small>}
+              {passwordError && <small>{passwordError}</small>}
             </InputContainer>
             <InputContainer>
               <label htmlFor='confirm'>새 비밀번호 확인</label>
               <Input
-                onChange={onChangeNewPwHandler}
+                onChange={passwordChangeUtil}
                 type='password'
                 id='confirm'
                 name='confirm'
                 value={confirm}
                 placeholder='새 비밀번호 확인'
                 theme='underLine'
+                maxLength={16}
               />
               {confirmError && <small>{confirmError}</small>}
             </InputContainer>

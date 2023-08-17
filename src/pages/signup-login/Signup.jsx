@@ -5,6 +5,10 @@ import SignupModal from '../../components/common/modal/SignupModal.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
 import Button from '../../components/common/button/Button.jsx';
+import {
+  onChangePasswordHandler,
+  passwordCheckHandler,
+} from '../../utils/passwordValidation';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -26,16 +30,7 @@ function Signup() {
     idCheckHandler(idValue);
   };
 
-  const onChangePasswordHandler = (e) => {
-    const { name, value } = e.target;
-    if (name === 'password') {
-      setPassword(value);
-      passwordCheckHandler(value, confirm);
-    } else {
-      setConfirm(value);
-      passwordCheckHandler(password, value);
-    }
-  };
+  const passwordChangeUtil = (e) => onChangePasswordHandler(e, password, confirm, setPassword, setConfirm, setPasswordError, setConfirmError);
 
   const idCheckHandler = async (id) => {
     const idRegex = /^[a-zA-Z\d]{5,20}$/;
@@ -67,30 +62,6 @@ function Signup() {
     }
   };
 
-  const passwordCheckHandler = (password, confirm) => {
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*\s)(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
-    console.log('password', password); // TODO : 테스트 완료 후 삭제하기
-    console.log('confirm', confirm);
-    if (password === '') {
-      setPasswordError('비밀번호를 입력해주세요.');
-      return false;
-    } else if (!passwordRegex.test(password)) {
-      setPasswordError(
-        '비밀번호는 8~16자의 영문, 숫자, 특수문자(!@#$%^&*)를 모두 포함하여야 합니다.'
-      );
-      return false;
-    } else if (confirm !== password) {
-      setPasswordError('');
-      setConfirmError('비밀번호가 일치하지 않습니다.');
-      return false;
-    } else {
-      setPasswordError('');
-      setConfirmError('');
-      return true;
-    }
-  };
-
   const signupHandler = async (e) => {
     e.preventDefault();
     //setOpenModal(true); // TODO : 테스트 완료 후 삭제하기
@@ -102,8 +73,7 @@ function Signup() {
       return;
     }
 
-    const passwordCheckResult = passwordCheckHandler(password, confirm);
-    if (!passwordCheckResult) return;
+    if (!passwordCheckHandler(password, confirm, setPasswordError, setConfirmError)) return;
 
     try {
       const responseData = await signup(id, password, confirm);
@@ -146,7 +116,7 @@ function Signup() {
             <InputContainer>
               <label htmlFor='id'>비밀번호</label>
               <Input
-                onChange={onChangePasswordHandler}
+                onChange={passwordChangeUtil}
                 type='password'
                 id='password'
                 name='password'
@@ -157,7 +127,7 @@ function Signup() {
               />
               {passwordError && <small>{passwordError}</small>}
               <Input
-                onChange={onChangePasswordHandler}
+                onChange={passwordChangeUtil}
                 type='password'
                 id='confirm'
                 name='confirm'
@@ -176,7 +146,7 @@ function Signup() {
           </ButtonContainer>
         </Form>
       </Wrapper>
-      {setOpenModal ? openModal && <SignupModal /> : null}
+      {openModal && <SignupModal />}
     </>
   );
 }
