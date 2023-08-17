@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { uploadImage } from '../../hooks/uploadImage.js';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Layout from '../../layout';
 import { styled } from 'styled-components';
@@ -12,17 +12,23 @@ function PostWrite() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [file, setFile] = useState({});
+  const navigate = useNavigate();
   const changeHandler = (e) => {
     setFile(e.target.files[0]);
   };
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    uploadImage(file).then((url) => {
+    try {
+      const url = await uploadImage(file);
       const config = { imageUrl: url, title: title };
-      api.post(`/group/${id}/memory`, config, {
+      await api.post(`/group/${id}/memory`, config, {
         withCredentials: true,
       });
-    });
+      navigate(`/postmain/${id}`);
+    } catch (error) {
+      // 오류 처리
+      console.error('Error:', error);
+    }
   };
   return (
     <Layout>

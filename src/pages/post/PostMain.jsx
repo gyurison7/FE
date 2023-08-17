@@ -12,7 +12,6 @@ export default function PostMain() {
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(id);
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       console.log(res.data);
       setData(res.data);
@@ -27,73 +26,72 @@ export default function PostMain() {
     <div style={{ position: 'relative' }}>
       <Wrap>
         <Head $heady={stkicky}>
-          <IconComponents iconType='vectorLeft' stroke='white' />{' '}
-          {stkicky && <p>{data?.groupName}</p>}{' '}
+          <BackButton onClick={() => navigate(-1)}>
+            <IconComponents iconType='vectorLeft' stroke='white' />
+          </BackButton>
+          {stkicky && <p>{data?.groupName}</p>}
           <CamereButton onClick={() => navigate(`/postwrite/${id}`)}>
-            {' '}
-            <IconComponents iconType='camera' stroke='white' />{' '}
-          </CamereButton>{' '}
-        </Head>{' '}
+            <IconComponents iconType='camera' stroke='white' />
+          </CamereButton>
+        </Head>
         <div>
-          {' '}
-          <CoverImage data={data}></CoverImage>{' '}
+          <CoverImage data={data}></CoverImage>
           <Side>
-            {' '}
             <GroupTitle>
-              {' '}
               <Title>
-                {' '}
-                <h3>{data?.groupName}</h3>{' '}
-                <IconComponents iconType='vectorRight' stroke='#787777' />{' '}
-              </Title>{' '}
+                <h3>{data?.groupName}</h3>
+                <IconComponents iconType='vectorRight' stroke='#787777' />
+              </Title>
               <FriendAdd>
-                {' '}
-                <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />{' '}
-                <p>친구초대</p>{' '}
-              </FriendAdd>{' '}
-            </GroupTitle>{' '}
+                <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
+                <p>친구초대</p>
+              </FriendAdd>
+            </GroupTitle>
             <DateLocation>
-              {' '}
               <WrapDate>
-                {' '}
-                <IconComponents iconType='date' stroke='#8E8E8E' />{' '}
+                <IconComponents iconType='date' stroke='#8E8E8E' />
                 <p>
-                  {' '}
-                  {data?.startDate.substr(0, 10)}~{data?.endDate.substr(0, 10)}{' '}
-                </p>{' '}
-              </WrapDate>{' '}
+                  {data?.startDate.substr(0, 10)}~{data?.endDate.substr(0, 10)}
+                </p>
+              </WrapDate>
               <WrapLocation>
-                {' '}
-                <IconComponents iconType='location' stroke='#8E8E8E' />{' '}
-                <p>{processedPlace}</p>{' '}
-              </WrapLocation>{' '}
-            </DateLocation>{' '}
+                <IconComponents iconType='location' stroke='#8E8E8E' />
+                <p>{processedPlace}</p>
+              </WrapLocation>
+            </DateLocation>
             <AvatarContainer>
-              {' '}
               {data?.participants.map((element) => {
                 return (
                   <AvatarWrap key={element.userId}>
-                    {' '}
-                    <AvatarImage src={element.profileUrl} />{' '}
-                    <span>{element.nickname}</span>{' '}
+                    <AvatarImage src={element.profileUrl} />
+                    <span>{element.nickname}</span>
                   </AvatarWrap>
                 );
-              })}{' '}
-            </AvatarContainer>{' '}
-          </Side>{' '}
+              })}
+            </AvatarContainer>
+          </Side>
           <Content>
-            {' '}
-            {Array.from({ length: 1 }, (_, index) => (
-              <Box key={index} />
-            ))}{' '}
-          </Content>{' '}
-        </div>{' '}
-        <div style={{ height: '72px' }}></div>{' '}
-      </Wrap>{' '}
+            {data?.memories?.map((element) => {
+              return (
+                <Box key={element.memoryId}>
+                  <img
+                    src={element.imageUrl}
+                    alt='rasm'
+                    style={{
+                      width: '100%',
+                    }}
+                    height={130}
+                  />
+                </Box>
+              );
+            })}
+          </Content>
+        </div>
+        <div style={{ height: '72px' }}></div>
+      </Wrap>
       <Foot>
-        {' '}
-        <Footer />{' '}
-      </Foot>{' '}
+        <Footer />
+      </Foot>
     </div>
   );
 }
@@ -130,6 +128,7 @@ const CamereButton = styled.button`
   border: none;
   background: transparent;
 `;
+const BackButton = styled(CamereButton)``;
 const Side = styled.div`
   width: 100%;
   height: 174px;
