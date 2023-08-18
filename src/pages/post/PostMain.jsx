@@ -28,7 +28,7 @@ export default function PostMain() {
     <div style={{ position: 'relative' }}>
       <Wrap>
         <Head $heady={stkicky}>
-          <BackButton onClick={() => navigate(-1)}>
+          <BackButton onClick={() => navigate('/groupmain')}>
             <IconComponents iconType='vectorLeft' stroke='white' />
           </BackButton>
           {stkicky && <p>{data?.groupName}</p>}
