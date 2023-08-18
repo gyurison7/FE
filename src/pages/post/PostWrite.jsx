@@ -34,7 +34,7 @@ function PostWrite() {
     <Layout>
       <Form style={{ width: '100%' }} onSubmit={submitHandler}>
         <Top>
-          <IconComponents iconType='back' />
+          <IconComponents iconType='back' onClick={() => navigate(-1)} />
           <Title>
             <span>게시하기</span> <p>Memory Mingle</p>
           </Title>
