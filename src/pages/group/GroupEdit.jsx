@@ -89,7 +89,7 @@ function GroupWrite() {
     }
     const payload = {
       groupName: groupName,
-      thumbnailUrl: imageUrlFromCloud,
+      thumbnailUrl: imageUrlFromCloud || thumbnailUrl,
       place: places,
       participant: selectedFriends.map((friend) => friend.userId.toString()),
       startDate: startDate,
