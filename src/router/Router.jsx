@@ -19,7 +19,7 @@ const Router = () => {
       <Routes>
         <Route path='/' element={<Introduction />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/api/login/kakao/callback' element={<KakaoLoginRedirect />} />
+        <Route path='/api/auth/login/kakao/callback' element={<KakaoLoginRedirect />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/userprofile' element={<UserProfile />} />
         <Route path='/groupmain' element={<ProtectedRoute />}>

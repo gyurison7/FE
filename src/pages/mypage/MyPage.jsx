@@ -80,7 +80,6 @@ const MyPage = () => {
       const responseData = await logout();
       console.log('responseData', responseData);
       if (responseData) {
-        alert('로그아웃되었습니다.');
         navigate('/login');
       }
     } catch (error) {
@@ -129,7 +128,7 @@ const MyPage = () => {
             <ImageButton onTouchStart={nicknameSubmitHandler}>
               {isEditing ? (
                 <img
-                  src={`${process.env.PUBLIC_URL}assets/svgs/check.svg`}
+                  src={`${process.env.PUBLIC_URL}assets/svgs/mypage_check.svg`}
                   alt='닉네임 바꾸기'
                 />
               ) : (
