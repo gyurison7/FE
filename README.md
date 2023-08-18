@@ -9,8 +9,7 @@
 
 ### 2. 개발 환경⚙️
 
-[![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://www.w3.org/html/) [![CSS3](https://img.shields.io/badge/CSS3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/Overview.en.html) [![JavaScript](https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) [![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/) [![React Query](https://img.shields.io/badge/React_Query-%2300C7B7.svg?style=for-the-badge&logo=react-query&logoColor=white)](https://react-query.tanstack.com/) [![Recoil](https://img.shields.io/badge/Recoil-%2361DAFB.svg?style=for-the-badge&logo=recoil&logoColor=white)](https://recoiljs.org/) [![styled-components](https://img.shields.io/badge/styled--components-%23DB7093.svg?style=for-the-badge&logo=styled-components&logoColor=white)](https://styled-components.com/) [![Axios](https://img.shields.io/badge/Axios-%230A74DA.svg?style=for-the-badge)](https://axios-http.com/)
- [![Cloudinary](https://img.shields.io/badge/Cloudinary-%2393A5F3.svg?style=for-the-badge)](https://cloudinary.com/) [![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/) [![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://www.w3.org/html/) [![CSS3](https://img.shields.io/badge/CSS3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/Overview.en.html) [![JavaScript](https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) [![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/) [![React Query](https://img.shields.io/badge/React_Query-%2300C7B7.svg?style=for-the-badge&logo=react-query&logoColor=white)](https://react-query.tanstack.com/) [![Recoil](https://img.shields.io/badge/Recoil-%2361DAFB.svg?style=for-the-badge&logo=recoil&logoColor=white)](https://recoiljs.org/) [![styled-components](https://img.shields.io/badge/styled--components-%23DB7093.svg?style=for-the-badge&logo=styled-components&logoColor=white)](https://styled-components.com/) [![Axios](https://img.shields.io/badge/Axios-%230A74DA.svg?style=for-the-badge)](https://axios-http.com/) [![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/) [![Cloudinary](https://img.shields.io/badge/Cloudinary-%2393A5F3.svg?style=for-the-badge)](https://cloudinary.com/) [![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 <br />
 <br />
 
@@ -19,7 +18,7 @@
 
 🔗 [테스트 배포 링크 바로가기](https://fe-psi-five.vercel.app/)
 
-🔗 [팀 노션 바로가기](https://www.notion.so/5-S-A-MemoryMingle-9286b897c31947e0aa144fdcf521d46f)
+🔗 [팀 노션 바로가기](https://brass-result-164.notion.site/5-S-A-MemoryMingle-9286b897c31947e0aa144fdcf521d46f?pvs=4)
 
 🔗 [백엔드 깃허브 바로가기](https://github.com/MemoryMingle/BE)
 <br />
@@ -56,7 +55,7 @@
 | :----: | :--------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 |  손규리  | [🔗gyurison7](https://github.com/gyurison7) | 로그인/회원가입 구현, 카카오 소셜 로그인 구현, 마이페이지/비밀번호 변경 페이지 구현                                                                          |
 |  Moses  | [🔗mmms2000](https://github.com/mmms2000)     | 메인페이지 구현, 앨범 만들기/수정하기 페이지 구현 |
-|  Khusan  | [🔗khu107](https://github.com/Haegnim)         | 시작페이지 Carousel 구현, 앨범 자세히 보기 페이지 구현, 게시글 올리기 구현, 푸터 구현                                             |
+|  Khusan  | [🔗khu107](https://github.com/Haegnim)         | 시작페이지 Carousel 구현, 스크롤에 따른 다이나믹 헤더 구현, 앨범 자세히 보기 페이지 구현, 게시글 올리기 구현, 푸터 구현                                             |
 
 <br/>
 <br/>
@@ -81,66 +80,68 @@
 
 
 ### 8. 폴더구조📂
-📦src<br>
- ┣ 📂api<br>
- ┃ ┣ 📜auth.js<br>
- ┃ ┣ 📜groupMainApi.js<br>
- ┃ ┗ 📜index.jsx<br>
- ┣ 📂assets<br>
- ┃ ┗ 📂fonts<br>
- ┃ ┃ ┗ 📜PretendardVariable.woff2<br>
- ┣ 📂components<br>
- ┃ ┗ 📂common<br>
- ┃ ┃ ┣ 📂button<br>
- ┃ ┃ ┃ ┗ 📜Button.jsx<br>
- ┃ ┃ ┣ 📂header<br>
- ┃ ┃ ┃ ┗ 📜Header.jsx<br>
- ┃ ┃ ┣ 📂iconComponent<br>
- ┃ ┃ ┃ ┗ 📜IconComponents.jsx<br>
- ┃ ┃ ┣ 📂input<br>
- ┃ ┃ ┃ ┣ 📜Input.jsx<br>
- ┃ ┃ ┃ ┗ 📜WriteImageUpload.jsx<br>
- ┃ ┃ ┗ 📂modal<br>
- ┃ ┃ ┃ ┣ 📜NicknameModal.jsx<br>
- ┃ ┃ ┃ ┗ 📜SignupModal.jsx<br>
- ┣ 📂hooks<br>
- ┃ ┣ 📜uploadImage.js<br>
- ┃ ┗ 📜useStickyMode.jsx<br>
- ┣ 📂layout<br>
- ┃ ┣ 📂footer<br>
- ┃ ┃ ┗ 📜Footer.js<br>
- ┃ ┣ 📂header<br>
- ┃ ┃ ┣ 📜GroupPageHeader.js<br>
- ┃ ┃ ┗ 📜PostMainHeader.js<br>
- ┃ ┗ 📜index.js<br>
- ┣ 📂pages<br>
- ┃ ┣ 📂app-introduction<br>
- ┃ ┃ ┗ 📜Introduction.jsx<br>
- ┃ ┣ 📂group<br>
- ┃ ┃ ┣ 📜GroupEdit.jsx<br>
- ┃ ┃ ┣ 📜GroupMain.jsx<br>
- ┃ ┃ ┗ 📜GroupWrite.jsx<br>
- ┃ ┣ 📂kakao-login<br>
- ┃ ┃ ┣ 📜KakaoLogin.jsx<br>
- ┃ ┃ ┗ 📜KakaoLoginRedirect.jsx<br>
- ┃ ┣ 📂mypage<br>
- ┃ ┃ ┣ 📜MyPage.jsx<br>
- ┃ ┃ ┗ 📜PasswordChange.jsx<br>
- ┃ ┣ 📂post<br>
- ┃ ┃ ┣ 📜PostMain.jsx<br>
- ┃ ┃ ┗ 📜PostWrite.jsx<br>
- ┃ ┗ 📂signup-login<br>
- ┃ ┃ ┣ 📜Login.jsx<br>
- ┃ ┃ ┣ 📜Signup.jsx<br>
- ┃ ┃ ┗ 📜UserProfile.jsx<br>
- ┣ 📂recoil<br>
- ┃ ┗ 📜Atom.js<br>
- ┣ 📂router<br>
- ┃ ┣ 📜ProtectedRoute.jsx<br>
- ┃ ┗ 📜Router.jsx<br>
- ┣ 📂utils<br>
- ┃ ┣ 📜nicknameValidation.js<br>
- ┃ ┗ 📜passwordValidation.js<br>
- ┣ 📜App.jsx<br>
- ┣ 📜index.css<br>
- ┗ 📜index.js<br>
+```
+📦src
+ ┣ 📂api
+ ┃ ┣ 📜auth.js
+ ┃ ┣ 📜groupMainApi.js
+ ┃ ┗ 📜index.jsx
+ ┣ 📂assets
+ ┃ ┗ 📂fonts
+ ┃ ┃ ┗ 📜PretendardVariable.woff2
+ ┣ 📂components
+ ┃ ┗ 📂common
+ ┃ ┃ ┣ 📂button
+ ┃ ┃ ┃ ┗ 📜Button.jsx
+ ┃ ┃ ┣ 📂header
+ ┃ ┃ ┃ ┗ 📜Header.jsx
+ ┃ ┃ ┣ 📂iconComponent
+ ┃ ┃ ┃ ┗ 📜IconComponents.jsx
+ ┃ ┃ ┣ 📂input
+ ┃ ┃ ┃ ┣ 📜Input.jsx
+ ┃ ┃ ┃ ┗ 📜WriteImageUpload.jsx
+ ┃ ┃ ┗ 📂modal
+ ┃ ┃ ┃ ┣ 📜NicknameModal.jsx
+ ┃ ┃ ┃ ┗ 📜SignupModal.jsx
+ ┣ 📂hooks
+ ┃ ┣ 📜uploadImage.js
+ ┃ ┗ 📜useStickyMode.jsx
+ ┣ 📂layout
+ ┃ ┣ 📂footer
+ ┃ ┃ ┗ 📜Footer.js
+ ┃ ┣ 📂header
+ ┃ ┃ ┣ 📜GroupPageHeader.js
+ ┃ ┃ ┗ 📜PostMainHeader.js
+ ┃ ┗ 📜index.js
+ ┣ 📂pages
+ ┃ ┣ 📂app-introduction
+ ┃ ┃ ┗ 📜Introduction.jsx
+ ┃ ┣ 📂group
+ ┃ ┃ ┣ 📜GroupEdit.jsx
+ ┃ ┃ ┣ 📜GroupMain.jsx
+ ┃ ┃ ┗ 📜GroupWrite.jsx
+ ┃ ┣ 📂kakao-login
+ ┃ ┃ ┣ 📜KakaoLogin.jsx
+ ┃ ┃ ┗ 📜KakaoLoginRedirect.jsx
+ ┃ ┣ 📂mypage
+ ┃ ┃ ┣ 📜MyPage.jsx
+ ┃ ┃ ┗ 📜PasswordChange.jsx
+ ┃ ┣ 📂post
+ ┃ ┃ ┣ 📜PostMain.jsx
+ ┃ ┃ ┗ 📜PostWrite.jsx
+ ┃ ┗ 📂signup-login
+ ┃ ┃ ┣ 📜Login.jsx
+ ┃ ┃ ┣ 📜Signup.jsx
+ ┃ ┃ ┗ 📜UserProfile.jsx
+ ┣ 📂recoil
+ ┃ ┗ 📜Atom.js
+ ┣ 📂router
+ ┃ ┣ 📜ProtectedRoute.jsx
+ ┃ ┗ 📜Router.jsx
+ ┣ 📂utils
+ ┃ ┣ 📜nicknameValidation.js
+ ┃ ┗ 📜passwordValidation.js
+ ┣ 📜App.jsx
+ ┣ 📜index.css
+ ┗ 📜index.js
+```
