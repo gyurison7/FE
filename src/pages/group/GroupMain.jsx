@@ -5,6 +5,7 @@ import GroupPageHeader from '../../layout/header/GroupPageHeader';
 import Footer from '../../layout/footer/Footer.js';
 import { getGroupData } from '../../api/groupMainApi';
 import { useQuery } from 'react-query';
+import PlusButton from '../../components/common/button/PlusButton.jsx';
 
 function GroupMain() {
   const navigate = useNavigate();
@@ -48,12 +49,7 @@ function GroupMain() {
           ) : (
             <>
               <ButtonWrapper>
-                <WriteButton onClick={writeButtonHandler}>
-                  <PlusImage
-                    src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
-                    alt='logo'
-                  />
-                </WriteButton>
+                <PlusButton onClick={writeButtonHandler}/>
               </ButtonWrapper>
               {groupData.map((item) => {
                 const formattedStartDate = item.startDate
@@ -176,23 +172,23 @@ const ButtonWrapper = styled.div`
 `;
 
 //styled
-const WriteButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 170px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  font-size: 50px;
-  color: white;
-  background-color: rgba(88, 115, 254, 1);
-`;
+// const WriteButton = styled.button`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 100%;
+//   height: 170px;
+//   border-radius: 12px;
+//   border: none;
+//   cursor: pointer;
+//   font-size: 50px;
+//   color: white;
+//   background-color: rgba(88, 115, 254, 1);
+// `;
 
-const PlusImage = styled.img`
-  margin: 0;
-`;
+// const PlusImage = styled.img`
+//   margin: 0;
+// `;
 
 const PreMainContainer = styled.div`
   display: flex;
