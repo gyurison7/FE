@@ -5,6 +5,8 @@ import useStickyMode from '../../hooks/useStickyMode.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
+import Photo from '../../components/common/photo/Photo.jsx';
+import Profile from '../../components/common/profile/Profile.jsx';
 export default function PostMain() {
   const stkicky = useStickyMode(115);
   console.log(stkicky);
@@ -13,7 +15,6 @@ export default function PostMain() {
   const navigate = useNavigate();
   useEffect(() => {
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
-      console.log(res.data);
       setData(res.data);
     });
   }, []);
@@ -39,8 +40,8 @@ export default function PostMain() {
           <Side>
             <GroupTitle>
               <Title>
-                <h3>{data?.groupName}</h3>
-                <IconComponents iconType='vectorRight' stroke='#787777' />
+                <h4>{data?.groupName}</h4>
+                <IconComponents iconType='vectorRight' width='20' stroke='#787777' />
               </Title>
               <FriendAdd>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
@@ -49,41 +50,41 @@ export default function PostMain() {
             </GroupTitle>
             <DateLocation>
               <WrapDate>
-                <IconComponents iconType='date' stroke='#8E8E8E' />
+                <IconComponents
+                  iconType='date'
+                  width='20'
+                  height='20'
+                  stroke='#8E8E8E'
+                />
                 <p>
                   {data?.startDate.substr(0, 10)}~{data?.endDate.substr(0, 10)}
                 </p>
               </WrapDate>
               <WrapLocation>
-                <IconComponents iconType='location' stroke='#8E8E8E' />
+                <IconComponents
+                  iconType='location'
+                  width='20'
+                  height='20'
+                  stroke='#8E8E8E'
+                />
                 <p>{processedPlace}</p>
               </WrapLocation>
             </DateLocation>
             <AvatarContainer>
               {data?.participants.map((element) => {
                 return (
-                  <AvatarWrap key={element.userId}>
-                    <AvatarImage src={element.profileUrl} />
-                    <span>{element.nickname}</span>
-                  </AvatarWrap>
+                  <Profile
+                    key={element.userId}
+                    url={element.profileUrl}
+                    name={element.nickname}
+                  />
                 );
               })}
             </AvatarContainer>
           </Side>
           <Content>
-            {data?.memories?.map((element) => {
-              return (
-                <Box key={element.memoryId}>
-                  <img
-                    src={element.imageUrl}
-                    alt='rasm'
-                    style={{
-                      width: '100%',
-                    }}
-                    height={130}
-                  />
-                </Box>
-              );
+            {data?.memories?.map((url, i) => {
+              return <Photo key={i} image={url.imageUrl} />;
             })}
           </Content>
         </div>
@@ -142,13 +143,6 @@ const GroupTitle = styled.div`
 const Title = styled.div`
   display: flex;
   gap: 12px;
-  h3 {
-    color: #4c4c4c;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  }
 `;
 const FriendAdd = styled.div`
   display: flex;
@@ -192,34 +186,13 @@ const AvatarContainer = styled.div`
   margin-top: 10px;
   gap: 12.5px;
 `;
-const AvatarWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5px;
-  align-items: center;
-  span {
-    color: #4c4c4c;
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-  }
-`;
-const AvatarImage = styled.img`
-  width: 43px;
-  height: 43px;
-  border-radius: 50%;
-  background: black;
-`;
+
 const Content = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.5px;
+  gap: 1px;
 `;
-const Box = styled.div`
-  height: 130px;
-  background: #555;
-`;
+
 const Foot = styled.div`
   position: fixed;
   bottom: 0;
