@@ -63,18 +63,31 @@ export const getUserProfile = async () => {
   return response.data.userInfoData;
 };
 
-export const updateMyPageProfile = async (nickname, profileUrl) => {
+export const updateMyPageProfileImage = async (profileUrl) => {
   const response = await api.put(
     '/auth/me/profile',
     {
-      nickname,
       profileUrl,
     },
     {
       withCredentials: true,
     }
   );
+  console.log(response);
+  return response.data;
+};
 
+export const updateMyPageNickname = async (nickname) => {
+  const response = await api.put(
+    '/auth/me/nickname',
+    {
+      nickname,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+console.log(response);
   return response.data;
 };
 
