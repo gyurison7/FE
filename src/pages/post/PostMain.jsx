@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import Photo from '../../components/common/photo/Photo.jsx';
 import Profile from '../../components/common/profile/Profile.jsx';
+import PlusButton from '../../components/common/button/PlusButton.jsx';
 export default function PostMain() {
   const stkicky = useStickyMode(115);
   console.log(stkicky);
@@ -83,6 +84,12 @@ export default function PostMain() {
             </AvatarContainer>
           </Side>
           <Content>
+            <PlusButton
+              borderradious='none'
+              height='130px'
+              background='#D9D9D9'
+              onClick={() => navigate(`/postwrite/${id}`)}
+            />
             {data?.memories?.map((url, i) => {
               return <Photo key={i} image={url.imageUrl} />;
             })}
