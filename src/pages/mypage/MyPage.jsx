@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router';
 import { uploadProfileImage } from '../../api/uploadProfile';
-import { getUserProfile, updateMyPageProfileImage, updateMyPageNickname, logout } from '../../api/auth.js';
+import {
+  getUserProfile,
+  updateMyPageProfileImage,
+  updateMyPageNickname,
+  logout,
+} from '../../api/auth.js';
 import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
@@ -45,18 +50,17 @@ const MyPage = () => {
   const imageSubmitHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      uploadProfileImage(file).then((url) => {
+      try {
+        const url = await uploadProfileImage(file);
         setProfileImage(url);
-        try {
-          const responseData = updateMyPageProfileImage(url);
-          if(!responseData) {
-            alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도 해주세요.');
-          }
-        } catch (error) {
-          alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
-          console.error(error);
+        const responseData = await updateMyPageProfileImage(url);
+        if (!responseData) {
+          alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도 해주세요.');
         }
-      });
+      } catch (error) {
+        alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+        console.error(error);
+      }
     }
   };
 
@@ -65,23 +69,19 @@ const MyPage = () => {
       setIsEditing(true);
       return;
     }
-    if (isEditing) {
-      const result = nicknameCheckHandler(inputNickname);
-      if (result) {
-        try {
-          const responseData = await updateMyPageNickname(
-            inputNickname,
-          );
-          if (responseData) {
-            setNickname(inputNickname);
-            setIsEditing(false);
-          } else {
-            alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
-          }
-        } catch (error) {
-          alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
-          console.error(error);
+    const result = nicknameCheckHandler(inputNickname);
+    if (result) {
+      try {
+        const responseData = await updateMyPageNickname(inputNickname);
+        if (responseData) {
+          setNickname(inputNickname);
+          setIsEditing(false);
+        } else {
+          alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
+      } catch (error) {
+        alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+        console.error(error);
       }
     }
   };
@@ -110,9 +110,7 @@ const MyPage = () => {
             onChange={imageSubmitHandler}
             style={{ display: 'none' }}
           />
-          <ImageButton
-            onClick={() => imageUploadInput.current.click()}
-          >
+          <ImageButton onClick={() => imageUploadInput.current.click()}>
             <img
               className='profileImage'
               src={
