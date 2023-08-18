@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadImage } from '../../hooks/uploadImage.js';
+import { uploadImage } from '../../api/uploadImage.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Layout from '../../layout';

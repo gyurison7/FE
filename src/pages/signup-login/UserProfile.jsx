@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { uploadImage } from '../../hooks/uploadImage';
+import { uploadProfileImage } from '../../api/uploadProfile';
 import { uploadUserProfile } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
@@ -60,7 +60,7 @@ const UserProfile = () => {
 
     let imageUrlFromCloud = '';
     if (chosenFile) {
-      imageUrlFromCloud = await uploadImage(chosenFile);
+      imageUrlFromCloud = await uploadProfileImage(chosenFile);
     }
     console.log('imageUrlFromCloud', imageUrlFromCloud);
 

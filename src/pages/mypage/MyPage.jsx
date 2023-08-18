@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router';
-import { uploadImage } from '../../hooks/uploadImage.js';
+import { uploadProfileImage } from '../../api/uploadProfile';
 import { getUserProfile, updateMyPageProfileImage, updateMyPageNickname, logout } from '../../api/auth.js';
 import {
   nicknameCheckHandler,
@@ -45,7 +45,7 @@ const MyPage = () => {
   const imageSubmitHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      uploadImage(file).then((url) => {
+      uploadProfileImage(file).then((url) => {
         setProfileImage(url);
         try {
           const responseData = updateMyPageProfileImage(url);
