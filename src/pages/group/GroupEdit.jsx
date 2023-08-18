@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
-import { uploadImage } from '../../hooks/uploadImage.js';
+import { uploadImage } from '../../api/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
 import moment from 'moment';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
+import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 
 function GroupWrite() {
@@ -89,7 +90,7 @@ function GroupWrite() {
     }
     const payload = {
       groupName: groupName,
-      thumbnailUrl: imageUrlFromCloud,
+      thumbnailUrl: imageUrlFromCloud || thumbnailUrl,
       place: places,
       participant: selectedFriends.map((friend) => friend.userId.toString()),
       startDate: startDate,
@@ -106,7 +107,11 @@ function GroupWrite() {
       console.error('Error sending group data:', error);
     }
   };
-
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
   //이미지 처리하는 로직
   const imageHandler = (e) => {
     const file = e.target.files[0];
@@ -181,13 +186,13 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
         <WriteHeader>
           <div>
-            <BackButton onClick={backButtonHandler}>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/svgs/icon_back.svg`}
-                alt='left'
+          <BackButton onClick={backButtonHandler}>
+              <IconComponents
+                iconType='vectorLeft'
+                stroke ='#4C4C4C'
               />
             </BackButton>
           </div>
@@ -442,6 +447,8 @@ const BackButton = styled.button`
   margin-left: 20px;
   background-color: transparent;
   border: none;
+  position:relative;
+  top:5px
 `;
 
 const WriteImageWrapper = styled.div`

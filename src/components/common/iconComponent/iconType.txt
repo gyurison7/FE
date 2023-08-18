@@ -1,0 +1,15 @@
+home : 홈버튼
+group : ???
+inbox : 알림아이콘
+user : 마이페이지아이콘
+back : 취소
+vectorLeft : 뒤로가기
+vectorRight : 그룹수정 '>' 아이콘
+camera : 사진 등록
+inviteFriends : 친구초대하기 아이콘
+location : 장소
+date : 날짜
+myPageCheck : 닉네임 수정하기
+pencil : 닉네임 수정하기 
+plus : 추가하기 '+' 아이콘
+edit : 세로로된 '...' 수정하기 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadImage } from '../../hooks/uploadImage.js';
+import { uploadImage } from '../../api/uploadImage.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Layout from '../../layout';
@@ -11,11 +11,25 @@ import api from '../../api/index.jsx';
 function PostWrite() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
-  const [file, setFile] = useState({});
+  const [file, setFile] = useState(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+
   const navigate = useNavigate();
   const changeHandler = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      setFile(selectedFile);
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setThumbnailUrl(reader.result);
+      };
+
+      reader.readAsDataURL(selectedFile);
+    }
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -34,7 +48,11 @@ function PostWrite() {
     <Layout>
       <Form style={{ width: '100%' }} onSubmit={submitHandler}>
         <Top>
-          <IconComponents iconType='back' />
+          <IconComponents
+            iconType='vectorLeft'
+            stroke='#4C4C4C'
+            onClick={() => navigate(`/postmain/${id}`)}
+          />
           <Title>
             <span>게시하기</span> <p>Memory Mingle</p>
           </Title>
@@ -54,13 +72,27 @@ function PostWrite() {
           />
         </div>
         <div style={{ marginTop: '28px' }}>
-          <WriteImageUpload
+          {thumbnailUrl ? (
+            <div style={{ position: 'relative' }}>
+              <ThumbedImage src={thumbnailUrl} alt='Uploaded Thumbnail' />
+              <ImageInput type='file' accept='image/*' onChange={changeHandler} />
+            </div>
+          ) : (
+            <WriteImageUpload
+              height='40.6vh'
+              bgcolor='#D7D7D7'
+              onImageChange={changeHandler}
+            >
+              사진 추가하기
+            </WriteImageUpload>
+          )}
+          {/* <WriteImageUpload
             height='40.6vh'
             bgcolor='#D7D7D7'
             onImageChange={changeHandler}
           >
             사진 추가하기
-          </WriteImageUpload>
+          </WriteImageUpload> */}
         </div>
       </Form>
     </Layout>
@@ -93,4 +125,20 @@ const Title = styled.div`
     font-weight: 500;
     line-height: normal;
   }
+`;
+const ThumbedImage = styled.img`
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
+  border-radius: 7px;
+`;
+const ImageInput = styled.input`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 40vh;
+  border: 1px solid red;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
 `;

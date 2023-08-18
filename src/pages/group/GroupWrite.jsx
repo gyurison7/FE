@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
-import { uploadImage } from '../../hooks/uploadImage.js';
+import { uploadImage } from '../../api/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
+import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -56,9 +57,21 @@ function GroupWrite() {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   //데이터 보내는 로직
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!groupName || !startDate || !endDate) {
+      console.error('Required fields are missing!');
+      return;
+    }
+
     let imageUrlFromCloud = '';
     if (chosenFile) {
       imageUrlFromCloud = await uploadImage(chosenFile);
@@ -157,13 +170,13 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/svgs/icon_back.svg`}
-                alt='left'
+              <IconComponents
+                iconType='vectorLeft'
+                stroke ='#4C4C4C'
               />
             </BackButton>
           </div>
@@ -422,6 +435,8 @@ const BackButton = styled.button`
   margin-left: 20px;
   background-color: transparent;
   border: none;
+  position:relative;
+  top:5px
 `;
 
 const WriteImageWrapper = styled.div`
