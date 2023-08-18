@@ -8,22 +8,22 @@ function Footer() {
     <Wrap>
       <div>
         <StyledNavLink to='/groupmain'>
-          <IconComponents iconType='home' stroke='black' />
+          <IconComponents iconType='home' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
       <div>
         <StyledNavLink to='/your-link'>
-          <IconComponents iconType='group' stroke='black' />
+          <IconComponents iconType='group' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
       <div>
         <StyledNavLink to='/your-link'>
-          <IconComponents iconType='inbox' stroke='black' />
+          <IconComponents iconType='inbox' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
       <div>
         <StyledNavLink to='/mypage'>
-          <IconComponents iconType='user' stroke='black' />
+          <IconComponents iconType='user' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
     </Wrap>

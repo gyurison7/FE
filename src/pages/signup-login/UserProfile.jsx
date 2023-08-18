@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { uploadImage } from '../../hooks/uploadImage';
+import { uploadProfileImage } from '../../api/uploadProfile';
 import { uploadUserProfile } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
@@ -52,7 +52,7 @@ const UserProfile = () => {
     }
 
     if (profileImage === '') {
-      alert('프로필 사진을 등록해주세요.');
+      alert('프로필 사진을 등록해주세요!');
       return;
     }
 
@@ -60,7 +60,7 @@ const UserProfile = () => {
 
     let imageUrlFromCloud = '';
     if (chosenFile) {
-      imageUrlFromCloud = await uploadImage(chosenFile);
+      imageUrlFromCloud = await uploadProfileImage(chosenFile);
     }
     console.log('imageUrlFromCloud', imageUrlFromCloud);
 
@@ -75,10 +75,10 @@ const UserProfile = () => {
           '프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)'
         );
       } else {
-        alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
+        alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
+      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };
