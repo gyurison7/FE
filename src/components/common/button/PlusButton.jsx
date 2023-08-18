@@ -9,13 +9,14 @@ function PlusButton(props) {
       <WriteButton
         height={props.height}
         background={props.background}
-        borderradious='12px'
+        borderradious={props.borderradious}
       >
-        <IconComponents onClick={props.onClick} 
-        iconType='plus' 
-        width='24px'
-        height='24px'
-        stroke='white'
+        <IconComponents
+          onClick={props.onClick}
+          iconType='plus'
+          width='24px'
+          height='24px'
+          stroke='white'
         />
       </WriteButton>
     </>
@@ -30,7 +31,7 @@ const WriteButton = styled.button`
   justify-content: center;
   width: 100%;
   height: ${(props) => props.height || '170px'};
-  border-radius: ${(props) => (props.borderradious ? props.borderradious : 'none')};
+  border-radius: ${(props) => (props.borderradious ? props.borderradious : '12px')};
   border: none;
   cursor: pointer;
   font-size: 50px;
