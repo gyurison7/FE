@@ -57,9 +57,21 @@ function GroupWrite() {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   //데이터 보내는 로직
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!groupName || !startDate || !endDate) {
+      console.error('Required fields are missing!');
+      return;
+    }
+
     let imageUrlFromCloud = '';
     if (chosenFile) {
       imageUrlFromCloud = await uploadImage(chosenFile);
@@ -158,7 +170,7 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
