@@ -107,7 +107,11 @@ function GroupWrite() {
       console.error('Error sending group data:', error);
     }
   };
-
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
   //이미지 처리하는 로직
   const imageHandler = (e) => {
     const file = e.target.files[0];
@@ -182,7 +186,7 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
         <WriteHeader>
           <div>
           <BackButton onClick={backButtonHandler}>
