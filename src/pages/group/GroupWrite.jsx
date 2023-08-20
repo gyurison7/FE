@@ -284,7 +284,7 @@ function GroupWrite() {
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
-                isopen={isModalOpen}
+                ismodalopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
                 isUserSelected={isUserSelected}
@@ -294,7 +294,7 @@ function GroupWrite() {
               />
             )}
           </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '23px', marginTop:'14px', flexWrap:'wrap' }}>
             {selectedFriends &&
               selectedFriends.map((item) => {
                 return (
@@ -376,7 +376,6 @@ const WriteBody = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
-  overflow: scroll;
 `;
 
 const StDateWrapper = styled.div`
