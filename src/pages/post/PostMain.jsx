@@ -42,7 +42,12 @@ export default function PostMain() {
             <GroupTitle>
               <Title>
                 <h4>{data?.groupName}</h4>
-                <IconComponents iconType='vectorRight' width='20' stroke='#787777' />
+                <IconComponents
+                  iconType='vectorRight'
+                  width='20'
+                  stroke='#787777'
+                  onClick={() => navigate(`/grouadd/${id}`)}
+                />
               </Title>
               <FriendAdd>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
