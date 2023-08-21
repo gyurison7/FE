@@ -10,7 +10,7 @@ const Portal = ({ children }) => {
 
 function DatePicker({
   ismodalopen,
-  onClose,
+  onClose, 
   startDate,
   endDate,
   setStartDate,

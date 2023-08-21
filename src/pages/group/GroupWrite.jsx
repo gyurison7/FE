@@ -34,7 +34,7 @@ import {
   Form,
   DateInput,
   DateInputWraper
-} from './styleContainer.js';
+} from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 
 function GroupWrite() {
