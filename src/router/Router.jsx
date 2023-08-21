@@ -12,6 +12,7 @@ import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 import PasswordChange from '../pages/mypage/PasswordChange.jsx';
 import GroupEdit from '../pages/group/GroupEdit.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
+import DatePicker from '../components/common/modal/DatePicker.jsx';
 
 const Router = () => {
   return (
@@ -43,6 +44,7 @@ const Router = () => {
         <Route path='/groupedit/:id' element={<ProtectedRoute />}>
           <Route index element={<GroupEdit />} />
         </Route>
+        <Route path='/testdate' element={<DatePicker />}/>
       </Routes>
     </BrowserRouter>
   );
