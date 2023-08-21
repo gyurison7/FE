@@ -41,7 +41,7 @@ function Login() {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
       }
     } catch (error) {
-      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+      alert('아이디 또는 비밀번호를 다시 확인해주세요.');
       console.error(error);
     }
   }
