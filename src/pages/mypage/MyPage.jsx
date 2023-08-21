@@ -110,15 +110,20 @@ const MyPage = () => {
             onChange={imageSubmitHandler}
             style={{ display: 'none' }}
           />
-          <ImageButton onClick={() => imageUploadInput.current.click()}>
+          <ProfileImageButton onClick={() => imageUploadInput.current.click()}>
             <img
               className='profileImage'
               src={
                 profileImage || `${process.env.PUBLIC_URL}assets/image/big_user.png`
               }
-              alt='user'
+              alt='프로필 사진'
             />
-          </ImageButton>
+            <img
+              className='cameraIcon'
+              src={`${process.env.PUBLIC_URL}assets/svgs/camera.svg`}
+              alt='프로필 사진'
+            />
+          </ProfileImageButton>
           <NicknameContainer>
             {isEditing ? (
               <div>
@@ -134,7 +139,7 @@ const MyPage = () => {
             ) : (
               <span>{nickname}</span>
             )}
-            <ImageButton onTouchStart={nicknameSubmitHandler}>
+            <NicknameImageButton onTouchStart={nicknameSubmitHandler}>
               {isEditing ? (
                 <img
                   src={`${process.env.PUBLIC_URL}assets/svgs/mypage_check.svg`}
@@ -147,7 +152,7 @@ const MyPage = () => {
                   alt='닉네임 바꾸기'
                 />
               )}
-            </ImageButton>
+            </NicknameImageButton>
           </NicknameContainer>
           <span>{loginId}</span>
         </ProfileContainer>
@@ -204,20 +209,25 @@ const ProfileContainer = styled.div`
   }
 `;
 
-const ImageButton = styled.button`
+const ProfileImageButton = styled.button`
+  position: relative;
+  width: 100%;
+  height: auto;
   background: transparent;
   border: none;
 
   .profileImage {
+    display: block;
     width: 31vh;
     height: 31vh;
     border-radius: 100%;
     object-fit: cover;
   }
 
-  .pencilButton {
-    width: 18px;
-    height: 18px;
+  .cameraIcon {
+    position: absolute;
+    top: 80%;
+    left: 77%;
   }
 `;
 
@@ -252,6 +262,16 @@ const NicknameContainer = styled.div`
     color: #4c4c4c;
     font-size: 24px;
     font-weight: 700;
+  }
+`;
+
+const NicknameImageButton = styled.button`
+  background: transparent;
+  border: none;
+
+  .pencilButton {
+    width: 18px;
+    height: 18px;
   }
 `;
 
