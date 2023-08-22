@@ -63,18 +63,15 @@ export const getUserProfile = async () => {
   return response.data.userInfoData;
 };
 
-export const updateMyPageProfileImage = async (profileUrl) => {
-  const response = await api.put(
-    '/auth/me/profile',
-    {
-      profileUrl,
+export const updateMyPageProfileImage = async (formData) => {
+  const response = await api.put('/auth/me/profile', formData, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-    {
-      withCredentials: true,
-    }
-  );
-  console.log(response);
-  return response.data;
+  });
+  
+  return response.data.profileUrl;
 };
 
 export const updateMyPageNickname = async (nickname) => {
