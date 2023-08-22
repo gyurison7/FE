@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router';
-import { uploadProfileImage } from '../../api/uploadProfile';
 import {
   getUserProfile,
   updateMyPageProfileImage,
@@ -14,6 +13,7 @@ import {
 } from '../../utils/nicknameValidation.js';
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
+import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal.jsx';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -21,6 +21,7 @@ const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState('');
   const [loginId, setLoginId] = useState('');
+  const [openModal, setOpenModal] = useState(false);
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
@@ -50,11 +51,14 @@ const MyPage = () => {
   const imageSubmitHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      const formData = new FormData();
+      formData.append('profileUrl', file);
       try {
-        const url = await uploadProfileImage(file);
-        setProfileImage(url);
-        const responseData = await updateMyPageProfileImage(url);
-        if (!responseData) {
+        const responseData = await updateMyPageProfileImage(formData);
+        if (responseData) {
+          setProfileImage(responseData);
+          setOpenModal(false);
+        } else {
           alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도 해주세요.');
         }
       } catch (error) {
@@ -89,8 +93,8 @@ const MyPage = () => {
   const logoutHandler = async () => {
     try {
       const responseData = await logout();
-      console.log('responseData', responseData);
       if (responseData) {
+        localStorage.removeItem('userId');
         navigate('/login');
       }
     } catch (error) {
@@ -110,7 +114,7 @@ const MyPage = () => {
             onChange={imageSubmitHandler}
             style={{ display: 'none' }}
           />
-          <ProfileImageButton onClick={() => imageUploadInput.current.click()}>
+          <ProfileImageButton onClick={() => setOpenModal(true)}>
             <img
               className='profileImage'
               src={
@@ -169,9 +173,16 @@ const MyPage = () => {
           </div>
         </ButtonContainer>
       </MypageContainer>
-      <Foot>
-        <Footer />
-      </Foot>
+      {openModal ? (
+        <MyPageProfileModal
+          setOpenModal={setOpenModal}
+          imageUploadInput={imageUploadInput}
+        />
+      ) : (
+        <Foot>
+          <Footer />
+        </Foot>
+      )}
     </Wrapper>
   );
 };
@@ -246,7 +257,7 @@ const NicknameContainer = styled.div`
       height: 32px;
       background: transparent;
       border: none;
-      border-bottom: 1px solid #5873fe;
+      border-bottom: 1px solid #cecece;
       color: #4c4c4c;
       font-size: 24px;
       font-weight: 700;
