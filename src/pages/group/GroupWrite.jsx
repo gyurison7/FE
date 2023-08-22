@@ -240,7 +240,7 @@ function GroupWrite() {
             <DateInput
               value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
               onClick={() => setDateModal(!isDateModal)}
-              placeholder='2023.08.01 ~ 2023.08.03'
+              placeholder='추억을 나눈 날짜를 설정해주세요'
               readOnly
             />
             </DateInputWraper>

@@ -304,8 +304,8 @@ function GroupWrite() {
               </FriendContentWrap>
             </FriendSearchButton>
             {isModalOpen && (
-              <FriendSearchModal
-                isopen={isModalOpen}
+               <FriendSearchModal
+                ismodalopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
                 isUserSelected={isUserSelected}
