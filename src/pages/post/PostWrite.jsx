@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadImage } from '../../api/uploadImage.js';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Layout from '../../layout';
@@ -32,10 +32,14 @@ function PostWrite() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('imageUrl', file);
+    formData.append('title', title);
     try {
-      const url = await uploadImage(file);
-      const config = { imageUrl: url, title: title };
-      await api.post(`/group/${id}/memory`, config, {
+      await api.post(`/group/${id}/memory`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         withCredentials: true,
       });
       navigate(`/postmain/${id}`);
