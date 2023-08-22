@@ -60,7 +60,7 @@ const themeHandler = (theme, bordercolor, color) => {
       return `
                 padding: 36px 0px 7px 0px;
                 border: none;
-                border-bottom: 1px solid ${bordercolor || '#5873FE'};
+                border-bottom: 1px solid ${bordercolor || '#CECECE'};
                 outline: none;
                 color: ${color || '#8B8B8B'};
                 &::placeholder {
