@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { uploadProfileImage } from '../../api/uploadProfile';
 import { uploadUserProfile } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import Header from '../../components/common/header/Header.jsx';
@@ -58,18 +57,15 @@ const UserProfile = () => {
 
     if (!nicknameCheckHandler(nickname, setNicknameError)) return;
 
-    let imageUrlFromCloud = '';
+    const formData = new FormData();
+      formData.append('loginId', loginId);
+      formData.append('nickname', nickname);
     if (chosenFile) {
-      imageUrlFromCloud = await uploadProfileImage(chosenFile);
+      formData.append('profileUrl', chosenFile);
     }
-    console.log('imageUrlFromCloud', imageUrlFromCloud);
 
     try {
-      const responseData = await uploadUserProfile(
-        loginId,
-        nickname,
-        imageUrlFromCloud
-      );
+      const responseData = await uploadUserProfile(formData);
       if (responseData) {
         alertAndNavigate(
           '프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)'

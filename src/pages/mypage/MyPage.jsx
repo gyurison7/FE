@@ -57,6 +57,7 @@ const MyPage = () => {
         const responseData = await updateMyPageProfileImage(formData);
         if (responseData) {
           setProfileImage(responseData);
+          setOpenModal(false);
         } else {
           alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도 해주세요.');
         }
@@ -92,8 +93,8 @@ const MyPage = () => {
   const logoutHandler = async () => {
     try {
       const responseData = await logout();
-      console.log('responseData', responseData);
       if (responseData) {
+        localStorage.removeItem('userId');
         navigate('/login');
       }
     } catch (error) {
