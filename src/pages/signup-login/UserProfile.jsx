@@ -99,12 +99,16 @@ const UserProfile = () => {
           onChange={imageHandler}
           style={{ display: 'none' }}
         />
-        <ImageButton
-          onClick={() => imageUploadInput.current.click()}
-        >
+        <ImageButton onClick={() => imageUploadInput.current.click()}>
           <img
+            className='profileImage'
             src={profileImage || `${process.env.PUBLIC_URL}assets/image/user.png`}
-            alt='user'
+            alt='프로필 사진'
+          />
+          <img
+            className='cameraIcon'
+            src={`${process.env.PUBLIC_URL}assets/svgs/camera.svg`}
+            alt='프로필 사진'
           />
         </ImageButton>
         <FormContainer onSubmit={userProfileUploadHandler}>
@@ -161,15 +165,23 @@ const Text = styled.h2`
 `;
 
 const ImageButton = styled.button`
+  position: relative;
   margin-top: 5vh;
   background: transparent;
   border: none;
 
-  img {
-    height: 20vh;
+  .profileImage {
+    display: block;
     width: 20vh;
+    height: 20vh;
     border-radius: 100%;
     object-fit: cover;
+  }
+
+  .cameraIcon {
+    position: absolute;
+    top: 76%;
+    left: 75%;
   }
 `;
 

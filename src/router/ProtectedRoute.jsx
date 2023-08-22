@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import api from '../api/index.jsx'
+import api from '../api/index.jsx';
+import { useRecoilState } from 'recoil';
+import { userIdState } from '../recoil/Atom.js';
 
 function ProtectedRoute() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [userId, setUserId] = useRecoilState(userIdState);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkLogin = async () => {
+    const checkUserId = async () => {
       try {
         const response = await api.get('/userInfo', {
           withCredentials: true,
         });
-        console.log(response.data);
-        if (response.data) {
-          setIsLogin(true);
+        const userId = response.data.userInfoData.userId;
+        if (userId) {
+          setUserId(userId);
         } else {
           navigate('/login');
         }
@@ -23,13 +25,11 @@ function ProtectedRoute() {
         navigate('/login');
       }
     };
-    checkLogin();
+    checkUserId();
   }),
-    [navigate];
+    [navigate, setUserId];
 
-  console.log('isLogin', isLogin);
-
-  return isLogin ? <Outlet /> : null;
+  return userId ? <Outlet /> : null;
 }
 
 export default ProtectedRoute;
