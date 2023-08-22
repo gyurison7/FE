@@ -2,9 +2,9 @@ import React from 'react';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
-export default function Profile({ url, name }) {
+export default function Profile({ url, name, onClick }) {
   return (
-    <AvatarWrap>
+    <AvatarWrap onClick={onClick}>
       <AvatarImage src={url} alt='avatar' />
       <span>{name}</span>
     </AvatarWrap>
@@ -14,6 +14,7 @@ export default function Profile({ url, name }) {
 Profile.propTypes = {
   name: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 const AvatarWrap = styled.div`
   display: flex;

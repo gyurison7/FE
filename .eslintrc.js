@@ -6,6 +6,7 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
   ],
+
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
