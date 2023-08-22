@@ -162,7 +162,7 @@ function DatePicker({
               isbetween={isBetween(day)}
               onClick={() => day && handleDayClick(day)}
             >
-              {day}
+              <span className='dateText'>{day}</span>
             </ButtonDays>
           ))}
         </DaysWrapper>
@@ -294,7 +294,7 @@ const ButtonDays = styled.button`
   cursor: ${({ day }) => (day ? 'pointer' : 'default')};
   width: 100%;
   height: 5vh;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   border: none;
   background: ${({
     day,
@@ -304,11 +304,14 @@ const ButtonDays = styled.button`
     selectedmonth,
     isbetween,
   }) => {
-    if (
-      isSelected(day, startdate, selectedyear, selectedmonth) ||
-      isSelected(day, enddate, selectedyear, selectedmonth)
-    ) {
-      return 'rgba(148, 165, 254, 0.6)';
+    if (isSelected(day, startdate, selectedyear, selectedmonth) && !enddate) {
+      return 'none ';
+    }
+    if (isSelected(day, startdate, selectedyear, selectedmonth)) {
+      return 'linear-gradient(to left, rgba(148, 165, 254, 0.6) 29px, transparent 10px)';
+    }
+    if (isSelected(day, enddate, selectedyear, selectedmonth)) {
+      return 'linear-gradient(to right, rgba(148, 165, 254, 0.6) 29px, transparent 10px)';
     }
     return isbetween ? 'rgb(148,165,254,0.6)' : 'white';
   }};
@@ -325,41 +328,48 @@ const ButtonDays = styled.button`
     isbetween,
   }) => {
     if (isSelected(day, startdate, selectedyear, selectedmonth)) {
-      return '50% 0 0 50%';  
+      return '20px 0 0 20px';
     }
     if (isSelected(day, enddate, selectedyear, selectedmonth)) {
-      return '0 50% 50% 0';  
+      return '0 20px 20px 0';
     }
     return isbetween ? '0%' : '50%';
   }};
-  position: relative; 
 
-&::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(100% - 8px); 
-  height: calc(100% - 0px);
-  transform: translate(-50%, -50%); 
-  background-color: transparent; 
-  border-radius: 50%; 
-  z-index: 1; 
-}
+  .dateText {
+    position: relative;
+    z-index: 2;
+  }
 
-${({ day, startdate, selectedyear, selectedmonth }) =>
-  isSelected(day, startdate, selectedyear, selectedmonth) &&
-  `
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 8px);
+    height: calc(100% - 0px);
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  ${({ day, startdate, selectedyear, selectedmonth }) =>
+    isSelected(day, startdate, selectedyear, selectedmonth) &&
+    `
     &::before {
-      background-color: rgba(61,92,255,0.6);
+        
+      background-color: rgba(61,92,255);
     }
 `}
 
-${({ day, enddate, selectedyear, selectedmonth }) =>
-  isSelected(day, enddate, selectedyear, selectedmonth) &&
-  `
+  ${({ day, enddate, selectedyear, selectedmonth }) =>
+    isSelected(day, enddate, selectedyear, selectedmonth) &&
+    `
     &::before {
-      background-color: rgba(61,92,255,0.6);
+        
+      background-color: rgba(61,92,255);
     }
 `}
 `;
@@ -384,14 +394,14 @@ const DaysNameWrapper = styled.div`
 const DaysWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin-top: 12px;
+  margin-top: 20px;
 `;
 
 const Footer = styled.div`
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-top: 20px;
+  margin-top: 35px;
 `;
 
 const FotterButton = styled.button`
