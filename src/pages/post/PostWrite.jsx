@@ -56,7 +56,12 @@ function PostWrite() {
           <Title>
             <span>게시하기</span> <p>Memory Mingle</p>
           </Title>
-          <Button size='small' type='submit' color='white' background='#929292'>
+          <Button
+            size='small'
+            type='submit'
+            color='white'
+            background={thumbnailUrl ? '#5873FE' : '#929292'}
+          >
             게시하기
           </Button>
         </Top>
