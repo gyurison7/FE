@@ -14,6 +14,7 @@ import GroupEdit from '../pages/group/GroupEdit.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import DatePicker from '../components/common/modal/DatePicker.jsx';
 import PostDetail from '../pages/post/PostDetail.jsx';
+import Search from '../pages/search/Search.jsx';
 
 const Router = () => {
   return (
@@ -50,6 +51,9 @@ const Router = () => {
         </Route>
         <Route path='/postmain/:groupId/:postId' element={<ProtectedRoute />}>
           <Route index element={<PostDetail />} />
+        </Route>
+        <Route path='/search' element={<ProtectedRoute />}>
+          <Route index element={<Search />} />
         </Route>
         <Route path='/testdate' element={<DatePicker />} />
       </Routes>

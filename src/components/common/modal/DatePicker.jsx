@@ -201,7 +201,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   width: 100%;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '-5%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '-33%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -214,7 +214,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
       : css`
           ${slideDown} 1s
         `};
-  height: 558px;
+  height: 100%;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
   overflow: scroll;
@@ -225,13 +225,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: -5%;
+      bottom: -33%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: -5%;
+      bottom: -33%;
     }
     to {
       bottom: -100%;
@@ -303,7 +303,7 @@ const isSelected = (day, date, selectedyear, selectedmonth) =>
 const ButtonDays = styled.button`
   cursor: ${({ day }) => (day ? 'pointer' : 'default')};
   width: 100%;
-  height: 5vh;
+  height: 6vh;
   border: none;
   background: ${({
     day,
@@ -411,7 +411,8 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-top: 20px;
+  margin-top: 12px;
+  margin-bottom: 30px;
 `;
 
 const FotterButton = styled.button`

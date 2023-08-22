@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 function GroupPageHeader() {
+  const navigate = useNavigate()
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -16,6 +18,7 @@ function GroupPageHeader() {
             <SearchIcon
               src={`${process.env.PUBLIC_URL}/assets/svgs/searchicon.svg`}
               alt='search'
+              onClick={()=> navigate('/search')}
             />
           </SearchButton>
         </SearchWrapper>
@@ -60,6 +63,7 @@ const SearchButton = styled.button`
 `;
 
 const SearchIcon = styled.img`
+  cursor: pointer;
   width: 21px;
   margin-top: 21px;
   margin-right: 23px;
