@@ -105,6 +105,16 @@ function DatePicker({
 
   return (
     <Portal>
+            <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 999, 
+      }}
+    >
       <DatePickerWrap isopen={ismodalopen}>
         <ModalButtonWrapper>
           <ModalButton onClick={onClose}>
@@ -177,6 +187,7 @@ function DatePicker({
           </FotterButton>
         </Footer>
       </DatePickerWrap>
+      </div>
     </Portal>
   );
 }
@@ -190,7 +201,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   width: 100%;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '-32%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '-5%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -203,7 +214,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
       : css`
           ${slideDown} 1s
         `};
-  height: 100%;
+  height: 558px;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
   overflow: scroll;
@@ -214,13 +225,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: -32%;
+      bottom: -5%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: -32%;
+      bottom: -5%;
     }
     to {
       bottom: -100%;
@@ -290,11 +301,9 @@ const isSelected = (day, date, selectedyear, selectedmonth) =>
   selectedmonth === new Date(date).getMonth();
 
 const ButtonDays = styled.button`
-  padding: 8px;
   cursor: ${({ day }) => (day ? 'pointer' : 'default')};
   width: 100%;
   height: 5vh;
-  margin-bottom: 10px;
   border: none;
   background: ${({
     day,
@@ -395,19 +404,20 @@ const DaysWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   margin-top: 20px;
+  row-gap: 10px;
 `;
 
 const Footer = styled.div`
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-top: 35px;
+  margin-top: 20px;
 `;
 
 const FotterButton = styled.button`
   display: flex;
   width: 159px;
-  height: 57px;
+  height: 59px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
