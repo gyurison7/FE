@@ -36,7 +36,7 @@ function GroupMain() {
                 alt='handicon'
               />
               <PreMainContentWrapper>
-                <PreMainText>지금 추억을 추가해보세요 </PreMainText>
+                <PreMainText>지금 추억을 만들어보세요 </PreMainText>
                 <PreMainButton onClick={writeButtonHandler}>
                   <PreMainPlus
                     src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
