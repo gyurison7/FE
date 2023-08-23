@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
-import { uploadImage } from '../../api/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
@@ -43,8 +42,10 @@ function GroupWrite() {
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       console.log(res.data);
       setGroupName(res.data.groupName);
-      setStartDate(res.data.startDate);
-      setEndDate(res.data.endDate);
+      const formattedStartDate = res.data.startDate.slice(0, 10);
+      const formattedEndDate = res.data.endDate.slice(0, 10);
+      setStartDate(formattedStartDate);
+      setEndDate(formattedEndDate);
       setSelectedFriends(res.data.participants);
       setThumbnailUrl(res.data.thumbnailUrl);
       if (res.data.place) {
@@ -68,7 +69,7 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
-  console.log(places);
+  console.log(selectedFriends);
 
   console.log('starDate', startDate);
   console.log('endDate', endDate);
@@ -100,21 +101,26 @@ function GroupWrite() {
   //데이터 보내는 로직
   const submitHandler = async (e) => {
     e.preventDefault();
-    let imageUrlFromCloud = '';
+    const data = new FormData();
     if (chosenFile) {
-      imageUrlFromCloud = await uploadImage(chosenFile);
+      data.append('thumbnailUrl', chosenFile);
+    } else if (thumbnailUrl) {
+      data.append('thumbnailUrl', thumbnailUrl);
     }
-    const payload = {
-      groupName: groupName,
-      thumbnailUrl: imageUrlFromCloud || thumbnailUrl,
-      place: places,
-      participant: selectedFriends.map((friend) => friend.userId.toString()),
-      startDate: startDate,
-      endDate: endDate,
-    };
+    data.append('groupName', groupName);
+    data.append('place', JSON.stringify(places));
+    data.append(
+      'participant',
+      JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
+    );
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
 
     try {
-      const response = await api.put(`group/${id}`, payload, {
+      const response = await api.put(`/group/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         withCredentials: true,
       });
       console.log(response.data);
@@ -123,6 +129,7 @@ function GroupWrite() {
       console.error('Error sending group data:', error);
     }
   };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -194,8 +201,8 @@ function GroupWrite() {
     setSelectedFriends((prevfri) => prevfri.filter((item) => item.userId !== id));
   };
 
-  const isUserSelected = (loginId) => {
-    return selectedFriends.some((friend) => friend.loginId === loginId);
+  const isUserSelected = (userId) => {
+    return selectedFriends.some((friend) => friend.userId === userId);
   };
 
   return (
@@ -242,7 +249,11 @@ function GroupWrite() {
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <DateInput
-              value={startDate && endDate ? `${startDate.slice(0, 10)} ~ ${endDate.slice(0, 10)}` : ''}
+              value={
+                startDate && endDate
+                  ? `${startDate} ~ ${endDate}`
+                  : ''
+              }
               onClick={() => setDateModal(!isDateModal)}
               readOnly
             />
@@ -305,7 +316,7 @@ function GroupWrite() {
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
-                isopen={isModalOpen}
+                ismodalopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
                 isUserSelected={isUserSelected}
@@ -315,7 +326,7 @@ function GroupWrite() {
               />
             )}
           </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             {selectedFriends &&
               selectedFriends.map((item) => {
                 return (

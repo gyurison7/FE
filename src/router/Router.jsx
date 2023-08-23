@@ -13,6 +13,8 @@ import PasswordChange from '../pages/mypage/PasswordChange.jsx';
 import GroupEdit from '../pages/group/GroupEdit.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import DatePicker from '../components/common/modal/DatePicker.jsx';
+import PostDetail from '../pages/post/PostDetail.jsx';
+import Search from '../pages/search/Search.jsx';
 
 const Router = () => {
   return (
@@ -20,7 +22,10 @@ const Router = () => {
       <Routes>
         <Route path='/' element={<Introduction />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/api/auth/login/kakao/callback' element={<KakaoLoginRedirect />} />
+        <Route
+          path='/api/auth/login/kakao/callback'
+          element={<KakaoLoginRedirect />}
+        />
         <Route path='/signup' element={<Signup />} />
         <Route path='/userprofile' element={<UserProfile />} />
         <Route path='/groupmain' element={<ProtectedRoute />}>
@@ -44,7 +49,13 @@ const Router = () => {
         <Route path='/groupedit/:id' element={<ProtectedRoute />}>
           <Route index element={<GroupEdit />} />
         </Route>
-        <Route path='/testdate' element={<DatePicker />}/>
+        <Route path='/postmain/:groupId/:postId' element={<ProtectedRoute />}>
+          <Route index element={<PostDetail />} />
+        </Route>
+        <Route path='/search' element={<ProtectedRoute />}>
+          <Route index element={<Search />} />
+        </Route>
+        <Route path='/testdate' element={<DatePicker />} />
       </Routes>
     </BrowserRouter>
   );

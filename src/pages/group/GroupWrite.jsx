@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/index.jsx';
-import { uploadImage } from '../../api/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 // import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
@@ -33,8 +32,8 @@ import {
   WriteImageWrapper,
   Form,
   DateInput,
-  DateInputWraper
-} from './styleContainer.js';
+  DateInputWraper,
+} from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 
 function GroupWrite() {
@@ -78,11 +77,10 @@ function GroupWrite() {
       }
     }
   };
-
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-    } 
+    }
   };
 
   //데이터 보내는 로직
@@ -94,22 +92,22 @@ function GroupWrite() {
       return;
     }
 
-    let imageUrlFromCloud = '';
-    if (chosenFile) {
-      imageUrlFromCloud = await uploadImage(chosenFile);
-    }
-    console.log('url', imageUrlFromCloud);
-    const payload = {
-      groupName: groupName,
-      thumbnailUrl: imageUrlFromCloud,
-      place: places,
-      participant: selectedFriends.map((friend) => friend.userId.toString()),
-      startDate: startDate,
-      endDate: endDate,
-    };
+    const data = new FormData();
+    data.append('thumbnailUrl', chosenFile);
+    data.append('groupName', groupName);
+    data.append('place', JSON.stringify(places));
+    data.append(
+      'participant',
+      JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
+    );
+    data.append('startDate', startDate);
+    data.append('endDate', endDate);
 
     try {
-      const response = await api.post('/group', payload, {
+      const response = await api.post('/group', data,{
+        headers:{
+          'Content-Type':'multipart/form-data',
+        },
         withCredentials: true,
       });
       console.log(response.data);
@@ -236,13 +234,12 @@ function GroupWrite() {
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <DateInputWraper>
-
-            <DateInput
-              value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
-              onClick={() => setDateModal(!isDateModal)}
-              placeholder='2023.08.01 ~ 2023.08.03'
-              readOnly
-            />
+              <DateInput
+                value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
+                onClick={() => setDateModal(!isDateModal)}
+                placeholder='추억을 나눈 날짜를 설정해주세요'
+                readOnly
+              />
             </DateInputWraper>
             {isDateModal && (
               <DatePicker
