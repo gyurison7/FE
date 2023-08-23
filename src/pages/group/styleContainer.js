@@ -54,6 +54,7 @@ export const WriteBody = styled.div`
 `;
 
 export const StDateWrapper = styled.div`
+  position: relative;
   width: 100%;
 `;
 
