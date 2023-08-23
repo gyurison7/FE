@@ -19,7 +19,7 @@ function GroupMain() {
     isError,
     isLoading,
   } = useQuery('groupData', getGroupData);
-
+console.log(groupData)
   return (
     <>
       <MainContainer>

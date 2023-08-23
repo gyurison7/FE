@@ -37,7 +37,7 @@ function FriendSearchModal({
         </div>
 
         {searchResult
-          .filter((item) => !isUserSelected(item.loginId))
+          .filter((item) => !isUserSelected(item.userId))
           .map((item) => {
             return (
               <ResultWrapper key={item.userId}>

@@ -77,7 +77,6 @@ function GroupWrite() {
       }
     }
   };
-
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -96,7 +95,7 @@ function GroupWrite() {
     const data = new FormData();
     data.append('thumbnailUrl', chosenFile);
     data.append('groupName', groupName);
-    data.append('place', places);
+    data.append('place', JSON.stringify(places));
     data.append(
       'participant',
       JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
