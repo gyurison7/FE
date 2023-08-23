@@ -42,8 +42,10 @@ function GroupWrite() {
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       console.log(res.data);
       setGroupName(res.data.groupName);
-      setStartDate(res.data.startDate);
-      setEndDate(res.data.endDate);
+      const formattedStartDate = res.data.startDate.slice(0, 10);
+      const formattedEndDate = res.data.endDate.slice(0, 10);
+      setStartDate(formattedStartDate);
+      setEndDate(formattedEndDate);
       setSelectedFriends(res.data.participants);
       setThumbnailUrl(res.data.thumbnailUrl);
       if (res.data.place) {
@@ -67,7 +69,7 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
-  console.log(places);
+  console.log(selectedFriends);
 
   console.log('starDate', startDate);
   console.log('endDate', endDate);
@@ -106,7 +108,7 @@ function GroupWrite() {
       data.append('thumbnailUrl', thumbnailUrl);
     }
     data.append('groupName', groupName);
-    data.append('place', places);
+    data.append('place', JSON.stringify(places));
     data.append(
       'participant',
       JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
@@ -115,7 +117,7 @@ function GroupWrite() {
     data.append('endDate', endDate);
 
     try {
-      const response = await api.post('/group', data, {
+      const response = await api.put(`/group/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -199,8 +201,8 @@ function GroupWrite() {
     setSelectedFriends((prevfri) => prevfri.filter((item) => item.userId !== id));
   };
 
-  const isUserSelected = (loginId) => {
-    return selectedFriends.some((friend) => friend.loginId === loginId);
+  const isUserSelected = (userId) => {
+    return selectedFriends.some((friend) => friend.userId === userId);
   };
 
   return (
@@ -249,7 +251,7 @@ function GroupWrite() {
             <DateInput
               value={
                 startDate && endDate
-                  ? `${startDate.slice(0, 10)} ~ ${endDate.slice(0, 10)}`
+                  ? `${startDate} ~ ${endDate}`
                   : ''
               }
               onClick={() => setDateModal(!isDateModal)}
@@ -324,7 +326,7 @@ function GroupWrite() {
               />
             )}
           </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             {selectedFriends &&
               selectedFriends.map((item) => {
                 return (
