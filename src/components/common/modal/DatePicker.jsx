@@ -35,7 +35,6 @@ function DatePicker({
   ];
   const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  // Determine the initial year and month either from startDate, endDate, or the current date
   const initialYear = startDate
     ? new Date(startDate).getFullYear()
     : endDate
@@ -106,98 +105,89 @@ function DatePicker({
 
   return (
     <Portal>
-      <DatePickerWrap isopen={ismodalopen}>
-        <ModalButtonWrapper>
-          <ModalButton onClick={onClose}>
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
-              alt='line'
-            />
-          </ModalButton>
-        </ModalButtonWrapper>
-        <Header>
-          <MonthContainer>
-            <MonthSelector
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(+e.target.value)}
-            >
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </MonthSelector>
-          </MonthContainer>
-          <YearContainer>
-            <YearSelector
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(+e.target.value)}
-            >
-              {months.map((month, index) => (
-                <option key={month} value={index}>
-                  {month}
-                </option>
-              ))}
-            </YearSelector>
-          </YearContainer>
-        </Header>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(7, 1fr)',
-            gap: '4px',
-          }}
-        >
-          {dayNames.map((dayName) => (
-            <div
-              key={dayName}
-              style={{
-                fontWeight: 'bold',
-                padding: '8px',
-                border: '1px solid gray',
-                background: '#e0e0e0',
-              }}
-            >
-              {dayName}
-            </div>
-          ))}
-          {days.map((day, index) => (
-            <button
-              key={index}
-              id={
-                startDate && day === new Date(startDate).getDate()
-                  ? 'selectedDate'
-                  : ''
-              }
-              style={{
-                padding: '8px',
-                border: '1px solid gray',
-                background:
-                  (startDate &&
-                    day === new Date(startDate).getDate() &&
-                    selectedYear === new Date(startDate).getFullYear() &&
-                    selectedMonth === new Date(startDate).getMonth()) ||
-                  (endDate &&
-                    day === new Date(endDate).getDate() &&
-                    selectedYear === new Date(endDate).getFullYear() &&
-                    selectedMonth === new Date(endDate).getMonth())
-                    ? 'lightblue'
-                    : isBetween(day)
-                    ? 'lightyellow'
-                    : 'white',
-                cursor: day ? 'pointer' : 'default',
-              }}
-              onClick={() => day && handleDayClick(day)}
-            >
-              {day}
-            </button>
-          ))}
-        </div>
-        <div>
-          <button onClick={onResetHandler}> 초기회하기 </button>
-          <button onClick={applyHandler}> 적용하기</button>
-        </div>
-      </DatePickerWrap>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 999,
+        }}
+      >
+        <DatePickerWrap isopen={ismodalopen}>
+          <ModalButtonWrapper>
+            <ModalButton onClick={onClose}>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
+                alt='line'
+              />
+            </ModalButton>
+          </ModalButtonWrapper>
+          <Header>
+            <MonthContainer>
+              <MonthSelector
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(+e.target.value)}
+              >
+                {months.map((month, index) => (
+                  <option key={month} value={index}>
+                    {month}
+                  </option>
+                ))}
+              </MonthSelector>
+            </MonthContainer>
+            <YearContainer>
+              <YearSelector
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(+e.target.value)}
+              >
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </YearSelector>
+            </YearContainer>
+          </Header>
+          <DaysNameWrapper>
+            {dayNames.map((dayName) => (
+              <DaysName key={dayName}>{dayName}</DaysName>
+            ))}
+          </DaysNameWrapper>
+          <DaysWrapper>
+            {days.map((day, index) => (
+              <ButtonDays
+                key={index}
+                id={
+                  startDate && day === new Date(startDate).getDate()
+                    ? 'selectedDate'
+                    : ''
+                }
+                day={day}
+                startdate={startDate}
+                enddate={endDate}
+                selectedyear={selectedYear}
+                selectedmonth={selectedMonth}
+                isbetween={isBetween(day)}
+                onClick={() => day && handleDayClick(day)}
+              >
+                <span className='dateText'>{day}</span>
+              </ButtonDays>
+            ))}
+          </DaysWrapper>
+          <Footer>
+            <FotterButton onClick={onResetHandler} color='rgba(148, 163, 184, 1)'>
+              {' '}
+              초기회하기{' '}
+            </FotterButton>
+            <FotterButton onClick={applyHandler} color='rgba(88, 115, 254, 1)'>
+              {' '}
+              적용하기
+            </FotterButton>
+          </Footer>
+        </DatePickerWrap>
+      </div>
     </Portal>
   );
 }
@@ -206,12 +196,17 @@ export default DatePicker;
 
 const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
+  @media (max-width: 428px) {
+    width: 100%;
+  }
+  @media (min-width: 429px) {
+    width: 428px;
+  }
   padding: 16.9px;
-  position: fixed;
-  width: 100%;
+  position: absolute;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '-32%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '-33%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -235,13 +230,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: -32%;
+      bottom: -33%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: -32%;
+      bottom: -33%;
     }
     to {
       bottom: -100%;
@@ -250,25 +245,26 @@ const slideDown = keyframes`
 
 const Header = styled.div`
   display: flex;
+  margin-top: 14px;
   margin-bottom: 8px;
   gap: 16px;
 `;
 
-const MonthContainer = styled.div`
+const YearContainer = styled.div`
   width: 50%;
   height: 35px;
 `;
-const YearContainer = styled.div`
+const MonthContainer = styled.div`
   width: 50%;
 `;
 
-const MonthSelector = styled.select`
+const YearSelector = styled.select`
   width: 100%;
   height: 100%;
   border: none;
   padding: 8px;
 `;
-const YearSelector = styled.select`
+const MonthSelector = styled.select`
   width: 100%;
   height: 100%;
   border: none;
@@ -291,9 +287,9 @@ const ModalButtonWrapper = styled.div`
 DatePicker.propTypes = {
   onClose: PropTypes.func,
   ismodalopen: PropTypes.bool,
-  startDate: PropTypes.string, 
+  startDate: PropTypes.string,
   setStartDate: PropTypes.func,
-  endDate: PropTypes.string, 
+  endDate: PropTypes.string,
   setEndDate: PropTypes.func,
 };
 
@@ -301,3 +297,138 @@ DatePicker.defaultProps = {
   startDate: null,
   endDate: null,
 };
+
+// days button
+const isSelected = (day, date, selectedyear, selectedmonth) =>
+  date &&
+  day === new Date(date).getDate() &&
+  selectedyear === new Date(date).getFullYear() &&
+  selectedmonth === new Date(date).getMonth();
+
+const ButtonDays = styled.button`
+  cursor: ${({ day }) => (day ? 'pointer' : 'default')};
+  width: 100%;
+  height: 6vh;
+  border: none;
+  background: ${({
+    day,
+    startdate,
+    enddate,
+    selectedyear,
+    selectedmonth,
+    isbetween,
+  }) => {
+    if (isSelected(day, startdate, selectedyear, selectedmonth) && !enddate) {
+      return 'none ';
+    }
+    if (isSelected(day, startdate, selectedyear, selectedmonth)) {
+      return 'linear-gradient(to left, rgba(148, 165, 254, 0.6) 29px, transparent 10px)';
+    }
+    if (isSelected(day, enddate, selectedyear, selectedmonth)) {
+      return 'linear-gradient(to right, rgba(148, 165, 254, 0.6) 29px, transparent 10px)';
+    }
+    return isbetween ? 'rgb(148,165,254,0.6)' : 'white';
+  }};
+  color: ${({ day, startdate, selectedyear, selectedmonth, isbetween }) =>
+    isSelected(day, startdate, selectedyear, selectedmonth) || isbetween
+      ? 'white'
+      : 'black'};
+  border-radius: ${({
+    day,
+    startdate,
+    enddate,
+    selectedyear,
+    selectedmonth,
+    isbetween,
+  }) => {
+    if (isSelected(day, startdate, selectedyear, selectedmonth)) {
+      return '20px 0 0 20px';
+    }
+    if (isSelected(day, enddate, selectedyear, selectedmonth)) {
+      return '0 20px 20px 0';
+    }
+    return isbetween ? '0%' : '50%';
+  }};
+
+  .dateText {
+    position: relative;
+    z-index: 2;
+  }
+
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 8px);
+    height: calc(100% - 0px);
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  ${({ day, startdate, selectedyear, selectedmonth }) =>
+    isSelected(day, startdate, selectedyear, selectedmonth) &&
+    `
+    &::before {
+        
+      background-color: rgba(61,92,255);
+    }
+`}
+
+  ${({ day, enddate, selectedyear, selectedmonth }) =>
+    isSelected(day, enddate, selectedyear, selectedmonth) &&
+    `
+    &::before {
+        
+      background-color: rgba(61,92,255);
+    }
+`}
+`;
+
+const DaysName = styled.div`
+  color: var(--gray-400, #94a3b8);
+  text-align: center;
+  font-family: Inter;
+  font-size: 14.63px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20.257px;
+  text-transform: capitalize;
+`;
+
+const DaysNameWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 12px;
+`;
+
+const DaysWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 20px;
+  row-gap: 10px;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 12px;
+  margin-bottom: 30px;
+`;
+
+const FotterButton = styled.button`
+  display: flex;
+  width: 159px;
+  height: 59px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 35px;
+  background-color: ${(props) => props.color || 'defaultColor'};
+  color: white;
+`;

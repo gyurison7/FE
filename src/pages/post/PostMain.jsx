@@ -8,12 +8,27 @@ import api from '../../api/index.jsx';
 import Photo from '../../components/common/photo/Photo.jsx';
 import Profile from '../../components/common/profile/Profile.jsx';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
+import { useRecoilState } from 'recoil';
+import { selectedProfileState, modalState } from '../../recoil/Atom';
+import ProfileModal from '../../components/common/modal/ProfileModal.jsx';
+
 export default function PostMain() {
   const stkicky = useStickyMode(115);
   console.log(stkicky);
   const [data, setData] = useState(null);
+  const [selectedProfile, setSelectedProfile] = useRecoilState(selectedProfileState);
+  console.log('atom', selectedProfile);
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const handleProfileClick = (profileData) => {
+    setSelectedProfile(profileData);
+    setIsOpen(true);
+  };
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   useEffect(() => {
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       setData(res.data);
@@ -27,6 +42,7 @@ export default function PostMain() {
   return (
     <div style={{ position: 'relative' }}>
       <Wrap>
+        <ProfileModal isOpen={isOpen} closeModal={closeModal} />
         <Head $heady={stkicky}>
           <BackButton onClick={() => navigate('/groupmain')}>
             <IconComponents iconType='vectorLeft' stroke='white' />
@@ -42,7 +58,12 @@ export default function PostMain() {
             <GroupTitle>
               <Title>
                 <h4>{data?.groupName}</h4>
-                <IconComponents iconType='vectorRight' width='20' stroke='#787777' />
+                <IconComponents
+                  iconType='vectorRight'
+                  width='20'
+                  stroke='#787777'
+                  onClick={() => navigate(`/grouadd/${id}`)}
+                />
               </Title>
               <FriendAdd>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
@@ -78,6 +99,7 @@ export default function PostMain() {
                     key={element.userId}
                     url={element.profileUrl}
                     name={element.nickname}
+                    onClick={() => handleProfileClick(element)}
                   />
                 );
               })}
@@ -91,7 +113,13 @@ export default function PostMain() {
               onClick={() => navigate(`/postwrite/${id}`)}
             />
             {data?.memories?.map((url, i) => {
-              return <Photo key={i} image={url.imageUrl} />;
+              return (
+                <Photo
+                  key={i}
+                  image={url.imageUrl}
+                  onClick={() => navigate(`/postmain/${id}/${url.memoryId}`)}
+                />
+              );
             })}
           </Content>
         </div>
