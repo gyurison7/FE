@@ -44,6 +44,7 @@ const ModalBackground = styled.div`
 
 const ModalBody = styled.div`
   width: 95%;
+  max-width: 428px;
   background: transparent;
   margin-bottom: 3vh;
   z-index: 2;
@@ -84,5 +85,5 @@ const CancelButtonContainer = styled.div`
 
 MyPageProfileModal.propTypes = {
     setOpenModal: PropTypes.func.isRequired,
-    imageUploadInput: PropTypes.func.isRequired,
+    imageUploadInput: PropTypes.object.isRequired,
   };
