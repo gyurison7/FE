@@ -124,3 +124,12 @@ export const logout = async () => {
 
   return response.data;
 };
+
+export const memberOut = async (password) => {
+  const response = await api.delete('/auth/me/delete', {
+    data: { password },
+    withCredentials: true,
+  });
+
+  return response.data;
+};

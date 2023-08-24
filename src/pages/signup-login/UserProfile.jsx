@@ -34,16 +34,10 @@ const UserProfile = () => {
     }
   };
 
-  const alertAndNavigate = (message) => {
-    alert(message);
-    navigate('/login');
-  };
-
   const userProfileUploadHandler = async (e) => {
     e.preventDefault();
 
     const loginId = localStorage.getItem('loginId');
-    console.log(loginId);
     if (loginId === null || loginId === '') {
       alert('회원 정보가 존재하지 않습니다.');
       navigate('/login');
@@ -58,8 +52,8 @@ const UserProfile = () => {
     if (!nicknameCheckHandler(nickname, setNicknameError)) return;
 
     const formData = new FormData();
-      formData.append('loginId', loginId);
-      formData.append('nickname', nickname);
+    formData.append('loginId', loginId);
+    formData.append('nickname', nickname);
     if (chosenFile) {
       formData.append('profileUrl', chosenFile);
     }
@@ -67,14 +61,12 @@ const UserProfile = () => {
     try {
       const responseData = await uploadUserProfile(formData);
       if (responseData) {
-        alertAndNavigate(
-          '프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)'
-        );
+        navigate('/groupmain');
       } else {
         alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+      alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };
@@ -127,14 +119,7 @@ const UserProfile = () => {
             등록하기
           </Button>
         </FormContainer>
-        <SkipButton
-          type='button'
-          onClick={() =>
-            alertAndNavigate(
-              '회원가입은 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)'
-            )
-          }
-        >
+        <SkipButton type='button' onClick={() => navigate('/groupmain')}>
           건너뛰기
         </SkipButton>
       </UserProfileContainer>
