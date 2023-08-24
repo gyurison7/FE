@@ -169,7 +169,7 @@ function DatePicker({
                 enddate={endDate}
                 selectedyear={selectedYear}
                 selectedmonth={selectedMonth}
-                isbetween={isBetween(day)}
+                isbetween={String(isBetween(day))}
                 onClick={() => day && handleDayClick(day)}
               >
                 <span className='dateText'>{day}</span>
@@ -193,7 +193,18 @@ function DatePicker({
 }
 
 export default DatePicker;
+// props 경고창 해결
+const customProps = [
+  'day',
+  'startdate',
+  'enddate',
+  'selectedyear',
+  'selectedmonth',
+  'isbetween',
+];
+const filterProps = (prop) => !customProps.includes(prop);
 
+// styled-component
 const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   @media (max-width: 428px) {
@@ -224,7 +235,6 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   height: 100%;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
-
 `;
 
 const slideUp = keyframes`
@@ -286,15 +296,6 @@ const ModalButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-DatePicker.propTypes = {
-  onClose: PropTypes.func,
-  ismodalopen: PropTypes.bool,
-  startDate: PropTypes.string,
-  setStartDate: PropTypes.func,
-  endDate: PropTypes.string,
-  setEndDate: PropTypes.func,
-};
-
 DatePicker.defaultProps = {
   startDate: null,
   endDate: null,
@@ -307,7 +308,9 @@ const isSelected = (day, date, selectedyear, selectedmonth) =>
   selectedyear === new Date(date).getFullYear() &&
   selectedmonth === new Date(date).getMonth();
 
-const ButtonDays = styled.button`
+const ButtonDays = styled('button').withConfig({
+  shouldForwardProp: filterProps,
+})`
   cursor: ${({ day }) => (day ? 'pointer' : 'default')};
   width: 100%;
   height: 6vh;
@@ -329,10 +332,10 @@ const ButtonDays = styled.button`
     if (isSelected(day, enddate, selectedyear, selectedmonth)) {
       return 'linear-gradient(to right, rgba(148, 165, 254, 0.6) 29px, transparent 10px)';
     }
-    return isbetween ? 'rgb(148,165,254,0.6)' : 'white';
+    return isbetween === 'true' ? 'rgb(148,165,254,0.6)' : 'white';
   }};
   color: ${({ day, startdate, selectedyear, selectedmonth, isbetween }) =>
-    isSelected(day, startdate, selectedyear, selectedmonth) || isbetween
+    isSelected(day, startdate, selectedyear, selectedmonth) || isbetween === 'true'
       ? 'white'
       : 'black'};
   border-radius: ${({
@@ -434,3 +437,14 @@ const FotterButton = styled.button`
   background-color: ${(props) => props.color || 'defaultColor'};
   color: white;
 `;
+
+// props validation
+
+DatePicker.propTypes = {
+  onClose: PropTypes.func,
+  ismodalopen: PropTypes.bool,
+  startDate: PropTypes.string,
+  setStartDate: PropTypes.func,
+  endDate: PropTypes.string,
+  setEndDate: PropTypes.func,
+};

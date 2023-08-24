@@ -33,6 +33,8 @@ import {
   Form,
   DateInput,
   DateInputWraper,
+  TitleWraper,
+  WordCount,
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 
@@ -144,7 +146,9 @@ function GroupWrite() {
 
     switch (name) {
       case 'groupName':
-        setGroupName(value);
+        if (value.length <= 14) {
+          setGroupName(value);
+        }
         break;
       case 'place':
         setPlace(value);
@@ -212,6 +216,7 @@ function GroupWrite() {
         </WriteHeader>
 
         <WriteBody>
+        <TitleWraper>
           <Input
             color='#4C4C4C'
             theme='underLine'
@@ -222,6 +227,8 @@ function GroupWrite() {
             onChange={universalHandler}
             required
           />
+          <WordCount>{groupName.length}/14</WordCount>
+          </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
               <ThumbnailWrapper>

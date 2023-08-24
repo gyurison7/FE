@@ -23,7 +23,6 @@ function GroupMain() {
     isError,
     isLoading,
   } = useQuery('groupData', getGroupData);
-  console.log(groupData);
 
   const moreEditHandler = (groupId) => {
     if (isMoreModalId === groupId) {
@@ -84,7 +83,7 @@ function GroupMain() {
                         onClose={() => setMoreModalId(null)}
                         groupid={item.groupId}
                         groupUserId={item.userId}
-                        groupName = {item.groupName}
+                        groupName={item.groupName}
                         parentRef={parentRef}
                       />
                     )}
@@ -179,6 +178,9 @@ const GroupWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding-bottom: 72px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const ButtonWrapper = styled.div`
   margin-top: 12px;

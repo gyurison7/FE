@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
+import api from '../../../api/index.jsx';
 
 function MoreModal({ groupid, groupUserId, groupName, parentRef }) {
   const [userId, setUserId] = useState(null);
   const [position, setPosition] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
   const modalRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
@@ -33,7 +36,29 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef }) {
     }
   }, [modalRef, parentRef]);
 
-  const navigate = useNavigate();
+  const leaveGroupHandler = async (id) => {
+    const userConfirmation = window.confirm('정말로 나가시겠습니까?');
+
+    if (!userConfirmation) {
+      return;
+    }
+    try {
+      const response = await api.delete(`/group/${id}/groupout`, {
+        withCredentials: true,
+      });
+
+      if (response.data.success === false) {
+        console.log(response.data.success);
+        setErrorMessage(response.data.message);
+      } else if (response.data.success) {
+        alert(response.data.message);
+        setErrorMessage(null);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMessage('서버 애러 입니다');
+    }
+  };
 
   return (
     <MoreModalContainer style={position} ref={modalRef}>
@@ -46,7 +71,10 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef }) {
         </div>
       )}
       <div>
-        <ModalButton isend='true'>그룹나가기</ModalButton>
+        <ModalButton isend='true' onClick={() => leaveGroupHandler(groupid)}>
+          그룹나가기
+        </ModalButton>
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </div>
     </MoreModalContainer>
   );
@@ -58,12 +86,20 @@ const MoreModalContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 226px;
+  width: 240px;
   top: 60px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0px 0px 17px -4px rgba(0, 0, 0, 0.6);
   z-index: 500;
+`;
+
+const ErrorMessage = styled.p`
+  color: #ff6a6a;
+  font-size: 12px;
+  margin-top: -5px;
+  padding-left: 15px;
+  padding-bottom: 12px;
 `;
 
 const Header = styled.div`
@@ -76,16 +112,26 @@ const Header = styled.div`
   color: #868688;
   padding-left: 15px;
 `;
-const ModalButton = styled.button`
+
+const shouldForwardProp = (prop) => !['isend'].includes(prop);
+const ModalButton = styled.button.withConfig({ shouldForwardProp })`
   width: 100%;
-  height: 40px;
+  height: 46px;
+  font-size:1spx;
   background-color: white;
   border: none;
-  border-top: 1px solid #b2b3b2;
+  border-top: 1px solid rgba(178, 179, 178, 0.5);
   text-align: left;
   cursor: pointer;
   padding-left: 15px;
   border-radius: ${(props) => (props.isend ? '0 0 12px 12px' : '0')};
+
+  &:active {
+    background-color: #f0f0f0;
+  }
+  &:hover {
+    background-color: #f7f7f7;
+  }
 `;
 
 MoreModal.propTypes = {
