@@ -69,11 +69,6 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
-  console.log(selectedFriends);
-
-  console.log('starDate', startDate);
-  console.log('endDate', endDate);
-
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
