@@ -92,7 +92,14 @@ const ResultAddButton = styled.button`
 const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const ModalContainer = styled.div.withConfig({ shouldForwardProp })`
   position: fixed;
-  width: 100%;
+  @media (max-width: 428px) {
+    width: 100%;
+    margin: 0 auto;
+  }
+  @media (min-width: 429px) {
+    width: 428px;
+    margin: 0 auto;
+  }
   left: 0;
   right: 0;
   bottom: ${({ isopen }) => (isopen ? '-9%' : '-100%')};
@@ -111,7 +118,11 @@ const ModalContainer = styled.div.withConfig({ shouldForwardProp })`
   height: 100%;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
+  
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const slideUp = keyframes`

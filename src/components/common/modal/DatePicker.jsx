@@ -198,15 +198,17 @@ const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   @media (max-width: 428px) {
     width: 100%;
+    margin: 0 auto;
   }
   @media (min-width: 429px) {
     width: 428px;
+    margin: 0 auto;
   }
   padding: 16.9px;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '-33%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '-25%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -222,7 +224,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   height: 100%;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
-  overflow: scroll;
+
 `;
 
 const slideUp = keyframes`
@@ -230,13 +232,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: -33%;
+      bottom: -25%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: -33%;
+      bottom: -25%;
     }
     to {
       bottom: -100%;

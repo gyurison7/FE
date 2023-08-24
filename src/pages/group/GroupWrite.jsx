@@ -77,7 +77,14 @@ function GroupWrite() {
       }
     }
   };
-  const handleKeyPress = (e) => {
+  const placeEnterAdd = (e) => {
+    if (e.key === 'Enter' && place.trim() !== "") {
+      placeButtonHandler();
+      e.preventDefault();
+    }
+  };
+
+  const preventForceBack = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
@@ -87,7 +94,7 @@ function GroupWrite() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!groupName || !startDate || !endDate) {
+    if (!groupName || !startDate || !endDate || !chosenFile || !places ) {
       console.error('Required fields are missing!');
       return;
     }
@@ -151,7 +158,8 @@ function GroupWrite() {
     }
   };
 
-  const deletePlaceHandler = (indexToDelete) => {
+  const deletePlaceHandler = (indexToDelete,e) => {
+    e.preventDefault();
     setPlaces((prevPlaces) =>
       prevPlaces.filter((_, index) => index !== indexToDelete)
     );
@@ -190,7 +198,7 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
+      <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
@@ -265,6 +273,7 @@ function GroupWrite() {
                 placeholder='추억을 나눈 장소를 입력해주세요'
                 value={place}
                 onChange={universalHandler}
+                onKeyPress={placeEnterAdd}
               />
               {place && (
                 <PlaceAddButton className='button' onClick={placeButtonHandler}>
@@ -275,7 +284,7 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={() => deletePlaceHandler(index)}>
+                <PlaceRemoveButton onClick={(e) => deletePlaceHandler(index,e)}>
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'
