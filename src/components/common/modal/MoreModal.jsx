@@ -10,6 +10,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const modalRef = useRef(null);
   const navigate = useNavigate();
   const storedUserId = localStorage.getItem('userId');
+  
   const handleOverlayClick = () => {
     onClose && onClose();
   };

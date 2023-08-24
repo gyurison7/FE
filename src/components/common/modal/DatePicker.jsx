@@ -103,18 +103,13 @@ function DatePicker({
     onClose();
   };
 
+  const handleOverlayClick = () => {
+    onClose && onClose();
+  };
+
   return (
     <Portal>
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 999,
-        }}
-      >
+        <Overlay onClick={handleOverlayClick}/>
         <DatePickerWrap isopen={ismodalopen}>
           <ModalButtonWrapper>
             <ModalButton onClick={onClose}>
@@ -187,7 +182,6 @@ function DatePicker({
             </FotterButton>
           </Footer>
         </DatePickerWrap>
-      </div>
     </Portal>
   );
 }
@@ -203,6 +197,16 @@ const customProps = [
   'isbetween',
 ];
 const filterProps = (prop) => !customProps.includes(prop);
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9;
+`;
 
 // styled-component
 const shouldForwardProp = (prop) => !['isopen'].includes(prop);
