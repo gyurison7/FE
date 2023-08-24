@@ -114,9 +114,13 @@ export const changePassword = async (
 };
 
 export const logout = async () => {
-  const response = await api.post('/auth/logout', {
-    withCredentials: true,
-  });
+  const response = await api.post(
+    '/auth/logout',
+    {},
+    {
+      withCredentials: true,
+    }
+  );
 
   return response.data;
 };
