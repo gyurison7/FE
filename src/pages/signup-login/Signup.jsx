@@ -84,7 +84,7 @@ function Signup() {
         alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+      alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };

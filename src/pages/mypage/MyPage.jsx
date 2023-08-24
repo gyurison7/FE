@@ -112,6 +112,7 @@ const MyPage = () => {
       const responseData = await logout();
       if (responseData) {
         localStorage.removeItem('userId');
+        localStorage.removeItem('loginId');
         navigate('/login');
       }
     } catch (error) {
