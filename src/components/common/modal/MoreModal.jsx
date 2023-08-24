@@ -4,19 +4,15 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import api from '../../../api/index.jsx';
 
-function MoreModal({ groupid, groupUserId, groupName, parentRef }) {
-  const [userId, setUserId] = useState(null);
+function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const modalRef = useRef(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      setUserId(Number(storedUserId));
-    }
-  }, []);
+  const storedUserId = localStorage.getItem('userId');
+  const handleOverlayClick = () => {
+    onClose && onClose();
+  };
 
   useEffect(() => {
     if (modalRef.current && parentRef.current) {
@@ -61,22 +57,25 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef }) {
   };
 
   return (
-    <MoreModalContainer style={position} ref={modalRef}>
-      <Header>{groupName}</Header>
-      {userId === groupUserId && (
+    <>
+      <Overlay onClick={handleOverlayClick}></Overlay>
+      <MoreModalContainer style={position} ref={modalRef}>
+        <Header>{groupName}</Header>
+        {Number(storedUserId) === groupUserId && (
+          <div>
+            <ModalButton onClick={() => navigate(`/groupedit/${groupid}`)}>
+              수정하기
+            </ModalButton>
+          </div>
+        )}
         <div>
-          <ModalButton onClick={() => navigate(`/groupedit/${groupid}`)}>
-            수정하기
+          <ModalButton isend='true' onClick={() => leaveGroupHandler(groupid)}>
+            그룹나가기
           </ModalButton>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         </div>
-      )}
-      <div>
-        <ModalButton isend='true' onClick={() => leaveGroupHandler(groupid)}>
-          그룹나가기
-        </ModalButton>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      </div>
-    </MoreModalContainer>
+      </MoreModalContainer>
+    </>
   );
 }
 
@@ -117,7 +116,7 @@ const shouldForwardProp = (prop) => !['isend'].includes(prop);
 const ModalButton = styled.button.withConfig({ shouldForwardProp })`
   width: 100%;
   height: 46px;
-  font-size:1spx;
+  font-size: 1spx;
   background-color: white;
   border: none;
   border-top: 1px solid rgba(178, 179, 178, 0.5);
@@ -134,9 +133,20 @@ const ModalButton = styled.button.withConfig({ shouldForwardProp })`
   }
 `;
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 499;
+`;
+
 MoreModal.propTypes = {
   groupid: PropTypes.number,
   groupUserId: PropTypes.number,
   groupName: PropTypes.string,
   parentRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  onClose: PropTypes.func,
 };
