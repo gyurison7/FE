@@ -161,7 +161,7 @@ function GroupWrite() {
 
     switch (name) {
       case 'groupName':
-        if (value.length <= 14) {
+        if (value.length <= 25) {
           setGroupName(value);
         }
         break;
@@ -240,7 +240,7 @@ function GroupWrite() {
               onChange={universalHandler}
               required
             />
-            <WordCount>{groupName.length}/14</WordCount>
+            <WordCount>{groupName.length}/25</WordCount>
           </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (

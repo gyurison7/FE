@@ -105,7 +105,7 @@ function GroupMain() {
                         style={{
                           fontSize: '10px',
                           color: 'gray',
-                          marginTop: '12px',
+                          marginTop: '4px',
                         }}
                       >
                         {formattedStartDate}~{formattedEndDate}
@@ -189,6 +189,11 @@ const ButtonWrapper = styled.div`
   cursor: pointer;
   margin-left: 24px;
   position: relative;
+
+  h5{
+    margin-top: -5px;
+    line-height: 16px;
+  }
 `;
 
 //styled
