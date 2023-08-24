@@ -2,14 +2,14 @@ import React from 'react';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
-const MyPageProfileModal = ({ setOpenModal, imageUploadInput }) => {
+const MyPageProfileModal = ({ setOpenModal, imageUploadInput, deleteProfileImage }) => {
   return (
     <ModalWrapper>
       <ModalBackground onClick={() => setOpenModal(false)}></ModalBackground>
       <ModalBody>
         <ImageButtonContainer>
           <button onClick={() => imageUploadInput.current.click()}>앨범에서 사진 선택</button>
-          <button>프로필 사진 삭제</button>
+          <button onClick={deleteProfileImage}>프로필 사진 삭제</button>
         </ImageButtonContainer>
         <CancelButtonContainer>
           <button onClick={() => setOpenModal(false)}>취소하기</button>
@@ -86,4 +86,5 @@ const CancelButtonContainer = styled.div`
 MyPageProfileModal.propTypes = {
     setOpenModal: PropTypes.func.isRequired,
     imageUploadInput: PropTypes.object.isRequired,
+    deleteProfileImage: PropTypes.func.isRequired,
   };

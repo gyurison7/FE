@@ -79,7 +79,19 @@ export const updateMyPageNickname = async (nickname) => {
       withCredentials: true,
     }
   );
-  console.log(response);
+
+  return response.data;
+};
+
+export const deleteMyPageProfileImage = async () => {
+  const response = await api.put(
+    '/auth/me/default',
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+
   return response.data;
 };
 
@@ -102,9 +114,13 @@ export const changePassword = async (
 };
 
 export const logout = async () => {
-  const response = await api.post('/auth/logout', {
-    withCredentials: true,
-  });
+  const response = await api.post(
+    '/auth/logout',
+    {},
+    {
+      withCredentials: true,
+    }
+  );
 
   return response.data;
 };
