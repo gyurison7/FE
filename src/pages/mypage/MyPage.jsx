@@ -5,6 +5,7 @@ import {
   getUserProfile,
   updateMyPageProfileImage,
   updateMyPageNickname,
+  deleteMyPageProfileImage,
   logout,
 } from '../../api/auth.js';
 import {
@@ -19,7 +20,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
   const [inputNickname, setInputNickname] = useState(); // 유저가 입력한 닉네임
   const [isEditing, setIsEditing] = useState(false);
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
   const [loginId, setLoginId] = useState('');
   const [openModal, setOpenModal] = useState(false);
 
@@ -90,6 +91,18 @@ const MyPage = () => {
     }
   };
 
+  const deleteProfileImage = async () => {
+    try {
+      const responseData = await deleteMyPageProfileImage();
+      if (responseData) {
+        setProfileImage(null);
+        setOpenModal(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const logoutHandler = async () => {
     try {
       const responseData = await logout();
@@ -118,7 +131,8 @@ const MyPage = () => {
             <img
               className='profileImage'
               src={
-                profileImage || `${process.env.PUBLIC_URL}assets/image/big_user.png`
+                profileImage ||
+                'https://t1.daumcdn.net/cfile/tistory/243FE450575F82662D'
               }
               alt='프로필 사진'
             />
@@ -177,6 +191,7 @@ const MyPage = () => {
         <MyPageProfileModal
           setOpenModal={setOpenModal}
           imageUploadInput={imageUploadInput}
+          deleteProfileImage={deleteProfileImage}
         />
       ) : (
         <Foot>
