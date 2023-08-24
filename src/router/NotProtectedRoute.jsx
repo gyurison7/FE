@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import api from '../api/index.jsx';
 
-function ProtectedRoute() {
+function NotProtectedRoute() {
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
@@ -14,20 +14,17 @@ function ProtectedRoute() {
         });
         const userId = response.data.userInfoData.userId;
         if (userId) {
-          setUserId(userId);
-        } else {
-          navigate('/login');
+          navigate('/groupmain');
         }
       } catch (error) {
         console.error(error);
-        navigate('/login');
       }
     };
     checkUserId();
   }),
     [navigate, setUserId];
 
-  return userId ? <Outlet /> : null;
+  return userId ? null : <Outlet />;
 }
 
-export default ProtectedRoute;
+export default NotProtectedRoute;
