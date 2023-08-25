@@ -5,7 +5,9 @@ import {
   getUserProfile,
   updateMyPageProfileImage,
   updateMyPageNickname,
+  deleteMyPageProfileImage,
   logout,
+  memberOut,
 } from '../../api/auth.js';
 import {
   nicknameCheckHandler,
@@ -19,7 +21,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
   const [inputNickname, setInputNickname] = useState(); // 유저가 입력한 닉네임
   const [isEditing, setIsEditing] = useState(false);
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
   const [loginId, setLoginId] = useState('');
   const [openModal, setOpenModal] = useState(false);
 
@@ -59,10 +61,10 @@ const MyPage = () => {
           setProfileImage(responseData);
           setOpenModal(false);
         } else {
-          alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도 해주세요.');
+          alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
       } catch (error) {
-        alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+        alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       }
     }
@@ -84,9 +86,24 @@ const MyPage = () => {
           alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
       } catch (error) {
-        alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+        alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       }
+    }
+  };
+
+  const deleteProfileImage = async () => {
+    try {
+      const responseData = await deleteMyPageProfileImage();
+      if (responseData) {
+        setProfileImage(null);
+        setOpenModal(false);
+      } else {
+        alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    } catch (error) {
+      alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      console.error(error);
     }
   };
 
@@ -95,10 +112,28 @@ const MyPage = () => {
       const responseData = await logout();
       if (responseData) {
         localStorage.removeItem('userId');
+        localStorage.removeItem('loginId');
         navigate('/login');
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const memberOutHandler = async () => {
+    const passwordInput = prompt('정말 탈퇴하시겠습니까? 탈퇴하시려면 비밀번호를 입력해주세요.');
+    if (passwordInput) {
+      try {
+        const responseData = await memberOut(passwordInput);
+        if (responseData) {
+          alert(
+            '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
+          );
+          navigate('/login');
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -118,7 +153,8 @@ const MyPage = () => {
             <img
               className='profileImage'
               src={
-                profileImage || `${process.env.PUBLIC_URL}assets/image/big_user.png`
+                profileImage ||
+                'https://t1.daumcdn.net/cfile/tistory/243FE450575F82662D'
               }
               alt='프로필 사진'
             />
@@ -165,7 +201,9 @@ const MyPage = () => {
             비밀번호 변경
           </button>
           <div>
-            <button className='memberOut'>회원탈퇴</button>
+            <button className='memberOut' onClick={memberOutHandler}>
+              회원탈퇴
+            </button>
             <span>|</span>
             <button className='logout' onClick={logoutHandler}>
               로그아웃
@@ -177,6 +215,7 @@ const MyPage = () => {
         <MyPageProfileModal
           setOpenModal={setOpenModal}
           imageUploadInput={imageUploadInput}
+          deleteProfileImage={deleteProfileImage}
         />
       ) : (
         <Foot>

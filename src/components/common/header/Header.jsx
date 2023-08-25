@@ -29,12 +29,6 @@ const HeaderContainer = styled.div`
 `;
 
 const BackButton = styled.img`
-  display: flex;
-  width: 8.602px;
-  height: 17.745px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   flex-shrink: 0;
 `;
 

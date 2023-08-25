@@ -12,7 +12,7 @@ function Search() {
   return (
     <SearchPage>
       <header>검색</header>
-      <body>
+      <div>
         <DateInput
           value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
           onClick={() => setDateModal(!isDateModal)}
@@ -29,7 +29,7 @@ function Search() {
             setEndDate={setEndDate}
           />
         )}
-      </body>
+      </div>
       <FootWraper>
         <Footer />
       </FootWraper>

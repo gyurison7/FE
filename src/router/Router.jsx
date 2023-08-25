@@ -15,19 +15,26 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import DatePicker from '../components/common/modal/DatePicker.jsx';
 import PostDetail from '../pages/post/PostDetail.jsx';
 import Search from '../pages/search/Search.jsx';
+import NotProtectedRoute from './NotProtectedRoute.jsx';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Introduction />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<NotProtectedRoute />}>
+          <Route index element={<Login />} />
+        </Route>
         <Route
           path='/api/auth/login/kakao/callback'
           element={<KakaoLoginRedirect />}
         />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/userprofile' element={<UserProfile />} />
+        <Route path='/signup' element={<NotProtectedRoute />}>
+          <Route index element={<Signup />} />
+        </Route>
+        <Route path='/userprofile' element={<NotProtectedRoute />}>
+          <Route index element={<UserProfile />} />
+        </Route>
         <Route path='/groupmain' element={<ProtectedRoute />}>
           <Route index element={<GroupMain />} />
         </Route>
