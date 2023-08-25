@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import GroupPageHeader from '../../layout/header/GroupPageHeader';
@@ -6,9 +6,13 @@ import Footer from '../../layout/footer/Footer.js';
 import { getGroupData } from '../../api/groupMainApi';
 import { useQuery } from 'react-query';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
+import MoreModal from '../../components/common/modal/MoreModal.jsx';
 
 function GroupMain() {
+  const [isMoreModalId, setMoreModalId] = useState(null);
   const navigate = useNavigate();
+  const parentRef = useRef(null);
+
   const writeButtonHandler = () => {
     navigate(`/groupwrite`);
   };
@@ -19,10 +23,17 @@ function GroupMain() {
     isError,
     isLoading,
   } = useQuery('groupData', getGroupData);
-console.log(groupData)
+
+  const moreEditHandler = (groupId) => {
+    if (isMoreModalId === groupId) {
+      setMoreModalId(null);
+    } else {
+      setMoreModalId(groupId);
+    }
+  };
   return (
     <>
-      <MainContainer>
+      <MainContainer ref={parentRef}>
         <FixedHeader />
         <GroupWrapper>
           {isLoading ? (
@@ -49,7 +60,7 @@ console.log(groupData)
           ) : (
             <>
               <ButtonWrapper>
-                <PlusButton onClick={writeButtonHandler}/>
+                <PlusButton onClick={writeButtonHandler} />
               </ButtonWrapper>
               {groupData.map((item) => {
                 const formattedStartDate = item.startDate
@@ -61,14 +72,21 @@ console.log(groupData)
 
                 return (
                   <ButtonWrapper key={item.groupId}>
-                    <GroupEditButton
-                      onClick={() => navigate(`/groupedit/${item.groupId}`)}
-                    >
+                    <GroupEditButton onClick={() => moreEditHandler(item.groupId)}>
                       <EditIcon
                         src={`${process.env.PUBLIC_URL}/assets/svgs/iconedit.svg`}
                         alt='editicon'
                       />
                     </GroupEditButton>
+                    {isMoreModalId === item.groupId && (
+                      <MoreModal
+                        onClose={() => setMoreModalId(null)}
+                        groupid={item.groupId}
+                        groupUserId={item.userId}
+                        groupName={item.groupName}
+                        parentRef={parentRef}
+                      />
+                    )}
                     <GroupDetailButton
                       onClick={() => navigate(`/postmain/${item.groupId}`)}
                     >
@@ -87,7 +105,7 @@ console.log(groupData)
                         style={{
                           fontSize: '10px',
                           color: 'gray',
-                          marginTop: '12px',
+                          marginTop: '4px',
                         }}
                       >
                         {formattedStartDate}~{formattedEndDate}
@@ -115,9 +133,8 @@ const FixedHeader = styled(GroupPageHeader)`
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10; 
+  z-index: 10;
 `;
-
 
 const GroupEditButton = styled.button`
   position: absolute;
@@ -161,6 +178,9 @@ const GroupWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding-bottom: 72px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const ButtonWrapper = styled.div`
   margin-top: 12px;
@@ -169,6 +189,11 @@ const ButtonWrapper = styled.div`
   cursor: pointer;
   margin-left: 24px;
   position: relative;
+
+  h5{
+    margin-top: -10px;
+    line-height: 16px;
+  }
 `;
 
 //styled

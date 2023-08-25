@@ -28,6 +28,8 @@ import {
   SubmitButton,
   ThumbedImage,
   ThumbnailWrapper,
+  TitleWraper,
+  WordCount,
   WriteBody,
   WriteHeader,
   WriteImageWrapper,
@@ -69,10 +71,7 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
-  console.log(selectedFriends);
-
-  console.log('starDate', startDate);
-  console.log('endDate', endDate);
+  const storedUserId = localStorage.getItem('userId');
 
   const searchUser = async (nickname) => {
     try {
@@ -130,7 +129,14 @@ function GroupWrite() {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const placeEnterAdd = (e) => {
+    if (e.key === 'Enter' && place.trim() !== '') {
+      placeButtonHandler();
+      e.preventDefault();
+    }
+  };
+
+  const preventForceBack = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
@@ -155,7 +161,9 @@ function GroupWrite() {
 
     switch (name) {
       case 'groupName':
-        setGroupName(value);
+        if (value.length <= 25) {
+          setGroupName(value);
+        }
         break;
       case 'place':
         setPlace(value);
@@ -207,7 +215,7 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
+      <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
@@ -221,15 +229,19 @@ function GroupWrite() {
         </WriteHeader>
 
         <WriteBody>
-          <Input
-            color='#4C4C4C'
-            theme='underLine'
-            name='groupName'
-            type='text'
-            value={groupName}
-            placeholder='앨범 이름을 입력해주세요'
-            onChange={universalHandler}
-          />
+          <TitleWraper>
+            <Input
+              color='#4C4C4C'
+              theme='underLine'
+              name='groupName'
+              type='text'
+              value={groupName}
+              placeholder='앨범 이름을 입력해주세요'
+              onChange={universalHandler}
+              required
+            />
+            <WordCount>{groupName.length}/25</WordCount>
+          </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
               <ThumbnailWrapper>
@@ -249,11 +261,7 @@ function GroupWrite() {
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <DateInput
-              value={
-                startDate && endDate
-                  ? `${startDate} ~ ${endDate}`
-                  : ''
-              }
+              value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
               onClick={() => setDateModal(!isDateModal)}
               readOnly
             />
@@ -281,6 +289,7 @@ function GroupWrite() {
                 placeholder='추억을 나눈 장소를 입력해주세요'
                 value={place}
                 onChange={universalHandler}
+                onKeyPress={placeEnterAdd}
               />
               {place && (
                 <PlaceAddButton className='button' onClick={placeButtonHandler}>
@@ -328,8 +337,9 @@ function GroupWrite() {
           </div>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             {selectedFriends &&
-              selectedFriends.map((item) => {
-                return (
+              selectedFriends
+                .filter((item) => item.userId !== Number(storedUserId))
+                .map((item) => (
                   <SelectFrindWrapper key={item.userId}>
                     <ProfileImage src={item.profileUrl} alt={item.nickname} />
                     <p> {item.nickname} </p>
@@ -342,8 +352,7 @@ function GroupWrite() {
                       />
                     </SelectFrindRemover>
                   </SelectFrindWrapper>
-                );
-              })}
+                ))}
           </div>
         </WriteBody>
       </Form>
