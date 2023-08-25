@@ -16,6 +16,7 @@ import {
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal.jsx';
+import secureLocalStorage from 'react-secure-storage';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -111,8 +112,8 @@ const MyPage = () => {
     try {
       const responseData = await logout();
       if (responseData) {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('loginId');
+        secureLocalStorage.removeItem('userId')
+        secureLocalStorage.removeItem('loginId');
         navigate('/login');
       }
     } catch (error) {
