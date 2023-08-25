@@ -191,7 +191,7 @@ const ButtonWrapper = styled.div`
   position: relative;
 
   h5{
-    margin-top: -5px;
+    margin-top: -10px;
     line-height: 16px;
   }
 `;
