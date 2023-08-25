@@ -103,18 +103,13 @@ function DatePicker({
     onClose();
   };
 
+  const handleOverlayClick = () => {
+    onClose && onClose();
+  };
+
   return (
     <Portal>
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 999,
-        }}
-      >
+        <Overlay onClick={handleOverlayClick}/>
         <DatePickerWrap isopen={ismodalopen}>
           <ModalButtonWrapper>
             <ModalButton onClick={onClose}>
@@ -169,7 +164,7 @@ function DatePicker({
                 enddate={endDate}
                 selectedyear={selectedYear}
                 selectedmonth={selectedMonth}
-                isbetween={isBetween(day)}
+                isbetween={String(isBetween(day))}
                 onClick={() => day && handleDayClick(day)}
               >
                 <span className='dateText'>{day}</span>
@@ -187,26 +182,48 @@ function DatePicker({
             </FotterButton>
           </Footer>
         </DatePickerWrap>
-      </div>
     </Portal>
   );
 }
 
 export default DatePicker;
+// props 경고창 해결
+const customProps = [
+  'day',
+  'startdate',
+  'enddate',
+  'selectedyear',
+  'selectedmonth',
+  'isbetween',
+];
+const filterProps = (prop) => !customProps.includes(prop);
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9;
+`;
+
+// styled-component
 const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   @media (max-width: 428px) {
     width: 100%;
+    margin: 0 auto;
   }
   @media (min-width: 429px) {
     width: 428px;
+    margin: 0 auto;
   }
   padding: 16.9px;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '-33%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '-25%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -222,7 +239,6 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   height: 100%;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
-  overflow: scroll;
 `;
 
 const slideUp = keyframes`
@@ -230,13 +246,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: -33%;
+      bottom: -25%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: -33%;
+      bottom: -25%;
     }
     to {
       bottom: -100%;
@@ -284,15 +300,6 @@ const ModalButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-DatePicker.propTypes = {
-  onClose: PropTypes.func,
-  ismodalopen: PropTypes.bool,
-  startDate: PropTypes.string,
-  setStartDate: PropTypes.func,
-  endDate: PropTypes.string,
-  setEndDate: PropTypes.func,
-};
-
 DatePicker.defaultProps = {
   startDate: null,
   endDate: null,
@@ -305,7 +312,9 @@ const isSelected = (day, date, selectedyear, selectedmonth) =>
   selectedyear === new Date(date).getFullYear() &&
   selectedmonth === new Date(date).getMonth();
 
-const ButtonDays = styled.button`
+const ButtonDays = styled('button').withConfig({
+  shouldForwardProp: filterProps,
+})`
   cursor: ${({ day }) => (day ? 'pointer' : 'default')};
   width: 100%;
   height: 6vh;
@@ -327,10 +336,10 @@ const ButtonDays = styled.button`
     if (isSelected(day, enddate, selectedyear, selectedmonth)) {
       return 'linear-gradient(to right, rgba(148, 165, 254, 0.6) 29px, transparent 10px)';
     }
-    return isbetween ? 'rgb(148,165,254,0.6)' : 'white';
+    return isbetween === 'true' ? 'rgb(148,165,254,0.6)' : 'white';
   }};
   color: ${({ day, startdate, selectedyear, selectedmonth, isbetween }) =>
-    isSelected(day, startdate, selectedyear, selectedmonth) || isbetween
+    isSelected(day, startdate, selectedyear, selectedmonth) || isbetween === 'true'
       ? 'white'
       : 'black'};
   border-radius: ${({
@@ -432,3 +441,14 @@ const FotterButton = styled.button`
   background-color: ${(props) => props.color || 'defaultColor'};
   color: white;
 `;
+
+// props validation
+
+DatePicker.propTypes = {
+  onClose: PropTypes.func,
+  ismodalopen: PropTypes.bool,
+  startDate: PropTypes.string,
+  setStartDate: PropTypes.func,
+  endDate: PropTypes.string,
+  setEndDate: PropTypes.func,
+};

@@ -217,3 +217,18 @@ export const DateInput = styled.input`
 export const DateInputWraper= styled.div`
   width: 100%;
 `
+
+export const TitleWraper = styled.div`
+position: relative;
+width: 100%;
+`
+
+export const WordCount = styled.div`
+margin: -9px 0px 0px;
+  position: absolute;
+  line-height: 19px;
+  font-size: 14px;
+  right: 0px;
+  top: 68%;
+  color: rgb(130, 140, 148);
+`

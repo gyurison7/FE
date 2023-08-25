@@ -33,6 +33,8 @@ import {
   Form,
   DateInput,
   DateInputWraper,
+  TitleWraper,
+  WordCount,
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 
@@ -77,7 +79,14 @@ function GroupWrite() {
       }
     }
   };
-  const handleKeyPress = (e) => {
+  const placeEnterAdd = (e) => {
+    if (e.key === 'Enter' && place.trim() !== "") {
+      placeButtonHandler();
+      e.preventDefault();
+    }
+  };
+
+  const preventForceBack = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
@@ -87,7 +96,7 @@ function GroupWrite() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!groupName || !startDate || !endDate) {
+    if (!groupName || !startDate || !endDate || !chosenFile || !places ) {
       console.error('Required fields are missing!');
       return;
     }
@@ -137,7 +146,9 @@ function GroupWrite() {
 
     switch (name) {
       case 'groupName':
-        setGroupName(value);
+        if (value.length <= 25) {
+          setGroupName(value);
+        }
         break;
       case 'place':
         setPlace(value);
@@ -151,7 +162,8 @@ function GroupWrite() {
     }
   };
 
-  const deletePlaceHandler = (indexToDelete) => {
+  const deletePlaceHandler = (indexToDelete,e) => {
+    e.preventDefault();
     setPlaces((prevPlaces) =>
       prevPlaces.filter((_, index) => index !== indexToDelete)
     );
@@ -190,7 +202,7 @@ function GroupWrite() {
 
   return (
     <>
-      <Form onSubmit={submitHandler} onKeyPress={handleKeyPress}>
+      <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
@@ -204,6 +216,7 @@ function GroupWrite() {
         </WriteHeader>
 
         <WriteBody>
+        <TitleWraper>
           <Input
             color='#4C4C4C'
             theme='underLine'
@@ -214,6 +227,8 @@ function GroupWrite() {
             onChange={universalHandler}
             required
           />
+          <WordCount>{groupName.length}/25</WordCount>
+          </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
               <ThumbnailWrapper>
@@ -265,6 +280,7 @@ function GroupWrite() {
                 placeholder='추억을 나눈 장소를 입력해주세요'
                 value={place}
                 onChange={universalHandler}
+                onKeyPress={placeEnterAdd}
               />
               {place && (
                 <PlaceAddButton className='button' onClick={placeButtonHandler}>
@@ -275,7 +291,7 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={() => deletePlaceHandler(index)}>
+                <PlaceRemoveButton onClick={(e) => deletePlaceHandler(index,e)}>
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'
