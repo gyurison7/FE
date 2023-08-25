@@ -11,8 +11,6 @@ export const onChangePasswordHandler = (e, password, confirm, setPassword, setCo
 
 export const passwordCheckHandler = (password, confirm, setPasswordError, setConfirmError) => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*\s)(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
-  console.log('password', password); // TODO : 테스트 완료 후 삭제하기
-  console.log('confirm', confirm);
   if (password === '') {
     setPasswordError('비밀번호를 입력해주세요.');
     return false;
