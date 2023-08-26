@@ -5,6 +5,7 @@ import { login } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import KakaoLogin from '../kakao-login/KakaoLogin.jsx';
 import Button from '../../components/common/button/Button.jsx';
+import secureLocalStorage from 'react-secure-storage';
 
 function Login() {
   const [id, setId] = useState('');
@@ -16,12 +17,12 @@ function Login() {
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
     setIdError('');
-  }
+  };
 
   const onChangePasswordHandelr = (e) => {
     setPassword(e.target.value);
     setPasswordError('');
-  }
+  };
 
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -36,6 +37,7 @@ function Login() {
     try {
       const responseData = await login(id, password);
       if (responseData) {
+        secureLocalStorage.setItem('userId', responseData.userId);
         navigate('/groupmain');
       } else {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
@@ -44,12 +46,15 @@ function Login() {
       alert('아이디 또는 비밀번호를 다시 확인해주세요.');
       console.error(error);
     }
-  }
+  };
 
   return (
     <Wrapper>
       <form onSubmit={loginHandler}>
-        <LogoImage src={`${process.env.PUBLIC_URL}/assets/image/logo.png`} alt='logo' />
+        <LogoImage
+          src={`${process.env.PUBLIC_URL}/assets/image/logo.png`}
+          alt='logo'
+        />
         <InputContainer>
           <Input
             onChange={onChangeIdHandelr}
@@ -58,7 +63,8 @@ function Login() {
             name='id'
             value={id}
             placeholder='아이디 입력'
-            theme='radius' />
+            theme='radius'
+          />
           {idError && <small>{idError}</small>}
           <Input
             onChange={onChangePasswordHandelr}
@@ -67,16 +73,13 @@ function Login() {
             name='password'
             value={password}
             placeholder='비밀번호 입력'
-            theme='radius' />
+            theme='radius'
+          />
           {passwordError && <small>{passwordError}</small>}
         </InputContainer>
         <ButtonContainer>
-          <Button
-            type='submit'
-            size='large'
-            background='#FFF'
-            color='#5873FE'
-          >로그인
+          <Button type='submit' size='large' background='#FFF' color='#5873FE'>
+            로그인
           </Button>
         </ButtonContainer>
         <LinkContainer>
@@ -87,7 +90,7 @@ function Login() {
         <KakaoLogin />
       </form>
     </Wrapper>
-  )
+  );
 }
 
 export default Login;
@@ -99,7 +102,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background: linear-gradient(#5570FF, #8895F0);
+  background: linear-gradient(#5570ff, #8895f0);
 `;
 
 const LogoImage = styled.img`
@@ -127,7 +130,7 @@ const InputContainer = styled.div`
     text-align: left;
     margin-left: 5vw;
     margin-right: 5vw;
-    color: #FF7E62;
+    color: #ff7e62;
     font-size: 13px;
     font-weight: 600;
   }
@@ -140,7 +143,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   position: relative;
   bottom: -6vh;
-  
+
   button {
     font-weight: 700;
   }
@@ -150,7 +153,7 @@ const LinkContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   position: relative;
   bottom: -9vh;
 `;
@@ -158,7 +161,7 @@ const LinkContainer = styled.div`
 const LinkStyle = styled(Link)`
   text-decoration: none;
   //margin-right: 0.625rem;
-  color: #FFF;
+  color: #fff;
   text-align: center;
   font-size: 15px;
   font-weight: 500;
