@@ -32,7 +32,7 @@ const Router = () => {
         <Route path='/signup' element={<NotProtectedRoute />}>
           <Route index element={<Signup />} />
         </Route>
-        <Route path='/userprofile' element={<NotProtectedRoute />}>
+        <Route path='/userprofile' element={<ProtectedRoute />}>
           <Route index element={<UserProfile />} />
         </Route>
         <Route path='/groupmain' element={<ProtectedRoute />}>
