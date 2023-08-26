@@ -16,6 +16,7 @@ import {
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal.jsx';
+import secureLocalStorage from 'react-secure-storage';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -111,8 +112,8 @@ const MyPage = () => {
     try {
       const responseData = await logout();
       if (responseData) {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('loginId');
+        secureLocalStorage.removeItem('userId')
+        secureLocalStorage.removeItem('loginId');
         navigate('/login');
       }
     } catch (error) {
@@ -121,7 +122,9 @@ const MyPage = () => {
   };
 
   const memberOutHandler = async () => {
-    const passwordInput = prompt('정말 탈퇴하시겠습니까? 탈퇴하시려면 비밀번호를 입력해주세요.');
+    const passwordInput = prompt(
+      '정말 탈퇴하시겠습니까? 탈퇴하시려면 비밀번호를 입력해주세요.'
+    );
     if (passwordInput) {
       try {
         const responseData = await memberOut(passwordInput);
@@ -166,20 +169,21 @@ const MyPage = () => {
           </ProfileImageButton>
           <NicknameContainer>
             {isEditing ? (
-              <div>
-                <input
-                  type='text'
-                  value={inputNickname}
-                  onChange={nicknameChangeUtil}
-                  onBlur={blurHandler}
-                  placeholder='10자 이하로 입력해주세요!'
-                  maxLength={10}
-                />
-              </div>
+              <input
+                type='text'
+                value={inputNickname}
+                onChange={nicknameChangeUtil}
+                onBlur={blurHandler}
+                placeholder='10자 이하로 입력해주세요!'
+                maxLength={10}
+              />
             ) : (
               <span>{nickname}</span>
             )}
-            <NicknameImageButton onTouchStart={nicknameSubmitHandler}>
+            <NicknameImageButton
+              onTouchStart={nicknameSubmitHandler}
+              onMouseDown={nicknameSubmitHandler}
+            >
               {isEditing ? (
                 <img
                   src={`${process.env.PUBLIC_URL}assets/svgs/mypage_check.svg`}
@@ -287,24 +291,19 @@ const NicknameContainer = styled.div`
   align-items: center;
   gap: 1vw;
 
-  div {
-    display: flex;
-    flex-direction: column;
-
-    input {
-      width: 242px;
-      height: 32px;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #cecece;
-      color: #4c4c4c;
-      font-size: 24px;
-      font-weight: 700;
-      padding: 0 1px;
-      outline: none;
-      &::placeholder {
-        font-size: 16px;
-      }
+  input {
+    width: 242px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #cecece;
+    color: #4c4c4c;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0 1px;
+    outline: none;
+    &::placeholder {
+      font-size: 16px;
     }
   }
 
