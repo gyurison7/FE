@@ -144,7 +144,7 @@ const Overlay = styled.div`
   z-index: 499;
 `;
 
-MoreModal.propTypes = {
+MoreModal.propTypes = {   
   groupid: PropTypes.number,
   groupUserId: PropTypes.number,
   groupName: PropTypes.string,

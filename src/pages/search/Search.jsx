@@ -142,7 +142,6 @@ const SearchResutContainer = styled.div`
 `;
 const ThumbnailWrapper = styled.div`
   display: flex;
-  white-space: nowrap;
   margin-top: 12px;
   overflow-x: scroll;
   &::-webkit-scrollbar {
