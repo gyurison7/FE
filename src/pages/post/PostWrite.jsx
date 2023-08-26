@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { useNavigate, useParams } from 'react-router-dom';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Layout from '../../layout';
@@ -8,12 +7,17 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import Button from '../../components/common/button/Button.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import api from '../../api/index.jsx';
-function PostWrite() {
-  const { id } = useParams();
-  const [title, setTitle] = useState('');
-  const [file, setFile] = useState(null);
-  const [thumbnailUrl, setThumbnailUrl] = useState('');
+import { selectedProfileState } from '../../recoil/Atom.js';
+import { useRecoilValue } from 'recoil';
 
+function PostWrite() {
+  const [title, setTitle] = useState('');
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [file, setFile] = useState(null);
+  const { id } = useParams();
+  const postData = useRecoilValue(selectedProfileState);
+
+  console.log('detail', postData);
   const navigate = useNavigate();
   const changeHandler = (e) => {
     const selectedFile = e.target.files[0];
@@ -58,7 +62,7 @@ function PostWrite() {
             onClick={() => navigate(`/postmain/${id}`)}
           />
           <Title>
-            <span>게시하기</span> <p>Memory Mingle</p>
+            <span>게시하기</span> <p>{postData.groupName}</p>
           </Title>
           <Button
             size='small'

@@ -6,8 +6,8 @@ import { selectedProfileState } from '../../../recoil/Atom';
 import { styled } from 'styled-components';
 
 export default function ProfileModal({ isOpen, closeModal }) {
-  const selectedProfile = useRecoilValue(selectedProfileState);
-  if (!selectedProfile) {
+  const postData = useRecoilValue(selectedProfileState);
+  if (!postData) {
     return null;
   }
 
@@ -22,8 +22,8 @@ export default function ProfileModal({ isOpen, closeModal }) {
         maskStyle={{ background: 'black', opacity: '0.9' }}
       >
         <Wrap>
-          <ProfileImage src={selectedProfile.profileUrl} alt='' />
-          <ProfileName>{selectedProfile.nickname}</ProfileName>
+          <ProfileImage src={postData.profileUrl} alt='' />
+          <ProfileName>{postData.nickname}</ProfileName>
           <CloseButton onClick={closeModal}>x</CloseButton>
         </Wrap>
       </StyledModal>
