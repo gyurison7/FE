@@ -289,7 +289,7 @@ const NicknameContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1vw;
+  gap: 4px;
 
   input {
     width: 242px;
@@ -349,7 +349,7 @@ const ButtonContainer = styled.div`
 
   div {
     display: flex;
-    gap: 2vw;
+    gap: 8px;
 
     .memberOut,
     .logout {
