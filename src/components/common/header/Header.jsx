@@ -26,6 +26,7 @@ const HeaderContainer = styled.div`
   height: 80px;
   padding: 20px;
   position: relative;
+  top: 3vh;
 `;
 
 const BackButton = styled.img`

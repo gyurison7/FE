@@ -143,7 +143,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 12vh;
+  margin-top: 11vh;
 `;
 
 const Form = styled.form`
