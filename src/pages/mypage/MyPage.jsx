@@ -25,6 +25,7 @@ const MyPage = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [loginId, setLoginId] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [width, setWidth] = useState('');
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
@@ -71,7 +72,8 @@ const MyPage = () => {
     }
   };
 
-  const nicknameSubmitHandler = async () => {
+  const nicknameSubmitHandler = async (e) => {
+    e.preventDefault();
     if (!isEditing) {
       setIsEditing(true);
       return;
@@ -112,7 +114,7 @@ const MyPage = () => {
     try {
       const responseData = await logout();
       if (responseData) {
-        secureLocalStorage.removeItem('userId')
+        secureLocalStorage.removeItem('userId');
         secureLocalStorage.removeItem('loginId');
         navigate('/login');
       }
@@ -138,6 +140,13 @@ const MyPage = () => {
         console.log(error);
       }
     }
+  };
+
+  const dynamicWidth = (e) => {
+    const baseWidth = 63;
+    const addWidth = 21;
+    const newWidth = baseWidth + e.target.value.length * addWidth;
+    setWidth(newWidth);
   };
 
   return (
@@ -167,35 +176,28 @@ const MyPage = () => {
               alt='프로필 사진'
             />
           </ProfileImageButton>
-          <NicknameContainer>
+          <NicknameContainer onSubmit={nicknameSubmitHandler} width={width}>
             {isEditing ? (
               <input
                 type='text'
                 value={inputNickname}
                 onChange={nicknameChangeUtil}
                 onBlur={blurHandler}
-                placeholder='10자 이하로 입력해주세요!'
+                //placeholder='10자 이하로 입력해주세요!'
                 maxLength={10}
+                onInput={dynamicWidth}
               />
             ) : (
               <span>{nickname}</span>
             )}
-            <NicknameImageButton
-              onTouchStart={nicknameSubmitHandler}
-              onMouseDown={nicknameSubmitHandler}
-            >
-              {isEditing ? (
-                <img
-                  src={`${process.env.PUBLIC_URL}assets/svgs/mypage_check.svg`}
-                  alt='닉네임 바꾸기'
-                />
-              ) : (
+            <NicknameImageButton type='submit'>
+              {!isEditing ? (
                 <img
                   className='pencilButton'
                   src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`}
                   alt='닉네임 바꾸기'
                 />
-              )}
+              ) : null}
             </NicknameImageButton>
           </NicknameContainer>
           <span>{loginId}</span>
@@ -254,7 +256,7 @@ const ProfileContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 2vh;
-  margin-top: 10vh;
+  margin-top: 9vh;
 
   span {
     color: #959595;
@@ -285,15 +287,17 @@ const ProfileImageButton = styled.button`
   }
 `;
 
-const NicknameContainer = styled.div`
+const NicknameContainer = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1vw;
+  gap: 4px;
 
   input {
-    width: 242px;
-    height: 32px;
+    min-width: 63px;
+    max-width: 224px;
+    width: ${(props) => props.width}px;
+    height: 29px;
     background: transparent;
     border: none;
     border-bottom: 1px solid #cecece;
@@ -302,6 +306,7 @@ const NicknameContainer = styled.div`
     font-weight: 700;
     padding: 0 1px;
     outline: none;
+    transition: width 0.2s;
     &::placeholder {
       font-size: 16px;
     }
@@ -349,7 +354,7 @@ const ButtonContainer = styled.div`
 
   div {
     display: flex;
-    gap: 2vw;
+    gap: 8px;
 
     .memberOut,
     .logout {
