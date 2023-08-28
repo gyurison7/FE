@@ -176,7 +176,7 @@ const MyPage = () => {
               alt='프로필 사진'
             />
           </ProfileImageButton>
-          <NicknameContainer onSubmit={nicknameSubmitHandler} width={width}>
+          <NicknameContainer onSubmit={nicknameSubmitHandler} action='#' width={width}>
             {isEditing ? (
               <input
                 type='text'
