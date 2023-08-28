@@ -59,7 +59,7 @@ function PostWrite() {
           <IconComponents
             iconType='vectorLeft'
             stroke='#4C4C4C'
-            onClick={() => navigate(`/postmain/${id}`)}
+            onClick={() => navigate(-1)}
           />
           <Title>
             <span>게시하기</span> <p>{postData.groupName}</p>
