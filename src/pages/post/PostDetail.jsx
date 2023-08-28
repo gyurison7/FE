@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import { styled } from 'styled-components';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import Comment from '../../components/common/comment/Comment.jsx';
 import Avatar from '../../components/common/avatar/Avatar.jsx';
+import secureLocalStorage from 'react-secure-storage';
 export default function PostDetail() {
   const { groupId, postId } = useParams();
   const [detail, setDetail] = useState(null);
-  console.log(detail);
-  const commentRef = useRef('');
-  console.log(detail);
+  const storedUserId = secureLocalStorage.getItem('userId');
+  const [commentInput, setCommentInput] = useState('');
+
   useEffect(() => {
     api
       .get(`/group/${groupId}/memory/${postId}`, { withCredentials: true })
@@ -22,14 +23,33 @@ export default function PostDetail() {
     if (e.key === 'Enter') {
       e.preventDefault();
       const newComment = {
-        comment: commentRef.current.value,
+        comment: commentInput,
       };
-      api.post(`/group/${groupId}/memory/${postId}/comment`, newComment, {
+      await api.post(`/group/${groupId}/memory/${postId}/comment`, newComment, {
         withCredentials: true,
       });
-
-      commentRef.current.value = '';
+      api
+        .get(`/group/${groupId}/memory/${postId}`, { withCredentials: true })
+        .then((res) => {
+          setDetail(res.data);
+          setCommentInput('');
+        });
     }
+  };
+  const commentDeleta = async (commentId) => {
+    await api.delete(
+      `/group/${groupId}/memory/${detail.memory.memoryId}/comment/${commentId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    const updatedComments = detail.comments.filter(
+      (comment) => comment.commentId !== commentId
+    );
+    setDetail((prevDetail) => ({
+      ...prevDetail,
+      comments: updatedComments,
+    }));
   };
   return (
     <Wrap>
@@ -41,38 +61,51 @@ export default function PostDetail() {
       <div style={{ paddingBottom: '75px' }}>
         <UserInfo>
           <UserTitle>
-            <p>{detail?.memory.title} </p>
-            <div>...</div>
+            {detail && detail.memory && (
+              <>
+                <p>{detail.memory.title}</p>
+                {storedUserId === detail.memory.userId ? <div>...</div> : null}
+              </>
+            )}
           </UserTitle>
           <UserInfoData>
             <Avatar
-              src={detail?.memory['User.profileUrl']}
+              src={detail?.memory?.['User.profileUrl']}
               width='40px'
               height='40px'
             />
             <div>
-              <p>{detail?.memory['User.nickname']}</p>
+              <p>{detail?.memory?.['User.nickname']}</p>
               <div>
-                <p>2023.08.01</p>
+                <p>{detail?.memory?.createdAt.slice(0, 10)}</p>
               </div>
             </div>
           </UserInfoData>
         </UserInfo>
-        <IMG src={detail?.memory.imageUrl} alt='detaeil' />
+        <IMG src={detail?.memory?.imageUrl} alt='detaeil' />
         <CommentWrap>
           <div>
-            {detail?.comments.map((element) => {
-              return <Comment key={element.commentId} {...element} />;
+            {detail?.comments?.map((element) => {
+              return (
+                <Comment
+                  key={element.commentId}
+                  {...element}
+                  groupId={groupId}
+                  detail={detail}
+                  commentDeleta={() => commentDeleta(element.commentId)}
+                />
+              );
             })}
           </div>
         </CommentWrap>
       </div>
       <Footer>
-        <Avatar src={detail?.user.profileUrl} width='40px' height='40px' />
+        <Avatar src={detail?.user?.profileUrl} width='40px' height='40px' />
         <input
           type='text'
           placeholder='댓글을 달아주세요'
-          ref={commentRef}
+          value={commentInput}
+          onChange={(e) => setCommentInput(e.target.value)}
           onKeyPress={commentSubmit}
         />
       </Footer>
@@ -107,7 +140,6 @@ const Head = styled.div`
 `;
 const IMG = styled.img`
   width: 100%;
-  height: 393px;
 `;
 const UserInfo = styled.div`
   width: 100%;
@@ -158,14 +190,13 @@ const Footer = styled.div`
     border-radius: 20px;
     border: 0.1px solid #c5c5c7;
     outline: none;
-
+    padding-left: 15px;
     &::placeholder {
       color: #c5c5c7;
       font-size: 14px;
       font-style: normal;
       font-weight: 500;
       line-height: normal;
-      padding-left: 15px;
     }
   }
 `;
