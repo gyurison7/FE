@@ -12,7 +12,7 @@ const UserAvatar = styled.img`
   border-radius: 50%;
 `;
 Avatar.propTypes = {
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
 };
