@@ -190,7 +190,6 @@ const MyPage = () => {
             ) : (
               <span>{nickname}</span>
             )}
-            <button type="submit" style={{ display: 'none' }} />
             <NicknameImageButton type='submit'>
               {!isEditing ? (
                 <img
