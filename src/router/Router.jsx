@@ -16,6 +16,7 @@ import DatePicker from '../components/common/modal/DatePicker.jsx';
 import PostDetail from '../pages/post/PostDetail.jsx';
 import Search from '../pages/search/Search.jsx';
 import NotProtectedRoute from './NotProtectedRoute.jsx';
+import Notice from '../pages/notice/Notice.jsx';
 
 const Router = () => {
   return (
@@ -63,6 +64,9 @@ const Router = () => {
           <Route index element={<Search />} />
         </Route>
         <Route path='/testdate' element={<DatePicker />} />
+        <Route path='/notice' element={<ProtectedRoute />}>
+          <Route index element={<Notice />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

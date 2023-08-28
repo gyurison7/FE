@@ -17,7 +17,7 @@ function Footer() {
         </StyledNavLink>
       </div>
       <div>
-        <StyledNavLink to='/your-link'>
+        <StyledNavLink to='/notice'>
           <IconComponents iconType='inbox' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
