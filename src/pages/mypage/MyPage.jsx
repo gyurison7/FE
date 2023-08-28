@@ -180,6 +180,7 @@ const MyPage = () => {
             {isEditing ? (
               <input
                 type='text'
+                onKeyPress={e => {if(e.key === 'Enter') nicknameSubmitHandler(e)}}
                 value={inputNickname}
                 onChange={nicknameChangeUtil}
                 onBlur={blurHandler}
