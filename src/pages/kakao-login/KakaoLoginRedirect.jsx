@@ -11,7 +11,7 @@ const KakaoLoginRedirect = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `https://honeyitem.shop/api/auth/login/kakao/callback?code=${code}`,
+          `${process.env.REACT_APP_REDIRECT_URI}?code=${code}`,
           { withCredentials: true }
         );
         if (response.data) {
