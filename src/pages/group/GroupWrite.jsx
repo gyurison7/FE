@@ -35,6 +35,7 @@ import {
   DateInputWraper,
   TitleWraper,
   WordCount,
+  ErrorText,
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 
@@ -54,8 +55,13 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
-  console.log('startdatewrite', startDate);
-  console.log('endDatewrite', endDate);
+  //error state
+  const [groupNameError, setGroupNameError] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [placeError, setPlaceError] = useState(false);
+
+  console.log(searchResult);
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -80,7 +86,7 @@ function GroupWrite() {
     }
   };
   const placeEnterAdd = (e) => {
-    if (e.key === 'Enter' && place.trim() !== "") {
+    if (e.key === 'Enter' && place.trim() !== '') {
       placeButtonHandler();
       e.preventDefault();
     }
@@ -96,10 +102,34 @@ function GroupWrite() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!groupName || !startDate || !endDate || !chosenFile || !places ) {
-      console.error('Required fields are missing!');
-      return;
+    setGroupNameError(false);
+    setThumbnailError(false);
+    setDateError(false);
+    setPlaceError(false);
+
+    let validationPassed = true;
+
+    if (!groupName) {
+      setGroupNameError(true);
+      validationPassed = false;
     }
+
+    if (!chosenFile) {
+      setThumbnailError(true);
+      validationPassed = false;
+    }
+
+    if (!startDate || !endDate) {
+      setDateError(true);
+      validationPassed = false;
+    }
+
+    if (!places || places.length === 0) {
+      setPlaceError(true);
+      validationPassed = false;
+    }
+
+    if (!validationPassed) return;
 
     const data = new FormData();
     data.append('thumbnailUrl', chosenFile);
@@ -113,9 +143,9 @@ function GroupWrite() {
     data.append('endDate', endDate);
 
     try {
-      const response = await api.post('/group', data,{
-        headers:{
-          'Content-Type':'multipart/form-data',
+      const response = await api.post('/group', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
         withCredentials: true,
       });
@@ -162,7 +192,7 @@ function GroupWrite() {
     }
   };
 
-  const deletePlaceHandler = (indexToDelete,e) => {
+  const deletePlaceHandler = (indexToDelete, e) => {
     e.preventDefault();
     setPlaces((prevPlaces) =>
       prevPlaces.filter((_, index) => index !== indexToDelete)
@@ -216,18 +246,19 @@ function GroupWrite() {
         </WriteHeader>
 
         <WriteBody>
-        <TitleWraper>
-          <Input
-            color='#4C4C4C'
-            theme='underLine'
-            name='groupName'
-            type='text'
-            value={groupName}
-            placeholder='앨범 이름을 입력해주세요'
-            onChange={universalHandler}
-            required
-          />
-          <WordCount>{groupName.length}/25</WordCount>
+          <TitleWraper>
+            <Input
+              color='#4C4C4C'
+              theme='underLine'
+              name='groupName'
+              type='text'
+              value={groupName}
+              placeholder='앨범 이름을 입력해주세요'
+              onChange={universalHandler}
+              required
+            />
+            <WordCount>{groupName.length}/25</WordCount>
+            {groupNameError && <ErrorText >앨범 이름을 입력해주세요</ErrorText>}
           </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
@@ -245,6 +276,7 @@ function GroupWrite() {
                 썸네일 추가하기
               </WriteImageUpload>
             )}
+             {thumbnailError && <ErrorText>썸네일을 추가해주세요</ErrorText>}
           </WriteImageWrapper>
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
@@ -266,6 +298,7 @@ function GroupWrite() {
                 setEndDate={setEndDate}
               />
             )}
+             {dateError && <ErrorText >날짜를 설정해주세요</ErrorText>}
           </StDateWrapper>
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
@@ -291,7 +324,7 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={(e) => deletePlaceHandler(index,e)}>
+                <PlaceRemoveButton onClick={(e) => deletePlaceHandler(index, e)}>
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'
@@ -299,6 +332,7 @@ function GroupWrite() {
                 </PlaceRemoveButton>
               </PlaceResult>
             ))}
+             {placeError && <ErrorText>추억장소를 추가해주세요</ErrorText>}
           </PlaceContainer>
           <div style={{ width: '100%' }}>
             <DivHeaderText>함께한 친구들 </DivHeaderText>

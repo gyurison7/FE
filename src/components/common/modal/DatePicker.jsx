@@ -174,7 +174,7 @@ function DatePicker({
           <Footer>
             <FotterButton onClick={onResetHandler} color='rgba(148, 163, 184, 1)'>
               {' '}
-              초기회하기{' '}
+              초기화하기{' '}
             </FotterButton>
             <FotterButton onClick={applyHandler} color='rgba(88, 115, 254, 1)'>
               {' '}

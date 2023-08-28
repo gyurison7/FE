@@ -66,15 +66,15 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         {Number(storedUserId) === groupUserId && (
           <div>
             <ModalButton onClick={() => navigate(`/groupedit/${groupid}`)}>
-              수정하기
+              앨범 수정하기
             </ModalButton>
           </div>
         )}
         <div>
           <ModalButton isend='true' onClick={() => leaveGroupHandler(groupid)}>
-            그룹나가기
+          {storedUserId === groupUserId ? '앨범 삭제하기' : '앨범 나가기'}
           </ModalButton>
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          {errorMessage && <ErrorMessage>초대된 친구가 남아있어 삭제할 수 없습니다</ErrorMessage>}
         </div>
       </MoreModalContainer>
     </>

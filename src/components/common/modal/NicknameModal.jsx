@@ -1,6 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import { useState } from 'react';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -16,16 +17,36 @@ function FriendSearchModal({
   isUserSelected,
   participants,
 }) {
+
+  const [dragStartY, setDragStartY] = useState(0);
+
+  const handleDragStart = (e) => {
+    setDragStartY(e.clientY);
+  };
+
+  const handleDragEnd = (e) => {
+    if (e.clientY - dragStartY > 100) { 
+      onClose();
+    }
+  };
+
+
   return (
     <Portal>
       <ModalContainer isopen={ismodalopen}>
         <ModalButtonWrapper>
-          <ModalButton onClick={onClose}>
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
-              alt='line'
-            />
-          </ModalButton>
+          <div
+            draggable='true'
+            onDragStart={(e) => handleDragStart(e)}
+            onDragEnd={(e) => handleDragEnd(e)}
+          >
+            <ModalButton onClick={onClose}>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
+                alt='line'
+              />
+            </ModalButton>
+          </div>
         </ModalButtonWrapper>
         <div style={{ position: 'fix' }}>
           <ModalWriteInput
@@ -41,10 +62,18 @@ function FriendSearchModal({
           .map((item) => {
             return (
               <ResultWrapper key={item.userId}>
-                <ResultProfileImage src={item.profileUrl} alt='profileImg' />
-                <div>
-                  <p>{item.loginId} </p>
-                  <p>{item.nickname} </p>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '30px',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ResultProfileImage src={item.profileUrl} alt='profileImg' />
+                  <div>
+                    <LoginId>{item.loginId ? item.loginId : item.kakaoId}</LoginId>
+                    <p>{item.nickname} </p>
+                  </div>
                 </div>
                 <ResultAddButton
                   onClick={() => {
@@ -71,6 +100,11 @@ const ResultWrapper = styled.div`
   align-items: center;
   padding: 5px;
   justify-content: space-between;
+`;
+
+const LoginId = styled.p`
+  font-size: 14px;
+  color: grey;
 `;
 
 const ResultProfileImage = styled.img`
@@ -118,7 +152,7 @@ const ModalContainer = styled.div.withConfig({ shouldForwardProp })`
   height: 100%;
   border-radius: 30px;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
-  
+
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;

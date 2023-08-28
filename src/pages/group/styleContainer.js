@@ -232,3 +232,11 @@ margin: -9px 0px 0px;
   top: 68%;
   color: rgb(130, 140, 148);
 `
+
+export const ErrorText = styled.div`
+  color: #FF7E62;
+  font-size: 12px;
+  padding-top: 5px;
+  padding-left: 6px;
+ 
+`
