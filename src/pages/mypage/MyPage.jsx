@@ -176,18 +176,20 @@ const MyPage = () => {
               alt='프로필 사진'
             />
           </ProfileImageButton>
-          <NicknameContainer onSubmit={nicknameSubmitHandler} action='#' width={width}>
+          <NicknameContainer onSubmit={nicknameSubmitHandler} width={width}>
             {isEditing ? (
-              <input
-                type='text'
-                onKeyPress={e => {if(e.key === 'Enter') nicknameSubmitHandler(e)}}
-                value={inputNickname}
-                onChange={nicknameChangeUtil}
-                onBlur={blurHandler}
-                //placeholder='10자 이하로 입력해주세요!'
-                maxLength={10}
-                onInput={dynamicWidth}
-              />
+              <>
+                <input
+                  type='text'
+                  value={inputNickname}
+                  onChange={nicknameChangeUtil}
+                  onBlur={blurHandler}
+                  //placeholder='10자 이하로 입력해주세요!'
+                  maxLength={10}
+                  onInput={dynamicWidth}
+                />
+                <input type='text' style={{ display: 'none' }} />
+              </>
             ) : (
               <span>{nickname}</span>
             )}
