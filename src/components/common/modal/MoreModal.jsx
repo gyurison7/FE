@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import api from '../../../api/index.jsx';
+import secureLocalStorage from 'react-secure-storage';
 
 function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const modalRef = useRef(null);
   const navigate = useNavigate();
-  const storedUserId = localStorage.getItem('userId');
+  const storedUserId = secureLocalStorage.getItem('userId');
   
   const handleOverlayClick = () => {
     onClose && onClose();
@@ -144,7 +145,7 @@ const Overlay = styled.div`
   z-index: 499;
 `;
 
-MoreModal.propTypes = {
+MoreModal.propTypes = {   
   groupid: PropTypes.number,
   groupUserId: PropTypes.number,
   groupName: PropTypes.string,

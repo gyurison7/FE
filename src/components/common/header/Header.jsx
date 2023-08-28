@@ -23,7 +23,8 @@ const HeaderContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 5vw;
+  height: 80px;
+  padding: 20px;
   position: relative;
   top: 3vh;
 `;

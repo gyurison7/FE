@@ -9,6 +9,7 @@ import {
   onChangePasswordHandler,
   passwordCheckHandler,
 } from '../../utils/passwordValidation';
+import secureLocalStorage from 'react-secure-storage';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -78,7 +79,8 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
-        localStorage.setItem('loginId', id);
+        secureLocalStorage.setItem('loginId', id);
+        secureLocalStorage.setItem('userId', responseData.userId);
         setOpenModal(true);
       } else {
         alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
@@ -159,7 +161,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 12vh;
+  margin-top: 11vh;
 `;
 
 const Form = styled.form`
