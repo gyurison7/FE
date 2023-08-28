@@ -8,6 +8,7 @@ const KakaoLoginRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    navigate('/groupmain');
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
