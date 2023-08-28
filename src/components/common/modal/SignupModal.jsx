@@ -53,27 +53,23 @@ const ModalBackground = styled.div`
     opacity: 0.8;
     background-color: #000;
     z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
 `;
 
 const ModalBody = styled.div`
     position: relative;
-    padding: 1.25rem;
-    border-radius: 1.75rem;
-    opacity: 1;
-    background: #FFF;
     width: 80%;
-    height: 27.25rem;
-    flex-shrink: 0;
-    z-index: 2;
+    height: 436px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0 21px 32px;
+    border-radius: 28px;
+    background: #FFF;
+    flex-shrink: 0;
+    z-index: 2;
     img {
-        margin-top: 3rem;
+        margin-top: 69px;
     }
 `;
 
@@ -87,7 +83,7 @@ const TextContainer = styled.div`
     color: #4C4C4C;
     line-height: 129.336%;
     h2 {
-        margin-bottom: 2rem;
+        margin-bottom: 38px;
         font-size: 24px;
         font-weight: 700;
     }
@@ -98,10 +94,6 @@ const TextContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem 0;
     width: 100%;
     button {
         width: 100%;
