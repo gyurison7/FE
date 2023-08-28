@@ -14,15 +14,14 @@ import ProfileModal from '../../components/common/modal/ProfileModal.jsx';
 
 export default function PostMain() {
   const stkicky = useStickyMode(115);
-  console.log(stkicky);
   const [data, setData] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useRecoilState(selectedProfileState);
-  console.log('atom', selectedProfile);
+  const [postData, setPostData] = useRecoilState(selectedProfileState);
+  console.log(postData);
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const handleProfileClick = (profileData) => {
-    setSelectedProfile(profileData);
+  const handleProfileClick = (id) => {
+    setPostData(id);
     setIsOpen(true);
   };
   const [isOpen, setIsOpen] = useRecoilState(modalState);
@@ -32,6 +31,7 @@ export default function PostMain() {
   useEffect(() => {
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       setData(res.data);
+      setPostData(res.data);
     });
   }, []);
   const processedPlace = data?.place
@@ -110,7 +110,10 @@ export default function PostMain() {
               borderradious='none'
               height='130px'
               background='#D9D9D9'
-              onClick={() => navigate(`/postwrite/${id}`)}
+              onClick={() => {
+                setPostData(data);
+                navigate(`/postwrite/${id}`);
+              }}
             />
             {data?.memories?.map((url, i) => {
               return (
