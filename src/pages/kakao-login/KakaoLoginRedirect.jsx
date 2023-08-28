@@ -25,6 +25,7 @@ const KakaoLoginRedirect = () => {
     };
     kakaoLogin();
   }, [code]);
+  return <div>Loading...</div>;
 };
 
 export default KakaoLoginRedirect;
