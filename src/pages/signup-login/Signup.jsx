@@ -215,9 +215,9 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: -27vh;
+  bottom: -23vh;
   @media (max-height: 750px) {
-    bottom: -17vh;
+    bottom: -13vh;
   }
 
   button {
