@@ -15,8 +15,11 @@ import ProfileModal from '../../components/common/modal/ProfileModal.jsx';
 export default function PostMain() {
   const stkicky = useStickyMode(115);
   const [data, setData] = useState(null);
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postData, setPostData] = useRecoilState(selectedProfileState);
-  console.log(postData);
+  console.log('post', postData);
+  console.log('is', isOpen);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -24,11 +27,11 @@ export default function PostMain() {
     setPostData(id);
     setIsOpen(true);
   };
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
   const closeModal = () => {
     setIsOpen(false);
   };
   useEffect(() => {
+    setIsOpen(false);
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       setData(res.data);
       setPostData(res.data);

@@ -42,7 +42,6 @@ export default function Comment(prop) {
           ) : (
             <Button onClick={toggleEdit}>수정</Button>
           )}
-
           <Button onClick={commentDeleta}>삭제</Button>
         </ButtonWrap>
       ) : null}

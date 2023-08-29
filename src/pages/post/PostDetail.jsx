@@ -6,6 +6,8 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import Comment from '../../components/common/comment/Comment.jsx';
 import Avatar from '../../components/common/avatar/Avatar.jsx';
 import secureLocalStorage from 'react-secure-storage';
+import Drop from '../../components/common/dropdown/Drop.jsx';
+
 export default function PostDetail() {
   const [detail, setDetail] = useState(null);
   const storedUserId = secureLocalStorage.getItem('userId');
@@ -90,7 +92,9 @@ export default function PostDetail() {
             {detail && detail.memory && (
               <>
                 <p>{detail.memory.title}</p>
-                {storedUserId === detail.memory.userId ? <div>...</div> : null}
+                {storedUserId === detail.memory.userId ? (
+                  <Drop detail={detail} groupId={groupId} />
+                ) : null}
               </>
             )}
           </UserTitle>
