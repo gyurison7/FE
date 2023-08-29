@@ -10,8 +10,9 @@ const KakaoLoginRedirect = () => {
   useEffect(() => {
     const kakaoLogin = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_URL}/auth/login/kakao/callback?code=${code}`,
+        const response = await axios.post(
+          `${process.env.REACT_APP_URL}/auth/login/kakao/callback`,
+          { code },
           { withCredentials: true }
         );
         if (response.data) {
