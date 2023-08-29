@@ -106,7 +106,7 @@ const Wrapper = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 50%;
+  width: 52%;
   height: auto;
   position: relative;
   top: 11vh;

@@ -26,6 +26,7 @@ const MyPage = () => {
   const [loginId, setLoginId] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [width, setWidth] = useState('');
+  const [loginType, setLoginType] = useState('');
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
@@ -37,7 +38,12 @@ const MyPage = () => {
         setNickname(responseData.nickname);
         setInputNickname(responseData.nickname);
         setProfileImage(responseData.profileUrl);
-        setLoginId(responseData.loginId);
+        if (responseData.providerType === 'kakao') {
+          setLoginType(responseData.providerType);
+          setLoginId(responseData.kakaoId);
+        } else {
+          setLoginId(responseData.loginId);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -203,7 +209,10 @@ const MyPage = () => {
           <span>{loginId}</span>
         </ProfileContainer>
         <ButtonContainer>
-          <button className='passwordChange' onClick={() => navigate('/pwchange')}>
+          <button
+            className={`passwordChange ${loginType === 'kakao' ? 'hidden' : ''}`}
+            onClick={() => navigate('/pwchange')}
+          >
             비밀번호 변경
           </button>
           <div>
@@ -350,6 +359,11 @@ const ButtonContainer = styled.div`
     border-bottom: 1px solid #4c4c4c;
     color: #4c4c4c;
     font-size: 16px;
+  }
+
+  .hidden {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   div {
