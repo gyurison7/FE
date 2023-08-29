@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import { styled } from 'styled-components';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import Comment from '../../components/common/comment/Comment.jsx';
 import Avatar from '../../components/common/avatar/Avatar.jsx';
 import secureLocalStorage from 'react-secure-storage';
+import Drop from '../../components/common/dropdown/Drop.jsx';
+
 export default function PostDetail() {
-  const { groupId, postId } = useParams();
   const [detail, setDetail] = useState(null);
   const storedUserId = secureLocalStorage.getItem('userId');
   const [commentInput, setCommentInput] = useState('');
+  const { groupId, postId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -51,10 +54,35 @@ export default function PostDetail() {
       comments: updatedComments,
     }));
   };
+  const commentEdit = async (commentId, editedComment) => {
+    await api.put(
+      `/group/${groupId}/memory/${detail.memory.memoryId}/comment/${commentId}`,
+      { comment: editedComment },
+      {
+        withCredentials: true,
+      }
+    );
+
+    // 수정 완료 후 detail 상태 업데이트하여 화면 다시 그리기
+    const updatedComments = detail.comments.map((comment) =>
+      comment.commentId === commentId
+        ? { ...comment, comment: editedComment }
+        : comment
+    );
+    setDetail((prevDetail) => ({
+      ...prevDetail,
+      comments: updatedComments,
+    }));
+  };
+
   return (
     <Wrap>
       <Head>
-        <IconComponents iconType='vectorLeft' stroke='white' />
+        <IconComponents
+          iconType='vectorLeft'
+          stroke='white'
+          onClick={() => navigate(-1)}
+        />
         <p>게시물</p>
         <div></div>
       </Head>
@@ -64,7 +92,9 @@ export default function PostDetail() {
             {detail && detail.memory && (
               <>
                 <p>{detail.memory.title}</p>
-                {storedUserId === detail.memory.userId ? <div>...</div> : null}
+                {storedUserId === detail.memory.userId ? (
+                  <Drop detail={detail} groupId={groupId} />
+                ) : null}
               </>
             )}
           </UserTitle>
@@ -91,8 +121,8 @@ export default function PostDetail() {
                   key={element.commentId}
                   {...element}
                   groupId={groupId}
-                  detail={detail}
                   commentDeleta={() => commentDeleta(element.commentId)}
+                  commentEdit={commentEdit}
                 />
               );
             })}
