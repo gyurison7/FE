@@ -228,17 +228,16 @@ const MyPage = () => {
           </div>
         </ButtonContainer>
       </MypageContainer>
-      {memberOutModal && (
-        <MemberOutModal
-          setMemberOutModal={setMemberOutModal}
-          memberOutHandler={memberOutHandler}
-        />
-      )}
       {profileModal ? (
         <MyPageProfileModal
           setProfileModal={setProfileModal}
           imageUploadInput={imageUploadInput}
           deleteProfileImage={deleteProfileImage}
+        />
+      ) : memberOutModal ? (
+        <MemberOutModal
+          setMemberOutModal={setMemberOutModal}
+          memberOutHandler={memberOutHandler}
         />
       ) : (
         <Foot>
