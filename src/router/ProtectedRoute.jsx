@@ -1,48 +1,36 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import api from '../api/index.jsx';
 
 function ProtectedRoute() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkUserId = async () => {
+    const loginCheck = async () => {
+      setIsLoading(true);
       try {
-        const response = await api.get('/userInfo', {
+        const response = await api.get('/auth/login', {
           withCredentials: true,
         });
-        const userId = response.data.userInfoData.userId;
-        if (!userId) {
+        if(!response.data.success) {
           navigate('/login');
         }
       } catch (error) {
         console.error(error);
         navigate('/login');
+      } finally {
+        setIsLoading(false);
       }
     };
-    checkUserId();
-  }),
-    [navigate];
+    loginCheck();
+  }, [navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return <Outlet />;
 }
 
 export default ProtectedRoute;
-
-
-// import { useEffect } from 'react';
-// import { Outlet, useNavigate } from 'react-router-dom';
-// import secureLocalStorage from 'react-secure-storage';
-
-// function ProtectedRoute() {
-//   const navigate = useNavigate();
-//   const userId = secureLocalStorage.getItem('userId');
-
-//   useEffect(() => {
-//     if (!userId) navigate('/login');
-//   }, [userId, navigate]);
-
-//   return userId ? <Outlet /> : null;
-// }
-
-// export default ProtectedRoute;

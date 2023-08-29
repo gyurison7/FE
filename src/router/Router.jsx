@@ -8,15 +8,14 @@ import Introduction from '../pages/app-introduction/Introduction.jsx';
 import UserProfile from '../pages/signup-login/UserProfile.jsx';
 import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
-import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 import PasswordChange from '../pages/mypage/PasswordChange.jsx';
 import GroupEdit from '../pages/group/GroupEdit.jsx';
-import ProtectedRoute from './ProtectedRoute.jsx';
 import DatePicker from '../components/common/modal/DatePicker.jsx';
 import PostDetail from '../pages/post/PostDetail.jsx';
 import Search from '../pages/search/Search.jsx';
-import NotProtectedRoute from './NotProtectedRoute.jsx';
 import Notice from '../pages/notice/Notice.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
+import NotProtectedRoute from './NotProtectedRoute.jsx';
 
 const Router = () => {
   return (
@@ -26,7 +25,6 @@ const Router = () => {
         <Route path='/login' element={<NotProtectedRoute />}>
           <Route index element={<Login />} />
         </Route>
-        <Route path='/kakao/callback' element={<KakaoLoginRedirect />} />
         <Route path='/signup' element={<NotProtectedRoute />}>
           <Route index element={<Signup />} />
         </Route>

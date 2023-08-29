@@ -1,16 +1,35 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import secureLocalStorage from 'react-secure-storage';
+import api from '../api/index.jsx';
 
 function NotProtectedRoute() {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const userId = secureLocalStorage.getItem('userId');
 
   useEffect(() => {
-    if (userId) navigate('/groupmain');
-  }, [userId, navigate]);
+    const loginCheck = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get('/auth/login', {
+          withCredentials: true,
+        });
+        if(response.data.success) {
+          navigate('/groupmain');
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loginCheck();
+  }, [navigate]);
 
-  return userId ? null : <Outlet />;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <Outlet />;
 }
 
 export default NotProtectedRoute;
