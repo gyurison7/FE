@@ -281,6 +281,11 @@ function GroupWrite() {
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <DateInputWraper>
+            <img
+                src={`${process.env.PUBLIC_URL}/assets/image/Calender.png`}
+                alt='cal'
+                className='inputIcon'
+              />
               <DateInput
                 value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
                 onClick={() => setDateModal(!isDateModal)}

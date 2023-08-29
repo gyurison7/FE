@@ -214,29 +214,39 @@ export const DateInput = styled.input`
   border: none;
 `;
 
-export const DateInputWraper= styled.div`
+export const DateInputWraper = styled.div`
+  position: relative;
   width: 100%;
-`
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 7px;
+
+  .inputIcon {
+    margin-right: 8px;
+    margin-left: 10px;
+    margin-top: 7px;
+  }
+`;
 
 export const TitleWraper = styled.div`
-position: relative;
-width: 100%;
-`
+  position: relative;
+  width: 100%;
+`;
 
 export const WordCount = styled.div`
-margin: -9px 0px 0px;
+  margin: -9px 0px 0px;
   position: absolute;
   line-height: 19px;
   font-size: 14px;
   right: 0px;
   top: 68%;
   color: rgb(130, 140, 148);
-`
+`;
 
 export const ErrorText = styled.div`
-  color: #FF7E62;
+  color: #ff7e62;
   font-size: 12px;
   padding-top: 5px;
   padding-left: 6px;
- 
-`
+`;
