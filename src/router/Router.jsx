@@ -26,10 +26,7 @@ const Router = () => {
         <Route path='/login' element={<NotProtectedRoute />}>
           <Route index element={<Login />} />
         </Route>
-        <Route
-          path='/api/auth/login/kakao/callback'
-          element={<KakaoLoginRedirect />}
-        />
+        <Route path='/kakao/callback' element={<KakaoLoginRedirect />} />
         <Route path='/signup' element={<NotProtectedRoute />}>
           <Route index element={<Signup />} />
         </Route>

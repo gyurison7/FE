@@ -11,10 +11,11 @@ const KakaoLoginRedirect = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_REDIRECT_URI}?code=${code}`,
+          `${process.env.REACT_APP_URL}/auth/login/kakao/callback?code=${code}`,
           { withCredentials: true }
         );
         if (response.data) {
+          console.log(response.data);
           secureLocalStorage.setItem('userId', response.data.userId);
           navigate('/groupmain');
         }
