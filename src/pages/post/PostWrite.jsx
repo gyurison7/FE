@@ -15,9 +15,9 @@ function PostWrite() {
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [file, setFile] = useState(null);
   const { id } = useParams();
+
   const postData = useRecoilValue(selectedProfileState);
 
-  console.log('detail', postData);
   const navigate = useNavigate();
   const changeHandler = (e) => {
     const selectedFile = e.target.files[0];
@@ -59,7 +59,7 @@ function PostWrite() {
           <IconComponents
             iconType='vectorLeft'
             stroke='#4C4C4C'
-            onClick={() => navigate(`/postmain/${id}`)}
+            onClick={() => navigate(-1)}
           />
           <Title>
             <span>게시하기</span> <p>{postData.groupName}</p>

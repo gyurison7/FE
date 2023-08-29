@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Avatar from '../avatar/Avatar.jsx';
 import secureLocalStorage from 'react-secure-storage';
 
 export default function Comment(prop) {
-  const { comment, createdAt, commentDeleta } = prop;
+  const { comment, createdAt, commentDeleta, commentId, commentEdit } = prop;
   const storedUserId = secureLocalStorage.getItem('userId');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedComment, setEditedComment] = useState(comment);
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleCommentEdit = async () => {
+    await commentEdit(commentId, editedComment);
+    setIsEditing(false);
+  };
 
   return (
     <Wrap>
@@ -14,12 +24,24 @@ export default function Comment(prop) {
         <div>
           <NickName>{prop['User.nickname']}</NickName>
           <CreatedAt>{createdAt.slice(0, 10)}</CreatedAt>
-          <UserComment>{comment} </UserComment>
+          {isEditing ? (
+            <EditInput
+              type='text'
+              value={editedComment}
+              onChange={(e) => setEditedComment(e.target.value)}
+            />
+          ) : (
+            <UserComment>{comment} </UserComment>
+          )}
         </div>
       </UserInfo>
       {storedUserId === prop.userId ? (
         <ButtonWrap>
-          <Button>수정</Button>
+          {isEditing ? (
+            <Button onClick={handleCommentEdit}>완료</Button>
+          ) : (
+            <Button onClick={toggleEdit}>수정</Button>
+          )}
           <Button onClick={commentDeleta}>삭제</Button>
         </ButtonWrap>
       ) : null}
@@ -42,12 +64,12 @@ const Button = styled.span`
   background: transparent;
   color: #444;
   font-size: 11px;
+  cursor: pointer;
 `;
 
 const UserInfo = styled.div`
   word-break: break-all;
   display: flex;
-  width: 300px;
   gap: 9px;
 `;
 const NickName = styled.div`
@@ -66,4 +88,11 @@ const UserComment = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+`;
+const EditInput = styled.input`
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 0.1px solid #6666;
+  outline: none;
 `;
