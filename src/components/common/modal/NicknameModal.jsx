@@ -25,10 +25,10 @@ function FriendSearchModal({
 
   return (
     <Portal>
-      <Draggable axis='y' onStop={(e, data) => handleStop(e, data)}>
+       <Draggable axis='y' handle=".drag-handle" onStop={(e, data) => handleStop(e, data)}>
         <ModalContainer isopen={ismodalopen}>
           <ModalButtonWrapper>
-            <ModalButton onClick={onClose}>
+          <ModalButton className="drag-handle" onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
                 alt='line'
