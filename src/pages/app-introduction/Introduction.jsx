@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '../../components/common/button/Button.jsx';
 import { styled } from 'styled-components';
 import { Carousel } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -12,45 +11,68 @@ function Itroduction() {
   return (
     <Wrap>
       <CarouselWrap>
-        <Carousel autoplay>
-          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`} alt='rasm' />
-          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img2.jpeg`} alt='rasm' />
-          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img3.jpeg`} alt='rasm' />
-          <IMG src={`${process.env.PUBLIC_URL}/assets/image/img4.jpeg`} alt='rasm' />
+        <Carousel autoplay dotPosition='top'>
+          <IMG
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction.png`}
+            alt='rasm'
+          />
+          <IMG
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction1.png`}
+            alt='rasm'
+          />
+          <IMG
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction2.png`}
+            alt='rasm'
+          />
+          <IMG
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction3.png`}
+            alt='rasm'
+          />
+          <WrapButton>
+            <IMG
+              src={`${process.env.PUBLIC_URL}/assets/image/introduction4.png`}
+              alt='rasm'
+            />
+            <Button onClick={onClickHandler}>시작하기</Button>
+          </WrapButton>
         </Carousel>
       </CarouselWrap>
-      <WrapButton>
-        <Button
-          size='large'
-          background='#9A9A9A'
-          color='white'
-          onClick={onClickHandler}
-        >
-          시작하기
-        </Button>
-      </WrapButton>
     </Wrap>
   );
 }
 
 export default Itroduction;
 const Wrap = styled.div`
+  background: #5873fe;
   max-width: 428px;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
 `;
 const IMG = styled.img`
-  background: red;
-  height: 70vh;
+  width: 100%;
+  height: 100vh;
 `;
 const CarouselWrap = styled.div`
   width: 100%;
-  height: 70vh;
 `;
 const WrapButton = styled.div`
-  height: 30vh;
+  height: 100vh;
+`;
+const Button = styled.span`
+  position: sticky;
+  border-radius: 28px;
+  bottom: 30px;
+  color: #5873fe;
+  background: #fff;
+  height: 57px;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 428px) {
+    width: 200px;
+    margin: 0 auto;
+  }
+  @media (min-width: 429px) {
+    width: 200px;
+    margin: 0 auto;
+  }
 `;

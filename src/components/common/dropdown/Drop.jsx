@@ -12,6 +12,7 @@ export default function Drop({ detail, groupId }) {
   const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
 
   const toggleModal = () => {
+    console.log('working -> toggleModal');
     setIsModalOpen(!isModalOpen);
   };
 
@@ -19,6 +20,7 @@ export default function Drop({ detail, groupId }) {
     await api.delete(`/group/${groupId}/memory/${detail.memory.memoryId}`, {
       withCredentials: true,
     });
+    setIsModalOpen(false);
     navigate(`/postmain/${groupId}`);
   };
 
