@@ -258,7 +258,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
-  transition: bottom 0.4s ease-out;
+  transition: bottom 0.1s ease-in;
   animation: ${({ isopen }) =>
     isopen
       ? css`
@@ -432,7 +432,6 @@ const ButtonDays = styled('button').withConfig({
 const DaysName = styled.div`
   color: var(--gray-400, #94a3b8);
   text-align: center;
-  font-family: Inter;
   font-size: 14.63px;
   font-style: normal;
   font-weight: 600;
@@ -465,6 +464,7 @@ const FotterButton = styled.button`
   display: flex;
   width: 159px;
   height: 59px;
+  font-weight: 600;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;

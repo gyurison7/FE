@@ -12,7 +12,6 @@ import {
   DivHeaderText,
   FriendContentWrap,
   FriendSearchButton,
-  FriendSearchImage,
   FriendSearchText,
   GroupWriteInput,
   ImageInput,
@@ -312,9 +311,9 @@ function GroupWrite() {
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
-                alt='placeicon'
+            <IconComponents
+                iconType='location'
+                stroke='#4C4C4C'
                 className='inputIcon'
               />
               <GroupWriteInput
@@ -347,10 +346,12 @@ function GroupWrite() {
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
               <FriendContentWrap>
-                <FriendSearchImage
-                  src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
-                  alt='search'
-                />
+              <IconComponents
+                iconType='search'
+                width='22px'
+                stroke='#4C4C4C'
+                className='inputIcon'
+              />
                 <FriendSearchText>
                   {' '}
                   추억을 나눈 친구를 검색해주세요{' '}

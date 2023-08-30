@@ -37,11 +37,11 @@ function GroupMain() {
         <FixedHeader />
         <GroupWrapper>
           {isLoading ? (
-           <>
-           <SkeletonItem />
-           <SkeletonItem />
-           <SkeletonItem />
-         </>
+            <>
+              <SkeletonItem />
+              <SkeletonItem />
+              <SkeletonItem />
+            </>
           ) : isError ? (
             <div>Error fetching group data</div>
           ) : groupData && groupData.length === 0 ? (
@@ -142,6 +142,7 @@ const FixedHeader = styled(GroupPageHeader)`
 
 const GroupEditButton = styled.button`
   position: absolute;
+  padding: 3px 5px 12px 30px;
   right: 10px;
   top: 12px;
   border: none;
@@ -175,6 +176,7 @@ const MainContainer = styled.div`
 `;
 
 const GroupWrapper = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -220,11 +222,12 @@ const ButtonWrapper = styled.div`
 // `;
 
 const PreMainContainer = styled.div`
-  display: flex;
+  width: 100%;
+  top: 6vh;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5rem;
+  display: flex;
+  position: absolute;
+  background-color: white;
 `;
 
 const PreMainContentWrapper = styled.div`
@@ -239,24 +242,29 @@ const PreMainContentWrapper = styled.div`
 
 const PreMainButton = styled.button`
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
   width: 167px;
   height: 52px;
   border-radius: 26.321px;
   background: #5873fe;
   color: #fff;
+  font-size: 16px;
 `;
 
 const PreMainText = styled.p`
   color: #4c4c4c;
   text-align: center;
-  font-size: 18px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 `;
 
 const PreMainPlus = styled.img`
-  width: 12px;
+  width: 16px;
 `;
 
 const Foot = styled.div`
@@ -270,7 +278,7 @@ const Foot = styled.div`
   }
 `;
 
-/// 스켈레턴 
+/// 스켈레턴
 const SkeletonWrapper = styled.div`
   margin-top: 12px;
   width: 40%;
@@ -287,8 +295,8 @@ const SkeletonImage = styled.div`
 `;
 
 const SkeletonText = styled.div`
-
-  h5, p {
+  h5,
+  p {
     background-color: #ccc;
     width: 80%;
     height: 10px;

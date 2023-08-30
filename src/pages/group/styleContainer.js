@@ -146,6 +146,7 @@ export const PlaceResult = styled.div`
   margin-left: 5px;
   margin-top: 15px;
   height: 30px;
+  gap: 6px;
   display: inline-flex;
   background-color: #5873fe;
   border-radius: 20px;
@@ -156,7 +157,8 @@ export const PlaceResult = styled.div`
 `;
 
 export const PlaceRemoveButton = styled.button`
-  padding-top: 2px;
+  display: flex;
+  padding-top: 2px 7px 12px 25px;
   align-items: center;
   border: none;
   background-color: transparent;
@@ -215,13 +217,13 @@ export const DateInput = styled.input`
   background-color: #f5f5f5;
   border: none;
 
-   &::placeholder {
+  &::placeholder {
     color: #c2c2c2;
     font-size: 15px;
     font-style: normal;
     line-height: normal;
   }
-   &:focus {
+  &:focus {
     outline: none;
   }
 `;

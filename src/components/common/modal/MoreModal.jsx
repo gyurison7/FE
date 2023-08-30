@@ -48,7 +48,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         console.log(response.data.success);
         setErrorMessage(response.data.message);
       } else if (response.data.success) {
-        alert(response.data.message);
+        alert('엘범에서 나갔습니다');
         setErrorMessage(null);
       }
     } catch (error) {
