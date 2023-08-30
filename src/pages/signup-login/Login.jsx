@@ -37,7 +37,7 @@ function Login() {
     try {
       const responseData = await login(id, password);
       if (responseData) {
-        secureLocalStorage.setItem('userId', responseData.userId);
+        secureLocalStorage.setItem('userId', JSON.stringify(responseData.userId));
         navigate('/groupmain');
       } else {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
