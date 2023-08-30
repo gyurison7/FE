@@ -38,6 +38,7 @@ export const ProfileImage = styled.img`
 
 export const WriteHeader = styled.div`
   width: 100%;
+  padding-top: 3vh;
   display: flex;
   justify-content: space-between;
   height: 80px;
@@ -100,7 +101,7 @@ export const SubmitButton = styled.button`
   background-color: transparent;
   color: rgba(88, 115, 254, 1);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   font-style: normal;
   line-height: normal;
   margin-right: 20px;

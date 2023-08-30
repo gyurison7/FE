@@ -173,6 +173,7 @@ const GroupWrapper = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: flex-start;
+  background-color: white;
   padding-bottom: 72px;
   background-color: white;
   &::-webkit-scrollbar {

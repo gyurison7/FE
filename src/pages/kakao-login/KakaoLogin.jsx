@@ -32,10 +32,8 @@ const KakaoLoginButtonContainer = styled.div`
   button {
     display: flex;
     justify-content: center;
+    width: 100%;
     background: transparent;
     border: none;
-  }
-  img {
-    width: 90%;
   }
 `;
