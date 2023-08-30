@@ -34,7 +34,7 @@ function GroupMain() {
   return (
     <>
       <MainContainer ref={parentRef}>
-        <FixedHeader />
+        <GroupPageHeader />
         <GroupWrapper>
           {isLoading ? (
             <>
@@ -132,14 +132,6 @@ function GroupMain() {
 
 export default GroupMain;
 
-const FixedHeader = styled(GroupPageHeader)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-`;
-
 const GroupEditButton = styled.button`
   position: absolute;
   right: 10px;
@@ -179,10 +171,10 @@ const GroupWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  overflow-y: auto;
   align-items: flex-start;
   justify-content: flex-start;
   padding-bottom: 72px;
+  background-color: white;
   &::-webkit-scrollbar {
     display: none;
   }
