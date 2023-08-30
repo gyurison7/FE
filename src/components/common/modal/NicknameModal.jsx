@@ -18,7 +18,7 @@ function FriendSearchModal({
   isUserSelected,
   participants,
 }) {
-  
+
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -30,6 +30,7 @@ function FriendSearchModal({
       document.body.style.overflow = 'unset';
     };
   }, [ismodalopen]);
+  
   const handleStop = (e, data) => {
     if (data.y > 100) {
       onClose();
