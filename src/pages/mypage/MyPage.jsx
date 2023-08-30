@@ -17,6 +17,7 @@ import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal.jsx';
 import MemberOutModal from '../../components/common/modal/MemberOutModal.jsx';
+import useLoading from '../../hooks/useLoading.jsx';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -31,6 +32,7 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
+  const { startLoading, endLoading } = useLoading();
 
   useEffect(() => {
     const getUserProfilefromApi = async () => {
@@ -62,6 +64,7 @@ const MyPage = () => {
   const imageSubmitHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      startLoading();
       const formData = new FormData();
       formData.append('profileUrl', file);
       try {
@@ -76,6 +79,7 @@ const MyPage = () => {
         alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       }
+      endLoading();
     }
   };
 
