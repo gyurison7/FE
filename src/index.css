@@ -14,6 +14,12 @@ button,
 input {
   font-family: 'PretendardVariable', sans-serif;
 }
+body {
+  background-image: url('./assets/images/background.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .App {
   max-width: 428px;
   margin: 0 auto;
