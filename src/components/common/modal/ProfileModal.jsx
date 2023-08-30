@@ -65,11 +65,11 @@ const CloseButton = styled.button`
   left: 50%;
   transform: translateX(-50%);
   padding: 15px;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background: transparent;
   color: white;
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 50%;
   font-size: 20px;
   display: flex;
