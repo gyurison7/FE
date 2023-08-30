@@ -239,7 +239,7 @@ function GroupWrite() {
               <IconComponents iconType='vectorLeft' stroke='#4C4C4C' />
             </BackButton>
           </div>
-          <div>앨범 만들기</div>
+          <div style={{fontWeight:'600'}}>앨범 만들기</div>
           <div>
             <SubmitButton type='submit'>확인</SubmitButton>
           </div>
