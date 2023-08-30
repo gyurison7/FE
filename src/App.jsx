@@ -1,7 +1,8 @@
+import { QueryClient, QueryClientProvider } from 'react-query';
+import './index.css';
 import Layout from './layout';
 import Router from './router/Router.jsx';
-import './index.css';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import LoadingSpinner from './components/common/loading/LoadingSpinner.jsx';
 
 const queryClient = new QueryClient();
 
@@ -10,6 +11,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className='App'>
         <Layout>
+          <LoadingSpinner />
           <Router />
         </Layout>
       </div>
