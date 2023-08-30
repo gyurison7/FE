@@ -12,10 +12,7 @@ function Itroduction() {
     <Wrap>
       <CarouselWrap>
         <Carousel autoplay dotPosition='top'>
-          <IMG
-            src={`${process.env.PUBLIC_URL}/assets/image/introduction.png`}
-            alt='rasm'
-          />
+          <IMG src={`${process.env.PUBLIC_URL}/assets/image/test.png`} alt='rasm' />
           <IMG
             src={`${process.env.PUBLIC_URL}/assets/image/introduction1.png`}
             alt='rasm'
@@ -60,7 +57,7 @@ const WrapButton = styled.div`
 const Button = styled.span`
   position: sticky;
   border-radius: 28px;
-  bottom: 30px;
+  bottom: 200px;
   color: #5873fe;
   background: #fff;
   height: 57px;
