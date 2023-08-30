@@ -11,6 +11,7 @@ import { selectedProfileState } from '../../recoil/Atom.js';
 import { useRecoilValue } from 'recoil';
 
 function PostWrite() {
+  const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [file, setFile] = useState(null);
@@ -36,6 +37,12 @@ function PostWrite() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (isLoading || title.trim() === '') {
+      alert('제목을 적어주세요');
+      return;
+    }
+
+    setLoading(true);
     const formData = new FormData();
     formData.append('imageUrl', file);
     formData.append('title', title);
@@ -51,6 +58,7 @@ function PostWrite() {
       // 오류 처리
       console.error('Error:', error);
     }
+    setLoading(false);
   };
   return (
     <Layout>
@@ -70,7 +78,7 @@ function PostWrite() {
             color='white'
             background={thumbnailUrl ? '#5873FE' : '#929292'}
           >
-            게시하기
+            {isLoading ? '게시중...' : '게시하기'}
           </Button>
         </Top>
         <div>
@@ -99,13 +107,6 @@ function PostWrite() {
               사진 추가하기
             </WriteImageUpload>
           )}
-          {/* <WriteImageUpload
-            height='40.6vh'
-            bgcolor='#D7D7D7'
-            onImageChange={changeHandler}
-          >
-            사진 추가하기
-          </WriteImageUpload> */}
         </div>
       </Form>
     </Layout>

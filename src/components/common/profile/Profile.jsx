@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function Profile({ url, name, onClick }) {
   return (
-    <AvatarWrap onClick={onClick}>
+    <AvatarWrap onClick={() => onClick()}>
       <AvatarImage src={url} alt='avatar' />
       <span>{name}</span>
     </AvatarWrap>

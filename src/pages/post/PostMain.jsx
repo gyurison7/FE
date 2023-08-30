@@ -24,6 +24,7 @@ export default function PostMain() {
   const navigate = useNavigate();
 
   const handleProfileClick = (id) => {
+    console.log('Working...');
     setPostData(id);
     setIsOpen(true);
   };
@@ -31,7 +32,6 @@ export default function PostMain() {
     setIsOpen(false);
   };
   useEffect(() => {
-    setIsOpen(false);
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
       setData(res.data);
       setPostData(res.data);

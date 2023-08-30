@@ -10,24 +10,23 @@ export default function ProfileModal({ isOpen, closeModal }) {
   if (!postData) {
     return null;
   }
+  console.log('is -> profilemodla', isOpen);
 
   return (
-    <>
-      <StyledModal
-        open={isOpen}
-        footer={null}
-        onCancel={closeModal}
-        closable={false}
-        wrapClassName={'con'}
-        maskStyle={{ background: 'black', opacity: '0.9' }}
-      >
-        <Wrap>
-          <ProfileImage src={postData.profileUrl} alt='' />
-          <ProfileName>{postData.nickname}</ProfileName>
-          <CloseButton onClick={closeModal}>x</CloseButton>
-        </Wrap>
-      </StyledModal>
-    </>
+    <StyledModal
+      open={isOpen}
+      footer={null}
+      onCancel={closeModal}
+      closable={false}
+      wrapClassName={'con'}
+      maskStyle={{ background: 'black', opacity: '0.9' }}
+    >
+      <Wrap>
+        <ProfileImage src={postData.profileUrl} alt='' />
+        <ProfileName>{postData.nickname}</ProfileName>
+        <CloseButton onClick={closeModal}>x</CloseButton>
+      </Wrap>
+    </StyledModal>
   );
 }
 ProfileModal.propTypes = {
