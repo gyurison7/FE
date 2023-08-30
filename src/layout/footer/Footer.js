@@ -12,8 +12,8 @@ function Footer() {
         </StyledNavLink>
       </div>
       <div>
-        <StyledNavLink to='/your-link'>
-          <IconComponents iconType='group' stroke='#4C4C4C' />
+        <StyledNavLink to='/search'>
+          <IconComponents iconType='search' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
       <div>
