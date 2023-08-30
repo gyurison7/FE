@@ -164,7 +164,7 @@ function GroupWrite() {
     );
     data.append('startDate', startDate);
     data.append('endDate', endDate);
-    mutation.mutate(id,data);
+    mutation.mutate({id,data});
   };
 
   const placeEnterAdd = (e) => {
