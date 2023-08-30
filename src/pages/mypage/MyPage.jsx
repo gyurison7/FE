@@ -266,7 +266,7 @@ const MypageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: auto;
+  padding-bottom: 13vh;
 `;
 
 const ProfileContainer = styled.div`
