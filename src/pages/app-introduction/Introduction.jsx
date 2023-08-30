@@ -13,24 +13,24 @@ function Itroduction() {
       <CarouselWrap>
         <Carousel autoplay dotPosition='top'>
           <IMG
-            src={`${process.env.PUBLIC_URL}/assets/svgs/introduction.svg`}
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction.png`}
             alt='rasm'
           />
           <IMG
-            src={`${process.env.PUBLIC_URL}/assets/svgs/introduction1.svg`}
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction1.png`}
             alt='rasm'
           />
           <IMG
-            src={`${process.env.PUBLIC_URL}/assets/svgs/introduction2.svg`}
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction2.png`}
             alt='rasm'
           />
           <IMG
-            src={`${process.env.PUBLIC_URL}/assets/svgs/introduction3.svg`}
+            src={`${process.env.PUBLIC_URL}/assets/image/introduction3.png`}
             alt='rasm'
           />
           <WrapButton>
             <IMG
-              src={`${process.env.PUBLIC_URL}/assets/svgs/introduction4.svg`}
+              src={`${process.env.PUBLIC_URL}/assets/image/introduction4.png`}
               alt='rasm'
             />
             <Button onClick={onClickHandler}>시작하기</Button>
