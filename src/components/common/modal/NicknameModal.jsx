@@ -1,7 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { useState } from 'react';
+import Draggable from 'react-draggable';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -17,77 +17,64 @@ function FriendSearchModal({
   isUserSelected,
   participants,
 }) {
-
-  const [dragStartY, setDragStartY] = useState(0);
-
-  const handleDragStart = (e) => {
-    setDragStartY(e.clientY);
-  };
-
-  const handleDragEnd = (e) => {
-    if (e.clientY - dragStartY > 100) { 
+  const handleStop = (e, data) => {
+    if (data.y > 100) {
       onClose();
     }
   };
 
-
   return (
     <Portal>
-      <ModalContainer isopen={ismodalopen}>
-        <ModalButtonWrapper>
-          <div
-            draggable='true'
-            onDragStart={(e) => handleDragStart(e)}
-            onDragEnd={(e) => handleDragEnd(e)}
-          >
+      <Draggable axis='y' onStop={(e, data) => handleStop(e, data)}>
+        <ModalContainer isopen={ismodalopen}>
+          <ModalButtonWrapper>
             <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
                 alt='line'
               />
             </ModalButton>
+          </ModalButtonWrapper>
+          <div style={{ position: 'fix' }}>
+            <ModalWriteInput
+              name='participants'
+              placeholder='친구 아이디'
+              value={participants}
+              onChange={universalHandler}
+            />
           </div>
-        </ModalButtonWrapper>
-        <div style={{ position: 'fix' }}>
-          <ModalWriteInput
-            name='participants'
-            placeholder='친구 아이디'
-            value={participants}
-            onChange={universalHandler}
-          />
-        </div>
-
-        {searchResult
-          .filter((item) => !isUserSelected(item.userId))
-          .map((item) => {
-            return (
-              <ResultWrapper key={item.userId}>
-                <div
-                  style={{
-                    display: 'flex',
-                    gap: '30px',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ResultProfileImage src={item.profileUrl} alt='profileImg' />
-                  <div>
-                    <LoginId>{item.loginId ? item.loginId : item.kakaoId}</LoginId>
-                    <p>{item.nickname} </p>
+          {searchResult
+            .filter((item) => !isUserSelected(item.userId))
+            .map((item) => {
+              return (
+                <ResultWrapper key={item.userId}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '30px',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ResultProfileImage src={item.profileUrl} alt='profileImg' />
+                    <div>
+                      <LoginId>{item.loginId ? item.loginId : item.kakaoId}</LoginId>
+                      <p>{item.nickname} </p>
+                    </div>
                   </div>
-                </div>
-                <ResultAddButton
-                  onClick={() => {
-                    addFriendHandler(item);
-                    onClose();
-                  }}
-                >
-                  {' '}
-                  추가
-                </ResultAddButton>
-              </ResultWrapper>
-            );
-          })}
-      </ModalContainer>
+                  <ResultAddButton
+                    onClick={() => {
+                      addFriendHandler(item);
+                      onClose();
+                    }}
+                  >
+                    {' '}
+                    추가
+                  </ResultAddButton>
+                </ResultWrapper>
+              );
+            })}
+        </ModalContainer>
+      </Draggable>
     </Portal>
   );
 }
