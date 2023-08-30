@@ -34,14 +34,14 @@ function GroupMain() {
   return (
     <>
       <MainContainer ref={parentRef}>
-        <GroupPageHeader />
+        <FixedHeader />
         <GroupWrapper>
           {isLoading ? (
-            <>
-              <SkeletonItem />
-              <SkeletonItem />
-              <SkeletonItem />
-            </>
+           <>
+           <SkeletonItem />
+           <SkeletonItem />
+           <SkeletonItem />
+         </>
           ) : isError ? (
             <div>Error fetching group data</div>
           ) : groupData && groupData.length === 0 ? (
@@ -132,6 +132,14 @@ function GroupMain() {
 
 export default GroupMain;
 
+const FixedHeader = styled(GroupPageHeader)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+`;
+
 const GroupEditButton = styled.button`
   position: absolute;
   right: 10px;
@@ -161,7 +169,6 @@ const ThumbNaiilImage = styled.img`
 
 //container and wrapper
 const MainContainer = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -171,11 +178,10 @@ const GroupWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  background-color: white;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: white;
   padding-bottom: 72px;
-  background-color: white;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -264,7 +270,7 @@ const Foot = styled.div`
   }
 `;
 
-/// 스켈레턴
+/// 스켈레턴 
 const SkeletonWrapper = styled.div`
   margin-top: 12px;
   width: 40%;
@@ -281,8 +287,8 @@ const SkeletonImage = styled.div`
 `;
 
 const SkeletonText = styled.div`
-  h5,
-  p {
+
+  h5, p {
     background-color: #ccc;
     width: 80%;
     height: 10px;
