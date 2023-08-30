@@ -62,7 +62,7 @@ export default function PostMain() {
               <Title>
                 <h4>{data?.groupName}</h4>
               </Title>
-              <FriendAdd>
+              <FriendAdd onClick={() => alert('준비중입니다. 잠시만 기다려주세요!')}>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
                 <p>친구초대</p>
               </FriendAdd>

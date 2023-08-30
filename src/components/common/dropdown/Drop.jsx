@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { modalState } from '../../../recoil/Atom';
+import { DropdownState } from '../../../recoil/Atom';
 import { styled } from 'styled-components';
 import IconComponents from '../iconComponent/IconComponents.jsx';
 import api from '../../../api/index.jsx';
@@ -9,10 +9,9 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Drop({ detail, groupId }) {
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useRecoilState(modalState);
-
+  const [isModalOpen, setIsModalOpen] = useRecoilState(DropdownState);
+  const dropdownRef = useRef();
   const toggleModal = () => {
-    console.log('working -> toggleModal');
     setIsModalOpen(!isModalOpen);
   };
 
@@ -23,9 +22,21 @@ export default function Drop({ detail, groupId }) {
     setIsModalOpen(false);
     navigate(`/postmain/${groupId}`);
   };
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', handleClickOutside);
+    return () => {
+      window.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <Wrap>
+    <Wrap ref={dropdownRef}>
       <IconComponents
         iconType='menu'
         width='20px'
@@ -37,7 +48,7 @@ export default function Drop({ detail, groupId }) {
       {isModalOpen ? (
         <Dropdown>
           <DropdownContent>게시물 수정하기</DropdownContent>
-          <hr />
+          <Line></Line>
           <DropdownContent onClick={memoryDelete}>게시물 삭제하기</DropdownContent>
         </Dropdown>
       ) : null}
@@ -54,11 +65,13 @@ const Wrap = styled.div`
   flex-direction: column;
   top: 7px;
 `;
+const Line = styled.div`
+  border-bottom: 1px solid rgba(178, 179, 178, 0.5);
+`;
 const Dropdown = styled.div`
   position: absolute;
   top: 20px;
   right: 0;
-  padding: 10px;
   width: 191px;
   display: flex;
   justify-content: space-around;
@@ -71,8 +84,9 @@ const Dropdown = styled.div`
 const DropdownContent = styled.div`
   cursor: pointer;
   color: #4c4c4c;
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
+  padding: 10px;
   font-weight: 500;
   line-height: normal;
 `;
