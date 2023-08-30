@@ -178,9 +178,9 @@ const GroupWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  overflow-y: auto;
   align-items: flex-start;
   justify-content: flex-start;
+  background-color: white;
   padding-bottom: 72px;
   &::-webkit-scrollbar {
     display: none;
