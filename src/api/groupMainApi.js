@@ -28,5 +28,14 @@ const createGroup = async (data) => {
   return response.data;
 }
 
+const editGroup = async ({data, id}) => {
+  const response = await api.put(`/group/${id}`,data,{
+    headers:{
+      'Content-Type': 'multipart/form-data',
+    },
+    withCredentials:true,
+  });
+  return response.data
+}
 
-export { getGroupData, createGroup };
+export { getGroupData, createGroup, editGroup };

@@ -184,11 +184,6 @@ export const FriendSearchButton = styled.div`
   background-color: rgba(245, 245, 245, 1);
 `;
 
-export const FriendSearchImage = styled.img`
-  width: 20px;
-  height: 20px;
-`;
-
 export const FriendContentWrap = styled.div`
   display: flex;
   position: absolute;

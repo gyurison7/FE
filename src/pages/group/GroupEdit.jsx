@@ -10,10 +10,10 @@ import {
   DateInput,
   DateInputWraper,
   DivHeaderText,
+  ErrorText,
   Form,
   FriendContentWrap,
   FriendSearchButton,
-  FriendSearchImage,
   FriendSearchText,
   GroupWriteInput,
   ImageInput,
@@ -36,6 +36,9 @@ import {
   WriteImageWrapper,
 } from './styleContainer.js';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
+import { useMutation, useQueryClient } from 'react-query';
+import { editGroup } from '../../api/groupMainApi.js';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 function GroupWrite() {
   const { id } = useParams();
@@ -72,6 +75,12 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
+  //error state
+  const [groupNameError, setGroupNameError] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [placeError, setPlaceError] = useState(false);
+
   const storedUserId = localStorage.getItem('userId');
 
   const searchUser = async (nickname) => {
@@ -99,8 +108,48 @@ function GroupWrite() {
   };
 
   //데이터 보내는 로직
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(editGroup, {
+    onMutate: () => {
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries('groupList');
+      navigate('/groupmain');
+    },
+  });
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    setGroupNameError(false);
+    setThumbnailError(false);
+    setDateError(false);
+    setPlaceError(false);
+
+    let validationPassed = true;
+
+    if (!groupName) {
+      setGroupNameError(true);
+      validationPassed = false;
+    }
+
+    if (!chosenFile) {
+      setThumbnailError(true);
+      validationPassed = false;
+    }
+
+    if (!startDate || !endDate) {
+      setDateError(true);
+      validationPassed = false;
+    }
+
+    if (!places || places.length === 0) {
+      setPlaceError(true);
+      validationPassed = false;
+    }
+
+    if (!validationPassed) return;
+
     const data = new FormData();
     if (chosenFile) {
       data.append('thumbnailUrl', chosenFile);
@@ -115,19 +164,7 @@ function GroupWrite() {
     );
     data.append('startDate', startDate);
     data.append('endDate', endDate);
-
-    try {
-      const response = await api.put(`/group/${id}`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-      console.log(response.data);
-      navigate('/groupmain');
-    } catch (error) {
-      console.error('Error sending group data:', error);
-    }
+    mutation.mutate(id,data);
   };
 
   const placeEnterAdd = (e) => {
@@ -217,6 +254,9 @@ function GroupWrite() {
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
+        {mutation.isLoading ? (
+          <LoadingSpinner isLoading={mutation.isLoading} />
+        ) : null}
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
@@ -242,6 +282,7 @@ function GroupWrite() {
               required
             />
             <WordCount>{groupName.length}/25</WordCount>
+            {groupNameError && <ErrorText>앨범 이름을 입력해주세요</ErrorText>}
           </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
@@ -258,6 +299,7 @@ function GroupWrite() {
                 썸네일 추가하기
               </WriteImageUpload>
             )}
+            {thumbnailError && <ErrorText>썸네일을 추가해주세요</ErrorText>}
           </WriteImageWrapper>
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
@@ -284,13 +326,14 @@ function GroupWrite() {
                 setEndDate={setEndDate}
               />
             )}
+            {dateError && <ErrorText>날짜를 설정해주세요</ErrorText>}
           </StDateWrapper>
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
-                alt='placeicon'
+              <IconComponents
+                iconType='location'
+                stroke='#4C4C4C'
                 className='inputIcon'
               />
               <GroupWriteInput
@@ -317,14 +360,17 @@ function GroupWrite() {
                 </PlaceRemoveButton>
               </PlaceResult>
             ))}
+            {placeError && <ErrorText>추억장소를 추가해주세요</ErrorText>}
           </PlaceContainer>
           <div style={{ width: '100%' }}>
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
               <FriendContentWrap>
-                <FriendSearchImage
-                  src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
-                  alt='search'
+                <IconComponents
+                  iconType='search'
+                  width='22px'
+                  stroke='#4C4C4C'
+                  className='inputIcon'
                 />
                 <FriendSearchText>
                   {' '}

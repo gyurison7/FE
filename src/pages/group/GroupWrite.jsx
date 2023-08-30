@@ -62,7 +62,7 @@ function GroupWrite() {
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
 
-  console.log(searchResult);
+
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -105,7 +105,6 @@ function GroupWrite() {
 
   const mutation = useMutation(createGroup, {
     onMutate: () => {
-      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
     },
     onSuccess: () => {
       queryClient.invalidateQueries('groupList');
