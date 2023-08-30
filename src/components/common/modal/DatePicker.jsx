@@ -19,11 +19,9 @@ function DatePicker({
 }) {
 
   const handleStop = (e, data) => {
-    console.log(e)
     if (data.y > 100) {
       onClose();
     }
-    console.log('y',data.y)
   };
 
   const currentYear = new Date().getFullYear();
@@ -220,7 +218,7 @@ const Overlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 9;
 `;

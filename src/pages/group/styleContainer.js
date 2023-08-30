@@ -219,6 +219,9 @@ export const DateInput = styled.input`
     font-style: normal;
     line-height: normal;
   }
+   &:focus {
+    outline: none;
+  }
 `;
 
 export const DateInputWraper = styled.div`

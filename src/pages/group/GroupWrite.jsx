@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
-// import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
