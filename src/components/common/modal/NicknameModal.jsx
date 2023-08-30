@@ -25,10 +25,15 @@ function FriendSearchModal({
 
   return (
     <Portal>
-       <Draggable axis='y' handle=".drag-handle" onStop={(e, data) => handleStop(e, data)}>
+      <Draggable
+        axis='y'
+        bounds={{ top: 0 }}
+        handle='.drag-handle'
+        onStop={(e, data) => handleStop(e, data)}
+      >
         <ModalContainer isopen={ismodalopen}>
-          <ModalButtonWrapper>
-          <ModalButton className="drag-handle" onClick={onClose}>
+          <ModalButtonWrapper className='drag-handle'>
+            <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
                 alt='line'
@@ -174,6 +179,7 @@ const ModalButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  padding-bottom: 12px;
   justify-content: center;
 `;
 

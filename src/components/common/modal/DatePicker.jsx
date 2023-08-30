@@ -17,10 +17,13 @@ function DatePicker({
   setStartDate,
   setEndDate,
 }) {
+
   const handleStop = (e, data) => {
+    console.log(e)
     if (data.y > 100) {
       onClose();
     }
+    console.log('y',data.y)
   };
 
   const currentYear = new Date().getFullYear();
@@ -119,12 +122,13 @@ function DatePicker({
       <Overlay onClick={handleOverlayClick} />
       <Draggable
         axis='y'
+        bounds={{ top: 0 }}
         handle='.drag-handle'
         onStop={(e, data) => handleStop(e, data)}
       >
-        <DatePickerWrap isopen={ismodalopen}>
-          <ModalButtonWrapper>
-            <ModalButton className='drag-handle' onClick={onClose}>
+        <DatePickerWrap isopen={ismodalopen} >
+          <ModalButtonWrapper className='drag-handle'>
+            <ModalButton  onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
                 alt='line'
@@ -226,17 +230,19 @@ const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   @media (max-width: 428px) {
     width: 100%;
+    height: 558px;
     margin: 0 auto;
   }
   @media (min-width: 429px) {
     width: 428px;
+    height: 558px;
     margin: 0 auto;
   }
   padding: 16.9px;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '-25%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '0%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -250,7 +256,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
           ${slideDown} 1s
         `};
   height: 100%;
-  border-radius: 30px;
+  border-radius: 30px 30px 0 0;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
 `;
 
@@ -259,13 +265,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: -25%;
+      bottom: 0%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: -25%;
+      bottom: 0%;
     }
     to {
       bottom: -100%;
@@ -308,6 +314,7 @@ const ModalButton = styled.button`
 
 const ModalButtonWrapper = styled.div`
   width: 100%;
+  padding-bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
