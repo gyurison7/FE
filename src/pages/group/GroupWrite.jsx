@@ -235,7 +235,7 @@ function GroupWrite() {
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
-      {mutation.isLoading ? (console.log("isLoading is true"), <LoadingSpinner isLoading={mutation.isLoading} />) : null}
+      {mutation.isLoading ?  <LoadingSpinner isLoading={mutation.isLoading} /> : null}
 
         <WriteHeader>
           <div>

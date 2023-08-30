@@ -37,11 +37,11 @@ function GroupMain() {
         <FixedHeader />
         <GroupWrapper>
           {isLoading ? (
-           <>
-           <SkeletonItem />
-           <SkeletonItem />
-           <SkeletonItem />
-         </>
+            <>
+              <SkeletonItem />
+              <SkeletonItem />
+              <SkeletonItem />
+            </>
           ) : isError ? (
             <div>Error fetching group data</div>
           ) : groupData && groupData.length === 0 ? (
@@ -169,6 +169,7 @@ const ThumbNaiilImage = styled.img`
 
 //container and wrapper
 const MainContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -270,7 +271,7 @@ const Foot = styled.div`
   }
 `;
 
-/// 스켈레턴 
+/// 스켈레턴
 const SkeletonWrapper = styled.div`
   margin-top: 12px;
   width: 40%;
@@ -287,8 +288,8 @@ const SkeletonImage = styled.div`
 `;
 
 const SkeletonText = styled.div`
-
-  h5, p {
+  h5,
+  p {
     background-color: #ccc;
     width: 80%;
     height: 10px;
