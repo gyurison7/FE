@@ -41,7 +41,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 32px;
+  width: 37px;
   height: auto;
 `;
 
