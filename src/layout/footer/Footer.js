@@ -4,6 +4,11 @@ import { NavLink } from 'react-router-dom';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Footer() {
+  const showAlert = (e) => {
+    e.preventDefault();
+    alert('준비중입니다. 잠시만 기다려주세요!');
+  }
+
   return (
     <Wrap>
       <div>
@@ -17,7 +22,7 @@ function Footer() {
         </StyledNavLink>
       </div>
       <div>
-        <StyledNavLink to='/notice'>
+        <StyledNavLink to='/notice' onClick={showAlert}>
           <IconComponents iconType='inbox' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
