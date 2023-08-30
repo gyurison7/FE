@@ -6,7 +6,7 @@ const getGroupData = async () => {
     const response = await api.get('/group', { withCredentials: true });
     const groupData = response.data.findMyGroupData || [];
     const userId = response.data.userId;
-    secureLocalStorage.setItem('userId', userId);
+    secureLocalStorage.setItem('userId', JSON.stringify(userId));
 
     return groupData;
   } catch (error) {
