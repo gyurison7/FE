@@ -16,9 +16,9 @@ function Footer() {
           <IconComponents iconType='home' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
-      <div>
-        <StyledNavLink to='/your-link'>
-          <IconComponents iconType='group' stroke='#4C4C4C' />
+      <div style={{height:'23px'}}>
+        <StyledNavLink to='/search'>
+          <IconComponents iconType='search' stroke='#4C4C4C' />
         </StyledNavLink>
       </div>
       <div>
