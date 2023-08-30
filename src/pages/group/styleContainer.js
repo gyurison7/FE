@@ -212,6 +212,13 @@ export const DateInput = styled.input`
   border-radius: 7px;
   background-color: #f5f5f5;
   border: none;
+
+   &::placeholder {
+    color: #c2c2c2;
+    font-size: 15px;
+    font-style: normal;
+    line-height: normal;
+  }
 `;
 
 export const DateInputWraper = styled.div`

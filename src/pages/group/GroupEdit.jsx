@@ -8,6 +8,7 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import {
   BackButton,
   DateInput,
+  DateInputWraper,
   DivHeaderText,
   Form,
   FriendContentWrap,
@@ -260,11 +261,19 @@ function GroupWrite() {
           </WriteImageWrapper>
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
-            <DateInput
-              value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
-              onClick={() => setDateModal(!isDateModal)}
-              readOnly
-            />
+            <DateInputWraper>
+              <IconComponents
+                iconType='date'
+                stroke='#4C4C4C'
+                className='inputIcon'
+              />
+              <DateInput
+                value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
+                onClick={() => setDateModal(!isDateModal)}
+                placeholder='추억을 나눈 날짜를 설정해주세요'
+                readOnly
+              />
+            </DateInputWraper>
             {isDateModal && (
               <DatePicker
                 ismodalopen={isDateModal}

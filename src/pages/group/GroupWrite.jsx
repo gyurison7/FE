@@ -258,7 +258,7 @@ function GroupWrite() {
               required
             />
             <WordCount>{groupName.length}/25</WordCount>
-            {groupNameError && <ErrorText >앨범 이름을 입력해주세요</ErrorText>}
+            {groupNameError && <ErrorText>앨범 이름을 입력해주세요</ErrorText>}
           </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
@@ -276,14 +276,14 @@ function GroupWrite() {
                 썸네일 추가하기
               </WriteImageUpload>
             )}
-             {thumbnailError && <ErrorText>썸네일을 추가해주세요</ErrorText>}
+            {thumbnailError && <ErrorText>썸네일을 추가해주세요</ErrorText>}
           </WriteImageWrapper>
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <DateInputWraper>
-            <img
-                src={`${process.env.PUBLIC_URL}/assets/image/Calender.png`}
-                alt='cal'
+              <IconComponents
+                iconType='date'
+                stroke='#4C4C4C'
                 className='inputIcon'
               />
               <DateInput
@@ -303,7 +303,7 @@ function GroupWrite() {
                 setEndDate={setEndDate}
               />
             )}
-             {dateError && <ErrorText >날짜를 설정해주세요</ErrorText>}
+            {dateError && <ErrorText>날짜를 설정해주세요</ErrorText>}
           </StDateWrapper>
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
@@ -337,7 +337,7 @@ function GroupWrite() {
                 </PlaceRemoveButton>
               </PlaceResult>
             ))}
-             {placeError && <ErrorText>추억장소를 추가해주세요</ErrorText>}
+            {placeError && <ErrorText>추억장소를 추가해주세요</ErrorText>}
           </PlaceContainer>
           <div style={{ width: '100%' }}>
             <DivHeaderText>함께한 친구들 </DivHeaderText>
