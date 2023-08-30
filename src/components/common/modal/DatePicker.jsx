@@ -17,7 +17,7 @@ function DatePicker({
   setStartDate,
   setEndDate,
 }) {
-  
+
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -242,19 +242,19 @@ const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   @media (max-width: 428px) {
     width: 100%;
-    height: 558px;
+    height: 100vh;
     margin: 0 auto;
   }
   @media (min-width: 429px) {
     width: 428px;
-    height: 558px;
+    height: 100vh;
     margin: 0 auto;
   }
   padding: 16.9px;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: ${({ isopen }) => (isopen ? '0%' : '-100%')};
+  bottom: ${({ isopen }) => (isopen ? '-25%' : '-100%')};
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
@@ -277,13 +277,13 @@ const slideUp = keyframes`
       bottom: -100%;
     }
     100% {
-      bottom: 0%;
+      bottom: -25%;
     }
     `;
 
 const slideDown = keyframes`
     from {
-      bottom: 0%;
+      bottom: -25%;
     }
     to {
       bottom: -100%;
