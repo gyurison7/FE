@@ -9,6 +9,10 @@ export const modalState = atom({
   key: 'modalState',
   default: false,
 });
+export const DropdownState = atom({
+  key: 'DropdownState',
+  default: false,
+});
 
 export const loadingState = atom({
   key: 'loadingState',
