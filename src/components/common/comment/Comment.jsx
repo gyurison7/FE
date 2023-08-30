@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Avatar from '../avatar/Avatar.jsx';
-import secureLocalStorage from 'react-secure-storage';
 
 export default function Comment(prop) {
   const { comment, createdAt, commentDeleta, commentId, commentEdit } = prop;
-  const storedUserId = secureLocalStorage.getItem('userId');
+  const storedUserId = localStorage.getItem('userId');
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment);
   const toggleEdit = () => {
@@ -35,7 +34,7 @@ export default function Comment(prop) {
           )}
         </div>
       </UserInfo>
-      {storedUserId === prop.userId ? (
+      {storedUserId == prop.userId ? (
         <ButtonWrap>
           {isEditing ? (
             <Button onClick={handleCommentEdit}>완료</Button>
@@ -54,6 +53,7 @@ const Wrap = styled.div`
   height: 92px;
   justify-content: space-between;
   border-bottom: 0.5px solid #e4e4e4;
+  background: white;
 `;
 const ButtonWrap = styled.div`
   width: 70px;
