@@ -132,7 +132,7 @@ export default function PostDetail() {
         <Avatar src={detail?.user?.profileUrl} width='40px' height='40px' />
         <input
           type='text'
-          placeholder='댓글을 작성하세요...'
+          placeholder='댓글을 작성해주세요...'
           value={commentInput}
           onChange={(e) => setCommentInput(e.target.value)}
           onKeyPress={commentSubmit}
