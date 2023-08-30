@@ -1,12 +1,10 @@
 import React from 'react';
 import './LoadingSpinner.css';
-import { useRecoilValue } from 'recoil';
-import { loadingState } from '../../../recoil/Atom';
+import PropTypes from 'prop-types';
 
-const LoadingSpinner = () => {
-  const isLoading = useRecoilValue(loadingState);
-  if(!isLoading) return null;
-  
+const LoadingSpinner = ({ isLoading }) => {
+  if (!isLoading) return null;
+
   return (
     <div className='loading-container'>
       <div className='loadingio-spinner-spin-vi85b5q1hnp'>
@@ -42,3 +40,7 @@ const LoadingSpinner = () => {
 };
 
 export default LoadingSpinner;
+
+LoadingSpinner.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+};
