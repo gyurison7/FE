@@ -13,8 +13,3 @@ export const DropdownState = atom({
   key: 'DropdownState',
   default: false,
 });
-
-export const loadingState = atom({
-  key: 'loadingState',
-  default: false,
-});
