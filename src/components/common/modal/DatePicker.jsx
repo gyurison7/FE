@@ -17,6 +17,18 @@ function DatePicker({
   setStartDate,
   setEndDate,
 }) {
+  
+  useEffect(() => {
+    if (ismodalopen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [ismodalopen]);
 
   const handleStop = (e, data) => {
     if (data.y > 100) {
@@ -111,8 +123,10 @@ function DatePicker({
     onClose();
   };
 
-  const handleOverlayClick = () => {
-    onClose && onClose();
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose && onClose();
+    }
   };
 
   return (
@@ -124,9 +138,9 @@ function DatePicker({
         handle='.drag-handle'
         onStop={(e, data) => handleStop(e, data)}
       >
-        <DatePickerWrap isopen={ismodalopen} >
+        <DatePickerWrap isopen={ismodalopen}>
           <ModalButtonWrapper className='drag-handle'>
-            <ModalButton  onClick={onClose}>
+            <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
                 alt='line'

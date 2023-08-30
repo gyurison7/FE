@@ -203,6 +203,7 @@ export const FriendSearchText = styled.p`
 
 export const Form = styled.form`
   width: 100%;
+  background-color: white;
 `;
 
 export const DateInput = styled.input`
