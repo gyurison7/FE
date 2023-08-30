@@ -133,7 +133,7 @@ function GroupWrite() {
       validationPassed = false;
     }
 
-    if (!chosenFile) {
+    if (!thumbnailUrl) {
       setThumbnailError(true);
       validationPassed = false;
     }
