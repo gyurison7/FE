@@ -5,6 +5,8 @@ import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
+import { createGroup } from '../../api/groupMainApi';
+import { useMutation, useQueryClient } from 'react-query';
 import {
   BackButton,
   DivHeaderText,
@@ -37,6 +39,7 @@ import {
   ErrorText,
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -98,6 +101,18 @@ function GroupWrite() {
   };
 
   //데이터 보내는 로직
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(createGroup, {
+    onMutate: () => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries('groupList');
+      navigate('/groupmain');
+    },
+  });
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -140,19 +155,7 @@ function GroupWrite() {
     );
     data.append('startDate', startDate);
     data.append('endDate', endDate);
-
-    try {
-      const response = await api.post('/group', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-      console.log(response.data);
-      navigate('/groupmain');
-    } catch (error) {
-      console.error('Error sending group data:', error);
-    }
+    mutation.mutate(data);
   };
 
   //이미지 처리하는 로직
@@ -232,6 +235,8 @@ function GroupWrite() {
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
+      {mutation.isLoading ? (console.log("isLoading is true"), <LoadingSpinner isLoading={mutation.isLoading} />) : null}
+
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
