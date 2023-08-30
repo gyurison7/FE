@@ -17,7 +17,8 @@ import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal.jsx';
 import MemberOutModal from '../../components/common/modal/MemberOutModal.jsx';
-import useLoading from '../../hooks/useLoading.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { useMutation } from 'react-query';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -32,7 +33,6 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
-  const { startLoading, endLoading } = useLoading();
 
   useEffect(() => {
     const getUserProfilefromApi = async () => {
@@ -61,14 +61,14 @@ const MyPage = () => {
     setIsEditing(false);
   };
 
+  const mutation = useMutation(updateMyPageProfileImage);
   const imageSubmitHandler = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      startLoading();
       const formData = new FormData();
       formData.append('profileUrl', file);
       try {
-        const responseData = await updateMyPageProfileImage(formData);
+        const responseData = await mutation.mutateAsync(formData);
         if (responseData) {
           setProfileImage(responseData);
           setProfileModal(false);
@@ -79,7 +79,6 @@ const MyPage = () => {
         alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       }
-      endLoading();
     }
   };
 
@@ -162,6 +161,7 @@ const MyPage = () => {
 
   return (
     <Wrapper>
+      {mutation.isLoading ? <LoadingSpinner isLoading={mutation.isLoading} /> : null}
       <Header title='마이페이지' />
       <MypageContainer>
         <ProfileContainer>
