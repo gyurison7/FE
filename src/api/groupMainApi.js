@@ -1,4 +1,3 @@
-import secureLocalStorage from 'react-secure-storage';
 import api from './index.jsx';
 
 const getGroupData = async () => {
@@ -6,7 +5,12 @@ const getGroupData = async () => {
     const response = await api.get('/group', { withCredentials: true });
     const groupData = response.data.findMyGroupData || [];
     const userId = response.data.userId;
-    secureLocalStorage.setItem('userId', JSON.stringify(userId));
+
+    if (
+      localStorage.getItem('userId') === null ||
+      localStorage.getItem('userId') === ''
+    )
+      localStorage.setItem('userId', userId);
 
     return groupData;
   } catch (error) {

@@ -9,7 +9,6 @@ import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation';
-import secureLocalStorage from 'react-secure-storage';
 
 const UserProfile = () => {
   const [nickname, setNickname] = useState('');
@@ -38,7 +37,7 @@ const UserProfile = () => {
   const userProfileUploadHandler = async (e) => {
     e.preventDefault();
 
-    const loginId = secureLocalStorage.getItem('loginId');
+    const loginId = localStorage.getItem('loginId');
     if (loginId === null || loginId === '') {
       alert('회원 정보가 존재하지 않습니다.');
       navigate('/login');
