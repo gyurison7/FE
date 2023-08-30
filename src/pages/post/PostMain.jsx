@@ -226,6 +226,7 @@ const Content = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1px;
+  background: white;
 `;
 
 const Foot = styled.div`
