@@ -115,7 +115,7 @@ const LogoImage = styled.img`
 `;
 
 const InputContainer = styled.div`
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -144,6 +144,7 @@ const ButtonContainer = styled.div`
   bottom: -6vh;
 
   button {
+    width: 100%;
     font-weight: 700;
   }
 `;
