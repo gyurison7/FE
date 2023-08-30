@@ -16,6 +16,7 @@ import {
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal.jsx';
+import MemberOutModal from '../../components/common/modal/MemberOutModal.jsx';
 import secureLocalStorage from 'react-secure-storage';
 
 const MyPage = () => {
@@ -23,10 +24,11 @@ const MyPage = () => {
   const [inputNickname, setInputNickname] = useState(); // 유저가 입력한 닉네임
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
+  const [profileModal, setProfileModal] = useState(false);
   const [loginId, setLoginId] = useState('');
-  const [openModal, setOpenModal] = useState(false);
-  const [width, setWidth] = useState('');
   const [loginType, setLoginType] = useState('');
+  const [width, setWidth] = useState('');
+  const [memberOutModal, setMemberOutModal] = useState(false);
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
@@ -67,7 +69,7 @@ const MyPage = () => {
         const responseData = await updateMyPageProfileImage(formData);
         if (responseData) {
           setProfileImage(responseData);
-          setOpenModal(false);
+          setProfileModal(false);
         } else {
           alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
@@ -106,7 +108,7 @@ const MyPage = () => {
       const responseData = await deleteMyPageProfileImage();
       if (responseData) {
         setProfileImage(null);
-        setOpenModal(false);
+        setProfileModal(false);
       } else {
         alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
@@ -129,22 +131,22 @@ const MyPage = () => {
     }
   };
 
-  const memberOutHandler = async () => {
-    const passwordInput = prompt(
-      '정말 탈퇴하시겠습니까? 탈퇴하시려면 비밀번호를 입력해주세요.'
-    );
-    if (passwordInput) {
-      try {
-        const responseData = await memberOut(passwordInput);
-        if (responseData) {
-          alert(
-            '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
-          );
-          navigate('/login');
-        }
-      } catch (error) {
-        console.log(error);
+  const memberOutHandler = async (password) => {
+    if (password === '') {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+    try {
+      const responseData = await memberOut(password);
+      if (responseData) {
+        alert(
+          '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
+        );
+        logoutHandler();
       }
+    } catch (error) {
+      alert('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
+      console.log(error);
     }
   };
 
@@ -167,7 +169,7 @@ const MyPage = () => {
             onChange={imageSubmitHandler}
             style={{ display: 'none' }}
           />
-          <ProfileImageButton onClick={() => setOpenModal(true)}>
+          <ProfileImageButton onClick={() => setProfileModal(true)}>
             <img
               className='profileImage'
               src={
@@ -216,7 +218,7 @@ const MyPage = () => {
             비밀번호 변경
           </button>
           <div>
-            <button className='memberOut' onClick={memberOutHandler}>
+            <button className='memberOut' onClick={() => setMemberOutModal(true)}>
               회원탈퇴
             </button>
             <span>|</span>
@@ -226,11 +228,16 @@ const MyPage = () => {
           </div>
         </ButtonContainer>
       </MypageContainer>
-      {openModal ? (
+      {profileModal ? (
         <MyPageProfileModal
-          setOpenModal={setOpenModal}
+          setProfileModal={setProfileModal}
           imageUploadInput={imageUploadInput}
           deleteProfileImage={deleteProfileImage}
+        />
+      ) : memberOutModal ? (
+        <MemberOutModal
+          setMemberOutModal={setMemberOutModal}
+          memberOutHandler={memberOutHandler}
         />
       ) : (
         <Foot>

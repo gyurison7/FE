@@ -57,7 +57,7 @@ const ModalBackground = styled.div`
 
 const ModalBody = styled.div`
     position: relative;
-    width: 80%;
+    width: 86.5%;
     height: 436px;
     display: flex;
     flex-direction: column;
