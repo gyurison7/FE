@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { DateInput } from '../group/styleContainer';
+import { DateInput, DateInputWraper } from '../group/styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import Footer from '../../layout/footer/Footer';
 import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
 import { useNavigate } from 'react-router-dom';
+import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Search() {
   const [startDate, setStartDate] = useState(null);
@@ -65,12 +66,19 @@ function Search() {
     <SearchPage>
       <header>검색</header>
       <div>
-        <DateInput
-          value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
-          onClick={() => setDateModal(!isDateModal)}
-          placeholder='추억을 나눈 날짜를 설정해주세요'
-          readOnly
-        />
+      <DateInputWraper>
+              <IconComponents
+                iconType='date'
+                stroke='#4C4C4C'
+                className='inputIcon'
+              />
+              <DateInput
+                value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
+                onClick={() => setDateModal(!isDateModal)}
+                placeholder='추억을 나눈 날짜를 설정해주세요'
+                readOnly
+              />
+            </DateInputWraper>
         {isDateModal && (
           <DatePicker
             ismodalopen={isDateModal}

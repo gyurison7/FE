@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import Draggable from 'react-draggable';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -16,6 +17,13 @@ function DatePicker({
   setStartDate,
   setEndDate,
 }) {
+
+  const handleStop = (e, data) => {
+    if (data.y > 100) {
+      onClose();
+    }
+  };
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const years = Array.from({ length: 100 }, (_, i) => currentYear - 50 + i);
@@ -109,79 +117,81 @@ function DatePicker({
 
   return (
     <Portal>
-        <Overlay onClick={handleOverlayClick}/>
-        <DatePickerWrap isopen={ismodalopen}>
-          <ModalButtonWrapper>
-            <ModalButton onClick={onClose}>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
-                alt='line'
-              />
-            </ModalButton>
-          </ModalButtonWrapper>
-          <Header>
-            <MonthContainer>
-              <MonthSelector
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(+e.target.value)}
-              >
-                {months.map((month, index) => (
-                  <option key={month} value={index}>
-                    {month}
-                  </option>
-                ))}
-              </MonthSelector>
-            </MonthContainer>
-            <YearContainer>
-              <YearSelector
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(+e.target.value)}
-              >
-                {years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </YearSelector>
-            </YearContainer>
-          </Header>
-          <DaysNameWrapper>
-            {dayNames.map((dayName) => (
-              <DaysName key={dayName}>{dayName}</DaysName>
-            ))}
-          </DaysNameWrapper>
-          <DaysWrapper>
-            {days.map((day, index) => (
-              <ButtonDays
-                key={index}
-                id={
-                  startDate && day === new Date(startDate).getDate()
-                    ? 'selectedDate'
-                    : ''
-                }
-                day={day}
-                startdate={startDate}
-                enddate={endDate}
-                selectedyear={selectedYear}
-                selectedmonth={selectedMonth}
-                isbetween={String(isBetween(day))}
-                onClick={() => day && handleDayClick(day)}
-              >
-                <span className='dateText'>{day}</span>
-              </ButtonDays>
-            ))}
-          </DaysWrapper>
-          <Footer>
-            <FotterButton onClick={onResetHandler} color='rgba(148, 163, 184, 1)'>
-              {' '}
-              초기회하기{' '}
-            </FotterButton>
-            <FotterButton onClick={applyHandler} color='rgba(88, 115, 254, 1)'>
-              {' '}
-              적용하기
-            </FotterButton>
-          </Footer>
-        </DatePickerWrap>
+          <Overlay onClick={handleOverlayClick} />
+      <Draggable axis='y' onStop={(e, data) => handleStop(e, data)}>
+          <DatePickerWrap isopen={ismodalopen}>
+            <ModalButtonWrapper>
+              <ModalButton onClick={onClose}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
+                  alt='line'
+                />
+              </ModalButton>
+            </ModalButtonWrapper>
+            <Header>
+              <MonthContainer>
+                <MonthSelector
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(+e.target.value)}
+                >
+                  {months.map((month, index) => (
+                    <option key={month} value={index}>
+                      {month}
+                    </option>
+                  ))}
+                </MonthSelector>
+              </MonthContainer>
+              <YearContainer>
+                <YearSelector
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(+e.target.value)}
+                >
+                  {years.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </YearSelector>
+              </YearContainer>
+            </Header>
+            <DaysNameWrapper>
+              {dayNames.map((dayName) => (
+                <DaysName key={dayName}>{dayName}</DaysName>
+              ))}
+            </DaysNameWrapper>
+            <DaysWrapper>
+              {days.map((day, index) => (
+                <ButtonDays
+                  key={index}
+                  id={
+                    startDate && day === new Date(startDate).getDate()
+                      ? 'selectedDate'
+                      : ''
+                  }
+                  day={day}
+                  startdate={startDate}
+                  enddate={endDate}
+                  selectedyear={selectedYear}
+                  selectedmonth={selectedMonth}
+                  isbetween={String(isBetween(day))}
+                  onClick={() => day && handleDayClick(day)}
+                >
+                  <span className='dateText'>{day}</span>
+                </ButtonDays>
+              ))}
+            </DaysWrapper>
+            <Footer>
+              <FotterButton onClick={onResetHandler} color='rgba(148, 163, 184, 1)'>
+                {' '}
+                초기화하기{' '}
+              </FotterButton>
+              <FotterButton onClick={applyHandler} color='rgba(88, 115, 254, 1)'>
+                {' '}
+                적용하기
+              </FotterButton>
+            </Footer>
+          </DatePickerWrap>
+      </Draggable>
     </Portal>
   );
 }
