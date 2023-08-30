@@ -5,7 +5,6 @@ import { login } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import KakaoLogin from '../kakao-login/KakaoLogin.jsx';
 import Button from '../../components/common/button/Button.jsx';
-import secureLocalStorage from 'react-secure-storage';
 
 function Login() {
   const [id, setId] = useState('');
@@ -37,7 +36,7 @@ function Login() {
     try {
       const responseData = await login(id, password);
       if (responseData) {
-        secureLocalStorage.setItem('userId', JSON.stringify(responseData.userId));
+        localStorage.setItem('userId',responseData.userId);
         navigate('/groupmain');
       } else {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
