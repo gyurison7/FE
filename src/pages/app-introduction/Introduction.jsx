@@ -58,6 +58,7 @@ const Button = styled.span`
   position: sticky;
   border-radius: 28px;
   bottom: 200px;
+  font-weight: 600;
   color: #5873fe;
   background: #fff;
   height: 57px;

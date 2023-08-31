@@ -6,9 +6,9 @@ import { styled } from 'styled-components';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import Button from '../../components/common/button/Button.jsx';
 import Input from '../../components/common/input/Input.jsx';
-import api from '../../api/index.jsx';
 import { selectedProfileState } from '../../recoil/Atom.js';
 import { useRecoilValue } from 'recoil';
+import { postWrite } from '../../api/postMainApi.js';
 
 function PostWrite() {
   const [isLoading, setLoading] = useState(false);
@@ -46,18 +46,14 @@ function PostWrite() {
     const formData = new FormData();
     formData.append('imageUrl', file);
     formData.append('title', title);
+
     try {
-      await api.post(`/group/${id}/memory`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-      navigate(`/postmain/${id}`);
+      await postWrite(id, formData, navigate); // postWrite 함수를 사용하여 API 호출을 처리합니다.
     } catch (error) {
       // 오류 처리
       console.error('Error:', error);
     }
+
     setLoading(false);
   };
   return (
