@@ -1,10 +1,7 @@
 import React from 'react';
 import './LoadingSpinner.css';
-import PropTypes from 'prop-types';
 
-const LoadingSpinner = ({ isLoading }) => {
-  if (!isLoading) return null;
-
+const LoadingSpinner = () => {
   return (
     <div className='loading-container'>
       <div className='loadingio-spinner-spin-vi85b5q1hnp'>
@@ -40,7 +37,3 @@ const LoadingSpinner = ({ isLoading }) => {
 };
 
 export default LoadingSpinner;
-
-LoadingSpinner.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-};
