@@ -13,3 +13,8 @@ export const DropdownState = atom({
   key: 'DropdownState',
   default: false,
 });
+
+export const SearchResult = atom({
+  key: 'searchResult',
+  default: [],
+});

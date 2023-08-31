@@ -5,16 +5,20 @@ import Footer from '../../layout/footer/Footer';
 import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { SearchResult } from '../../recoil/Atom'; 
+
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Search() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isDateModal, setDateModal] = useState(false);
-  const [searchData, setSearchData] = useState([]);
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
   const navigate = useNavigate();
-  console.log(searchData);
+  const setSearchResult = useSetRecoilState(SearchResult);
+  const searchResult = useRecoilValue(SearchResult);
+  console.log(searchResult);
 
   const getdayNames = (dateStr) => {
     const dateObj = new Date(dateStr);
@@ -27,7 +31,7 @@ function Search() {
       const response = await api.get(`/group/search/${searchDate}`, {
         withCredentials: true,
       });
-      return response.data;
+      return response.data
     } catch (error) {
       console.error('Error fetching data:', error);
       throw error;
@@ -39,7 +43,7 @@ function Search() {
     if (startDate && endDate) {
       fetchGroupByDate(searchDate)
         .then((data) => {
-          setSearchData(data.searchDateData);
+          setSearchResult(data.searchDateData);
         })
         .catch((error) => {
           console.log('Error:', error);
@@ -57,7 +61,7 @@ function Search() {
     }, {});
   };
 
-  const groupedData = groupByStartDate(searchData);
+  const groupedData = groupByStartDate(searchResult);
   const sortedEntries = Object.entries(groupedData).sort(
     (a, b) => new Date(a[0]) - new Date(b[0])
   );
@@ -177,7 +181,7 @@ const ThumbNail = styled.img`
   object-fit: cover;
 
   &:hover {
-    transform: scale(0.9);  // Scale the image up to 110% when hovered
+    transform: scale(1.1); 
   }
 `;
 

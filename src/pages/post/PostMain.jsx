@@ -47,7 +47,7 @@ export default function PostMain() {
       <Wrap>
         <ProfileModal isOpen={isOpen} closeModal={closeModal} />
         <Head $heady={stkicky}>
-          <BackButton onClick={() => navigate('/groupmain')}>
+          <BackButton onClick={() => navigate(-1)}>
             <IconComponents iconType='vectorLeft' stroke='white' />
           </BackButton>
           {stkicky && <p>{data?.groupName}</p>}
