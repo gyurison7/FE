@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
-// import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
+import { createGroup } from '../../api/groupMainApi';
+import { useMutation, useQueryClient } from 'react-query';
 import {
   BackButton,
   DivHeaderText,
   FriendContentWrap,
   FriendSearchButton,
-  FriendSearchImage,
   FriendSearchText,
   GroupWriteInput,
   ImageInput,
@@ -38,6 +38,7 @@ import {
   ErrorText,
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -61,7 +62,7 @@ function GroupWrite() {
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
 
-  console.log(searchResult);
+
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -99,6 +100,17 @@ function GroupWrite() {
   };
 
   //데이터 보내는 로직
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(createGroup, {
+    onMutate: () => {
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries('groupList');
+      navigate('/groupmain');
+    },
+  });
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -141,19 +153,7 @@ function GroupWrite() {
     );
     data.append('startDate', startDate);
     data.append('endDate', endDate);
-
-    try {
-      const response = await api.post('/group', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-      console.log(response.data);
-      navigate('/groupmain');
-    } catch (error) {
-      console.error('Error sending group data:', error);
-    }
+    mutation.mutate(data);
   };
 
   //이미지 처리하는 로직
@@ -233,6 +233,8 @@ function GroupWrite() {
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
+      {mutation.isLoading ?  <LoadingSpinner isLoading={mutation.isLoading} /> : null}
+
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
@@ -308,9 +310,9 @@ function GroupWrite() {
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
-                alt='placeicon'
+            <IconComponents
+                iconType='location'
+                stroke='#4C4C4C'
                 className='inputIcon'
               />
               <GroupWriteInput
@@ -343,10 +345,12 @@ function GroupWrite() {
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
               <FriendContentWrap>
-                <FriendSearchImage
-                  src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
-                  alt='search'
-                />
+              <IconComponents
+                iconType='search'
+                width='22px'
+                stroke='#4C4C4C'
+                className='inputIcon'
+              />
                 <FriendSearchText>
                   {' '}
                   추억을 나눈 친구를 검색해주세요{' '}

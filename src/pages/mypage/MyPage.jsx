@@ -67,18 +67,16 @@ const MyPage = () => {
     if (file) {
       const formData = new FormData();
       formData.append('profileUrl', file);
-      try {
-        const responseData = await mutation.mutateAsync(formData);
-        if (responseData) {
-          setProfileImage(responseData);
+      mutation.mutate(formData, {
+        onSuccess: (data) => {
+          setProfileImage(data);
           setProfileModal(false);
-        } else {
+        },
+        onError: (error) => {
           alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+          console.error(error);
         }
-      } catch (error) {
-        alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
-        console.error(error);
-      }
+      });
     }
   };
 
@@ -161,7 +159,7 @@ const MyPage = () => {
 
   return (
     <Wrapper>
-      {mutation.isLoading ? <LoadingSpinner isLoading={mutation.isLoading} /> : null}
+      {mutation.isLoading && <LoadingSpinner />}
       <Header title='마이페이지' />
       <MypageContainer>
         <ProfileContainer>
@@ -266,7 +264,7 @@ const MypageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: auto;
+  padding-bottom: 13vh;
 `;
 
 const ProfileContainer = styled.div`

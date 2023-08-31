@@ -2,6 +2,7 @@ import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable';
+import { useEffect } from 'react';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -17,17 +18,40 @@ function FriendSearchModal({
   isUserSelected,
   participants,
 }) {
+
+  useEffect(() => {
+    if (ismodalopen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [ismodalopen]);
+  
   const handleStop = (e, data) => {
     if (data.y > 100) {
       onClose();
     }
   };
 
+  const handleOverlayClick = () => {
+    onClose && onClose();
+  };
+
   return (
     <Portal>
-      <Draggable axis='y' onStop={(e, data) => handleStop(e, data)}>
+      <Overlay onClick={handleOverlayClick} />
+      <Draggable
+        axis='y'
+        bounds={{ top: 0 }}
+        handle='.drag-handle'
+        onStop={(e, data) => handleStop(e, data)}
+      >
         <ModalContainer isopen={ismodalopen}>
-          <ModalButtonWrapper>
+          <ModalButtonWrapper className='drag-handle'>
             <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
@@ -174,6 +198,7 @@ const ModalButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  padding-bottom: 12px;
   justify-content: center;
 `;
 
@@ -200,5 +225,15 @@ FriendSearchModal.propTypes = {
   isUserSelected: PropTypes.func,
   participants: PropTypes.array,
 };
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9;
+`;
 
 export default FriendSearchModal;
