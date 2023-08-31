@@ -9,7 +9,7 @@ import Input from '../../components/common/input/Input.jsx';
 import { selectedProfileState } from '../../recoil/Atom.js';
 import { useRecoilValue } from 'recoil';
 import { postWrite } from '../../api/postMainApi.js';
-
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 function PostWrite() {
   const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -58,6 +58,7 @@ function PostWrite() {
   };
   return (
     <Layout>
+      {isLoading && <LoadingSpinner />}
       <Form style={{ width: '100%' }} onSubmit={submitHandler}>
         <Top>
           <IconComponents
@@ -74,7 +75,7 @@ function PostWrite() {
             color='white'
             background={thumbnailUrl ? '#5873FE' : '#929292'}
           >
-            {isLoading ? '게시중...' : '게시하기'}
+            게시하기
           </Button>
         </Top>
         <div>
