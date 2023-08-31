@@ -18,7 +18,6 @@ function Search() {
   const navigate = useNavigate();
   const setSearchResult = useSetRecoilState(SearchResult);
   const searchResult = useRecoilValue(SearchResult);
-  console.log(searchResult);
 
   const getdayNames = (dateStr) => {
     const dateObj = new Date(dateStr);
