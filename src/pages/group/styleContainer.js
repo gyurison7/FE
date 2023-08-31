@@ -225,7 +225,7 @@ export const DateInput = styled.input`
 
 export const DateInputWraper = styled.div`
   position: relative;
-  width: 100%;
+  width: ${props => props.width || '100%'};
   display: flex;
   align-items: center;
   background-color: #f5f5f5;

@@ -62,7 +62,6 @@ function GroupWrite() {
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
 
-
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -104,8 +103,7 @@ function GroupWrite() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(createGroup, {
-    onMutate: () => {
-    },
+    onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries('groupList');
       navigate('/groupmain');
@@ -233,15 +231,14 @@ function GroupWrite() {
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
-      {mutation.isLoading ?  <LoadingSpinner isLoading={mutation.isLoading} /> : null}
-
+        {mutation.isLoading ? <LoadingSpinner /> : null}
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
               <IconComponents iconType='vectorLeft' stroke='#4C4C4C' />
             </BackButton>
           </div>
-          <div style={{fontWeight:'600'}}>앨범 만들기</div>
+          <div style={{ fontWeight: '600' }}>앨범 만들기</div>
           <div>
             <SubmitButton type='submit'>확인</SubmitButton>
           </div>
@@ -310,7 +307,7 @@ function GroupWrite() {
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
-            <IconComponents
+              <IconComponents
                 iconType='location'
                 stroke='#4C4C4C'
                 className='inputIcon'
@@ -345,12 +342,12 @@ function GroupWrite() {
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
               <FriendContentWrap>
-              <IconComponents
-                iconType='search'
-                width='22px'
-                stroke='#4C4C4C'
-                className='inputIcon'
-              />
+                <IconComponents
+                  iconType='search'
+                  width='22px'
+                  stroke='#4C4C4C'
+                  className='inputIcon'
+                />
                 <FriendSearchText>
                   {' '}
                   추억을 나눈 친구를 검색해주세요{' '}

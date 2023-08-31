@@ -7,6 +7,7 @@ import { getGroupData } from '../../api/groupMainApi';
 import { useQuery } from 'react-query';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
 import MoreModal from '../../components/common/modal/MoreModal.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 function GroupMain() {
   const [isMoreModalId, setMoreModalId] = useState(null);
@@ -38,9 +39,7 @@ function GroupMain() {
         <GroupWrapper>
           {isLoading ? (
             <>
-              <SkeletonItem />
-              <SkeletonItem />
-              <SkeletonItem />
+             <LoadingSpinner/>
             </>
           ) : isError ? (
             <div>Error fetching group data</div>
@@ -279,38 +278,38 @@ const Foot = styled.div`
 `;
 
 /// 스켈레턴
-const SkeletonWrapper = styled.div`
-  margin-top: 12px;
-  width: 40%;
-  padding-bottom: 24px;
-  margin-left: 24px;
-  position: relative;
-`;
+// const SkeletonWrapper = styled.div`
+//   margin-top: 12px;
+//   width: 40%;
+//   padding-bottom: 24px;
+//   margin-left: 24px;
+//   position: relative;
+// `;
 
-const SkeletonImage = styled.div`
-  width: 100%;
-  height: 170px;
-  border-radius: 12px;
-  background-color: #ccc;
-`;
+// const SkeletonImage = styled.div`
+//   width: 100%;
+//   height: 170px;
+//   border-radius: 12px;
+//   background-color: #ccc;
+// `;
 
-const SkeletonText = styled.div`
-  h5,
-  p {
-    background-color: #ccc;
-    width: 80%;
-    height: 10px;
-  }
-`;
+// const SkeletonText = styled.div`
+//   h5,
+//   p {
+//     background-color: #ccc;
+//     width: 80%;
+//     height: 10px;
+//   }
+// `;
 
-const SkeletonItem = () => (
-  <SkeletonWrapper>
-    <SkeletonImage />
-    <SkeletonText>
-      <h5>...</h5>
-      <p></p>
-    </SkeletonText>
-  </SkeletonWrapper>
-);
+// const SkeletonItem = () => (
+//   <SkeletonWrapper>
+//     <SkeletonImage />
+//     <SkeletonText>
+//       <h5>...</h5>
+//       <p></p>
+//     </SkeletonText>
+//   </SkeletonWrapper>
+// );
 
 // export default SkeletonItem;
