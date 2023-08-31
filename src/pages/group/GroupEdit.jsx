@@ -111,8 +111,7 @@ function GroupWrite() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(editGroup, {
-    onMutate: () => {
-    },
+    onMutate: () => {},
     onSuccess: () => {
       queryClient.invalidateQueries('groupList');
       navigate('/groupmain');
@@ -164,7 +163,7 @@ function GroupWrite() {
     );
     data.append('startDate', startDate);
     data.append('endDate', endDate);
-    mutation.mutate({id,data});
+    mutation.mutate({ id, data });
   };
 
   const placeEnterAdd = (e) => {
@@ -254,9 +253,7 @@ function GroupWrite() {
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
-        {mutation.isLoading ? (
-          <LoadingSpinner isLoading={mutation.isLoading} />
-        ) : null}
+        {mutation.isLoading ? <LoadingSpinner /> : null}
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
