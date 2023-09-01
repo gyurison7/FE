@@ -28,6 +28,7 @@ const ButtonStyle = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
+  cursor: pointer;
   ${(props) =>
     props.size === 'large' &&
     css`

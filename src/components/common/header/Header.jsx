@@ -30,6 +30,7 @@ const HeaderContainer = styled.div`
 `;
 
 const BackButton = styled.img`
+  cursor: pointer;
   flex-shrink: 0;
 `;
 

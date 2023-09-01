@@ -384,6 +384,7 @@ const ButtonContainer = styled.div`
     background: transparent;
     border: none;
     font-weight: 600;
+    cursor: pointer;
   }
 
   .passwordChange {
