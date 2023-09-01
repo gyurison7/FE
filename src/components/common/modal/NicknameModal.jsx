@@ -62,7 +62,7 @@ function FriendSearchModal({
           <div style={{ position: 'fix' }}>
             <ModalWriteInput
               name='participants'
-              placeholder='친구 아이디'
+              placeholder='친구 닉네임을 입력해주세요'
               value={participants}
               onChange={universalHandler}
             />
