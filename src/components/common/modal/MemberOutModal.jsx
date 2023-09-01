@@ -4,7 +4,7 @@ import Button from '../button/Button.jsx';
 import PropTypes from 'prop-types';
 
 const MemberOutModal = ({ setMemberOutModal, memberOutHandler }) => {
-  const [password, setPassword] = useState('');
+  const [memberOutCheck, setMemberOutCheck] = useState('');
 
   return (
     <ModalWrapper>
@@ -21,13 +21,13 @@ const MemberOutModal = ({ setMemberOutModal, memberOutHandler }) => {
             <br />
             삭제되어 복구가 불가능해요.
           </p>
-          <p className='second'>그래도 탈퇴하시려면 비밀번호를 입력해주세요.</p>
+          <p className='second'>그래도 탈퇴하시려면 &quot;떠날래요&quot;를 입력해주세요.</p>
           <input
-            onChange={(e) => setPassword(e.target.value)}
-            type='password'
-            name='password'
-            value={password}
-            placeholder='비밀번호를 입력해주세요.'
+            onChange={(e) => setMemberOutCheck(e.target.value)}
+            type='text'
+            name='memberOutCheck'
+            value={memberOutCheck}
+            placeholder='"떠날래요"를 입력해주세요.'
           />
         </TextContainer>
         <ButtonContainer>
@@ -40,7 +40,7 @@ const MemberOutModal = ({ setMemberOutModal, memberOutHandler }) => {
             취소
           </Button>
           <Button
-            onClick={() => memberOutHandler(password)}
+            onClick={() => memberOutHandler(memberOutCheck)}
             size='medium'
             background='#FF6A6A'
             color='#FFF'
