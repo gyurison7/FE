@@ -19,6 +19,7 @@ import MyPageProfileModal from '../../components/common/modal/MyPageProfileModal
 import MemberOutModal from '../../components/common/modal/MemberOutModal.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { useMutation } from 'react-query';
+import CropperModal from '../../components/common/modal/CropperModal.jsx';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -30,6 +31,9 @@ const MyPage = () => {
   const [loginType, setLoginType] = useState('');
   const [width, setWidth] = useState('');
   const [memberOutModal, setMemberOutModal] = useState(false);
+  const [selectImage, setSelectImage] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [openCropper, setOpenCropper] = useState(false);
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
@@ -54,30 +58,38 @@ const MyPage = () => {
     getUserProfilefromApi();
   }, []);
 
+  const selectImageHandelr = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectImage(URL.createObjectURL(file));
+      setOpenCropper(true);
+      setProfileModal(false);
+    }
+  };
+
+  const mutation = useMutation(updateMyPageProfileImage);
+
+  const imageSubmitHandler = async () => {
+    const formData = new FormData();
+    formData.append('profileUrl', croppedImage);
+    mutation.mutate(formData, {
+      onSuccess: (data) => {
+        setProfileImage(data);
+        setProfileModal(false);
+        setOpenCropper(false);
+      },
+      onError: (error) => {
+        alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        console.error(error);
+      },
+    });
+  };
+
   const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setInputNickname);
 
   const blurHandler = () => {
     setInputNickname(nickname);
     setIsEditing(false);
-  };
-
-  const mutation = useMutation(updateMyPageProfileImage);
-  const imageSubmitHandler = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('profileUrl', file);
-      mutation.mutate(formData, {
-        onSuccess: (data) => {
-          setProfileImage(data);
-          setProfileModal(false);
-        },
-        onError: (error) => {
-          alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
-          console.error(error);
-        }
-      });
-    }
   };
 
   const nicknameSubmitHandler = async (e) => {
@@ -165,11 +177,20 @@ const MyPage = () => {
       <Header title='마이페이지' />
       <MypageContainer>
         <ProfileContainer>
+          {openCropper && (
+            <CropperModal
+              imageSubmitHandler={imageSubmitHandler}
+              selectImage={selectImage}
+              croppedImage={croppedImage}
+              setCroppedImage={setCroppedImage}
+              setOpenCropper={setOpenCropper}
+            />
+          )}
           <input
             type='file'
             ref={imageUploadInput}
             accept='image/*'
-            onChange={imageSubmitHandler}
+            onChange={selectImageHandelr}
             style={{ display: 'none' }}
           />
           <ProfileImageButton onClick={() => setProfileModal(true)}>
