@@ -16,10 +16,12 @@ import Search from '../pages/search/Search.jsx';
 import Notice from '../pages/notice/Notice.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import NotProtectedRoute from './NotProtectedRoute.jsx';
+import GoogleAnalytics from '../utils/GoogleAnalytics.js';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <GoogleAnalytics />
       <Routes>
         <Route path='/' element={<Introduction />} />
         <Route path='/login' element={<NotProtectedRoute />}>
