@@ -125,9 +125,9 @@ export const logout = async () => {
   return response.data;
 };
 
-export const memberOut = async (password) => {
+export const memberOut = async (deleteCheck) => {
   const response = await api.delete('/auth/me/delete', {
-    data: { password },
+    data: { deleteCheck },
     withCredentials: true,
   });
 

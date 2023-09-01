@@ -131,13 +131,13 @@ const MyPage = () => {
     }
   };
 
-  const memberOutHandler = async (password) => {
-    if (password === '') {
-      alert('비밀번호를 입력해주세요.');
+  const memberOutHandler = async (memberOutCheck) => {
+    if (memberOutCheck === '') {
+      alert('"떠날래요"를 입력해주세요.');
       return;
     }
     try {
-      const responseData = await memberOut(password);
+      const responseData = await memberOut(memberOutCheck);
       if (responseData) {
         alert(
           '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
