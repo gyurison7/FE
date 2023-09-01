@@ -150,6 +150,7 @@ const ImageButton = styled.button`
   margin-top: 5vh;
   background: transparent;
   border: none;
+  cursor: pointer;
 
   .profileImage {
     display: block;
@@ -213,4 +214,5 @@ const SkipButton = styled.div`
   color: #4c4c4c;
   font-size: 16px;
   font-weight: 600;
+  cursor: pointer;
 `;
