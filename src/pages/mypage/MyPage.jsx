@@ -142,7 +142,9 @@ const MyPage = () => {
         alert(
           '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
         );
-        logoutHandler();
+        localStorage.removeItem('userId');
+        localStorage.removeItem('loginId');
+        navigate('/');
       }
     } catch (error) {
       alert('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
