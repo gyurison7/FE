@@ -23,13 +23,12 @@ import CropperModal from '../../components/common/modal/CropperModal.jsx';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
-  const [inputNickname, setInputNickname] = useState(); // 유저가 입력한 닉네임
+  const [newNickname, setNewNickname] = useState(); // 변경한 닉네임
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profileModal, setProfileModal] = useState(false);
   const [loginId, setLoginId] = useState('');
   const [loginType, setLoginType] = useState('');
-  const [width, setWidth] = useState('');
   const [memberOutModal, setMemberOutModal] = useState(false);
   const [selectImage, setSelectImage] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -43,7 +42,7 @@ const MyPage = () => {
       try {
         const responseData = await getUserProfile();
         setNickname(responseData.nickname);
-        setInputNickname(responseData.nickname);
+        setNewNickname(responseData.nickname);
         setProfileImage(responseData.profileUrl);
         if (responseData.providerType === 'kakao') {
           setLoginType(responseData.providerType);
@@ -85,25 +84,24 @@ const MyPage = () => {
     });
   };
 
-  const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setInputNickname);
+  const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setNewNickname);
 
   const blurHandler = () => {
-    setInputNickname(nickname);
+    setNewNickname(nickname);
     setIsEditing(false);
   };
 
-  const nicknameSubmitHandler = async (e) => {
-    e.preventDefault();
+  const nicknameSubmitHandler = async () => {
     if (!isEditing) {
       setIsEditing(true);
       return;
     }
-    const result = nicknameCheckHandler(inputNickname);
+    const result = nicknameCheckHandler(newNickname);
     if (result) {
       try {
-        const responseData = await updateMyPageNickname(inputNickname);
+        const responseData = await updateMyPageNickname(newNickname);
         if (responseData) {
-          setNickname(inputNickname);
+          setNickname(newNickname);
           setIsEditing(false);
         } else {
           alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
@@ -164,13 +162,6 @@ const MyPage = () => {
     }
   };
 
-  const dynamicWidth = (e) => {
-    const baseWidth = 63;
-    const addWidth = 21;
-    const newWidth = baseWidth + e.target.value.length * addWidth;
-    setWidth(newWidth);
-  };
-
   return (
     <Wrapper>
       {mutation.isLoading && <LoadingSpinner />}
@@ -208,28 +199,35 @@ const MyPage = () => {
               alt='프로필 사진'
             />
           </ProfileImageButton>
-          <NicknameContainer onSubmit={nicknameSubmitHandler} width={width}>
+          <NicknameContainer>
             {isEditing ? (
               <input
                 type='text'
-                value={inputNickname}
+                value={newNickname}
                 onChange={nicknameChangeUtil}
                 onBlur={blurHandler}
-                //placeholder='10자 이하로 입력해주세요!'
+                placeholder='10자 이하로 입력해주세요!'
                 maxLength={10}
-                onInput={dynamicWidth}
               />
             ) : (
               <span>{nickname}</span>
             )}
-            <NicknameImageButton type='submit'>
-              {!isEditing ? (
+            <NicknameImageButton
+              onTouchStart={nicknameSubmitHandler}
+              onMouseDown={nicknameSubmitHandler}
+            >
+              {isEditing ? (
+                <img
+                  src={`${process.env.PUBLIC_URL}assets/svgs/nickname_check.svg`}
+                  alt='닉네임 바꾸기'
+                />
+              ) : (
                 <img
                   className='pencilButton'
                   src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`}
                   alt='닉네임 바꾸기'
                 />
-              ) : null}
+              )}
             </NicknameImageButton>
           </NicknameContainer>
           <span>{loginId}</span>
@@ -327,32 +325,30 @@ const ProfileImageButton = styled.button`
   }
 `;
 
-const NicknameContainer = styled.form`
+const NicknameContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 
   input {
-    min-width: 63px;
-    max-width: 224px;
-    width: ${(props) => props.width}px;
-    height: 29px;
+    width: 242px;
+    height: 32px;
     background: transparent;
     border: none;
     border-bottom: 1px solid #cecece;
     color: #4c4c4c;
     font-size: 24px;
     font-weight: 700;
-    padding: 0 1px;
+    padding: 0 2px 3px 2px;
     outline: none;
-    transition: width 0.2s;
     &::placeholder {
       font-size: 16px;
     }
   }
 
   span {
+    height: 32px;
     color: #4c4c4c;
     font-size: 24px;
     font-weight: 700;
