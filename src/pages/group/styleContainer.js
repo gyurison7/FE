@@ -50,7 +50,7 @@ export const WriteBody = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 28px;
   padding: 1rem;
 `;
 
@@ -64,7 +64,7 @@ export const GroupWriteInput = styled.input`
   height: 44px;
   padding-right: 50px;
   border-radius: 7px;
-  background-color: #f5f5f5;
+  background-color: #F0F2F5;
   border: none;
 
   &:focus {
@@ -86,7 +86,7 @@ export const PlaceInputWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #F0F2F5;
   border-radius: 7px;
 
   .inputIcon {
@@ -178,10 +178,11 @@ export const PlaceAddButton = styled.button`
 export const FriendSearchButton = styled.div`
   position: relative;
   display: flex;
+  border-radius: 7px;
   justify-content: center;
   align-items: center;
   height: 44px;
-  background-color: rgba(245, 245, 245, 1);
+  background-color: #F0F2F5;
 `;
 
 export const FriendContentWrap = styled.div`
@@ -209,7 +210,7 @@ export const DateInput = styled.input`
   height: 44px;
   padding-right: 50px;
   border-radius: 7px;
-  background-color: #f5f5f5;
+  background-color: #F0F2F5;
   border: none;
 
   &::placeholder {
@@ -228,13 +229,13 @@ export const DateInputWraper = styled.div`
   width: ${props => props.width || '100%'};
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #F0F2F5;
   border-radius: 7px;
 
   .inputIcon {
-    margin-right: 8px;
-    margin-left: 10px;
-    margin-top: 7px;
+    width: 18px;
+    height: 18px;
+    margin: 13px;
   }
 `;
 

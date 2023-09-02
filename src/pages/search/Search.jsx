@@ -79,7 +79,11 @@ function Search() {
       </Top>
       <InputWrapper>
         <DateInputWraper width='90%'>
-          <IconComponents iconType='date' stroke='#4C4C4C' className='inputIcon' />
+          <img
+          className='inputIcon'
+            src={`${process.env.PUBLIC_URL}/assets/image/calander.png`}
+            alt='calander'
+          />
           <DateInput
             value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
             onClick={() => setDateModal(!isDateModal)}

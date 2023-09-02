@@ -149,7 +149,15 @@ function DatePicker({
         onStop={(e, data) => handleStop(e, data)}
       >
         <DatePickerWrap isopen={ismodalopen}>
-          <ModalButtonWrapper className='drag-handle'>
+        <div
+            style={{
+              width: '100%',
+              padding: '6px',
+            }}
+            className='drag-handle'
+          >
+          </div>
+          <ModalButtonWrapper >
             <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}

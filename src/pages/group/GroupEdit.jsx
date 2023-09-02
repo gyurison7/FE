@@ -301,10 +301,10 @@ function GroupWrite() {
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <DateInputWraper>
-              <IconComponents
-                iconType='date'
-                stroke='#4C4C4C'
+              <img
                 className='inputIcon'
+                src={`${process.env.PUBLIC_URL}/assets/image/calander.png`}
+                alt='calander'
               />
               <DateInput
                 value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
