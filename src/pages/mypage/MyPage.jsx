@@ -230,7 +230,7 @@ const MyPage = () => {
               )}
             </NicknameImageButton>
           </NicknameContainer>
-          <span>{loginId}</span>
+          <span>{`@${loginId}`}</span>
         </ProfileContainer>
         <ButtonContainer>
           <button
@@ -272,28 +272,29 @@ const MyPage = () => {
 
 export default MyPage;
 
-const Wrapper = styled.div`
+const FlexCenter =`
   display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Wrapper = styled.div`
+  ${FlexCenter}
   flex-direction: column;
   height: 100vh;
   justify-content: space-between;
 `;
 
 const MypageContainer = styled.div`
-  width: 100%;
-  display: flex;
+  ${FlexCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
   padding-bottom: 13vh;
 `;
 
 const ProfileContainer = styled.div`
-  display: flex;
+  ${FlexCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2vh;
   margin-top: 9vh;
 
   span {
@@ -305,31 +306,31 @@ const ProfileContainer = styled.div`
 
 const ProfileImageButton = styled.button`
   position: relative;
-  width: 100%;
   height: auto;
   background: transparent;
   border: none;
+  margin-bottom: 3vh;
 
   .profileImage {
     display: block;
-    width: 31vh;
-    height: 31vh;
+    width: 29vh;
+    height: 29vh;
     border-radius: 100%;
     object-fit: cover;
   }
 
   .cameraIcon {
     position: absolute;
-    top: 80%;
-    left: 77%;
+    top: 84%;
+    left: 75%;
   }
 `;
 
 const NicknameContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+  ${FlexCenter}
+  height: 32px;
+  margin-bottom: 2vh;
+  gap: 7px;
 
   input {
     width: 242px;
@@ -358,18 +359,17 @@ const NicknameContainer = styled.div`
 const NicknameImageButton = styled.button`
   background: transparent;
   border: none;
+  cursor: pointer;
 
   .pencilButton {
-    width: 18px;
-    height: 18px;
+    width: 21px;
+    height: 21px;
   }
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
+  ${FlexCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 3vh;
   margin-top: 20vh;
   @media (max-height: 750px) {
@@ -396,7 +396,7 @@ const ButtonContainer = styled.div`
 
   div {
     display: flex;
-    gap: 8px;
+    gap: 9px;
 
     .memberOut,
     .logout {
