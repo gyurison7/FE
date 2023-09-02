@@ -144,7 +144,7 @@ const MyPage = () => {
   };
 
   const memberOutHandler = async (memberOutCheck) => {
-    if (memberOutCheck === '') {
+    if (memberOutCheck === '' || memberOutCheck !== '떠날래요') {
       alert('"떠날래요"를 입력해주세요.');
       return;
     }
