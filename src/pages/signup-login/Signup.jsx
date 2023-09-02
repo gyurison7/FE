@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { signup, idDuplicateCheck } from '../../api/auth';
 import SignupModal from '../../components/common/modal/SignupModal.jsx';
@@ -27,10 +27,15 @@ function Signup() {
   const onChangeIdHandler = (e) => {
     const idValue = e.target.value;
     setId(idValue);
-    idCheckHandler(idValue);
   };
 
   const passwordChangeUtil = (e) => onChangePasswordHandler(e, password, confirm, setPassword, setConfirm, setPasswordError, setConfirmError);
+
+  useEffect (() => {
+    if(passwordError === '' && confirmError === '' && id) {
+      idCheckHandler(id);
+    }
+  }, [passwordError, confirmError, id])
 
   const idCheckHandler = async (id) => {
     const idRegex = /^[a-zA-Z\d]{5,20}$/;
