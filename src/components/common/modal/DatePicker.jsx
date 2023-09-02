@@ -16,8 +16,8 @@ function DatePicker({
   endDate,
   setStartDate,
   setEndDate,
+  onSearchClick,
 }) {
-
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -120,6 +120,16 @@ function DatePicker({
   };
 
   const applyHandler = () => {
+    if (!startDate && !endDate) {
+      alert('시작날짜와 끝날짜를 모두 입력해주세요');
+      return;
+    }
+
+    if (startDate && !endDate) {
+      alert('끝날짜도 입력해주세요');
+      return;
+    }
+    onSearchClick?.();
     onClose();
   };
 
@@ -483,4 +493,5 @@ DatePicker.propTypes = {
   setStartDate: PropTypes.func,
   endDate: PropTypes.string,
   setEndDate: PropTypes.func,
+  onSearchClick: PropTypes.func,
 };
