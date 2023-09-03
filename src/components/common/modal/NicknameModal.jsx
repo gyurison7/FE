@@ -53,7 +53,7 @@ function FriendSearchModal({
           <div
             style={{
               width: '100%',
-              padding: '2px',
+              padding: '8px',
             }}
             className='drag-handle'
           >
