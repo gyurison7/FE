@@ -9,6 +9,7 @@ import { changePassword } from '../../api/auth.js';
 import Header from '../../components/common/header/Header.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import Button from '../../components/common/button/Button.jsx';
+import { useToast } from '../../hooks/useToast.jsx';
 
 const PasswordChange = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -20,6 +21,7 @@ const PasswordChange = () => {
   const [confirmError, setConfirmError] = useState();
 
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const onChangeOldPasswordHandler = (e) => {
     const value = e.target.value;
@@ -57,20 +59,18 @@ const PasswordChange = () => {
       return;
 
     if (oldPassword === password) {
-      alert('새로운 비밀번호는 기존 비밀번호와 다르게 설정해주세요!');
+      showToast('새로운 비밀번호는 기존 비밀번호와 다르게 설정해주세요!');
       return;
     }
 
     try {
       const responseData = await changePassword(oldPassword, password, confirm);
       if (responseData) {
-        alert('비밀번호이 변경이 완료되었습니다!');
+        showToast('비밀번호가 변경되었습니다!', 3000);
         navigate('/mypage');
-      } else {
-        alert('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.');
       }
     } catch (error) {
-      alert('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.');
+      showToast('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.');
       console.error(error);
     }
   };

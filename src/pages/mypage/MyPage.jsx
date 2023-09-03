@@ -20,6 +20,7 @@ import MemberOutModal from '../../components/common/modal/MemberOutModal.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { useMutation } from 'react-query';
 import CropperModal from '../../components/common/modal/CropperModal.jsx';
+import { useToast } from '../../hooks/useToast.jsx';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -36,6 +37,7 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const getUserProfilefromApi = async () => {
@@ -78,7 +80,7 @@ const MyPage = () => {
         setOpenCropper(false);
       },
       onError: (error) => {
-        alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        showToast('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       },
     });
@@ -103,11 +105,9 @@ const MyPage = () => {
         if (responseData) {
           setNickname(newNickname);
           setIsEditing(false);
-        } else {
-          alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
       } catch (error) {
-        alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        showToast('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       }
     }
@@ -119,11 +119,9 @@ const MyPage = () => {
       if (responseData) {
         setProfileImage(null);
         setProfileModal(false);
-      } else {
-        alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };
@@ -143,13 +141,13 @@ const MyPage = () => {
 
   const memberOutHandler = async (memberOutCheck) => {
     if (memberOutCheck === '' || memberOutCheck !== '떠날래요') {
-      alert('"떠날래요"를 입력해주세요.');
+      showToast('"떠날래요"를 입력해주세요.');
       return;
     }
     try {
       const responseData = await memberOut(memberOutCheck);
       if (responseData) {
-        alert(
+        showToast(
           '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
         );
         localStorage.removeItem('userId');
@@ -157,7 +155,7 @@ const MyPage = () => {
         navigate('/');
       }
     } catch (error) {
-      alert('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
+      showToast('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
       console.log(error);
     }
   };
