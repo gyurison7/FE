@@ -15,7 +15,9 @@ function NotProtectedRoute() {
           navigate('/groupmain');
         }
       } catch (error) {
-        console.error(error);
+        if(!error.response) {
+          console.error(error);
+        }
       }
     };
     loginCheck();

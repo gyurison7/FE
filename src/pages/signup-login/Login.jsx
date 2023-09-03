@@ -101,14 +101,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background: linear-gradient(#5570ff, #8895f0);
+  background: linear-gradient(#3D5CFF, #8895F1);
+  padding: 24px;
 `;
 
 const LogoImage = styled.img`
   width: 52%;
   height: auto;
   position: relative;
-  top: 11vh;
+  top: 10vh;
   margin: 0 auto;
   display: flex;
   object-fit: cover;
@@ -121,17 +122,16 @@ const InputContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1vh;
-  margin-top: 18vh;
+  gap: 10px;
+  margin-top: 16vh;
 
   small {
     align-self: flex-start;
     text-align: left;
-    margin-left: 5vw;
-    margin-right: 5vw;
-    color: #ff7e62;
-    font-size: 13px;
-    font-weight: 600;
+    margin-left: 1vw;
+    color: #FF6A6A;
+    font-size: 12px;
+    font-weight: 400;
   }
 `;
 
@@ -154,7 +154,7 @@ const LinkContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  bottom: -9vh;
+  bottom: -8.5vh;
 `;
 
 const LinkStyle = styled(Link)`
