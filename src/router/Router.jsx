@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import GroupMain from '../pages/group/GroupMain.jsx';
 import Login from '../pages/signup-login/Login.jsx';
 import Signup from '../pages/signup-login/Signup.jsx';
@@ -17,6 +17,10 @@ import Notice from '../pages/notice/Notice.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import NotProtectedRoute from './NotProtectedRoute.jsx';
 import GoogleAnalytics from '../utils/GoogleAnalytics.js';
+
+function isLogin() {
+  return !!localStorage.getItem('userId');
+}
 
 const Router = () => {
   return (
@@ -64,6 +68,7 @@ const Router = () => {
         <Route path='/notice' element={<ProtectedRoute />}>
           <Route index element={<Notice />} />
         </Route>
+        <Route path='*' element={isLogin() ? <Navigate to='/groupmain' />: <Navigate to='/login' />} />
       </Routes>
     </BrowserRouter>
   );
