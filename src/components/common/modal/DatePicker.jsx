@@ -123,12 +123,12 @@ function DatePicker({
 
   const applyHandler = () => {
     if (!startDate && !endDate) {
-      showToast('시작날짜와 종류날짜를 모두 입력해주세요');
+      showToast('시작 날짜와 종료 날짜를 설정해주세요');
       return;
     }
 
     if (startDate && !endDate) {
-      showToast('종류날짜도 입력해주세요');
+      showToast('종료날짜도 설정해주세요');
       return;
     }
     onSearchClick?.();
