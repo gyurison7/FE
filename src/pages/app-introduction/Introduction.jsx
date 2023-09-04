@@ -197,7 +197,7 @@ const CustomImage = styled.img`
 `;
 const CustomImageLast = styled(CustomImage)`
   width: 50%;
-  height: 50vh;
+  height: 30vh;
 `;
 const CarouselWrap = styled.div`
   width: 100%;
