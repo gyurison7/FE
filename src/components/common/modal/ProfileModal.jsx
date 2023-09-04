@@ -10,7 +10,6 @@ export default function ProfileModal({ isOpen, closeModal }) {
   if (!postData) {
     return null;
   }
-  console.log('is -> profilemodla', isOpen);
 
   return (
     <StyledModal
