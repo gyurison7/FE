@@ -50,8 +50,8 @@ const ModalBackground = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    opacity: 0.8;
-    background-color: #000;
+    opacity: 0.6;
+    background-color: #000000;
     z-index: 1;
 `;
 
