@@ -11,6 +11,7 @@ import PlusButton from '../../components/common/button/PlusButton.jsx';
 import { useRecoilState } from 'recoil';
 import { selectedProfileState, modalState } from '../../recoil/Atom';
 import ProfileModal from '../../components/common/modal/ProfileModal.jsx';
+import shareKakao from '../../utils/shareKakao';
 
 export default function PostMain() {
   const stkicky = useStickyMode(115);
@@ -19,9 +20,9 @@ export default function PostMain() {
   const [postData, setPostData] = useRecoilState(selectedProfileState);
   console.log('post', postData);
   console.log('is', isOpen);
-
   const { id } = useParams();
   const navigate = useNavigate();
+  const kakaoShared = shareKakao();
 
   const handleProfileClick = (id) => {
     console.log('Working...');
@@ -62,9 +63,9 @@ export default function PostMain() {
               <Title>
                 <h4>{data?.groupName}</h4>
               </Title>
-              <FriendAdd onClick={() => alert('준비중입니다. 잠시만 기다려주세요!')}>
+              <FriendAdd onClick={() => kakaoShared()}>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
-                <p>친구초대</p>
+                <p>공유하기</p>
               </FriendAdd>
             </GroupTitle>
             <DateLocation>
@@ -180,6 +181,7 @@ const Title = styled.div`
   gap: 12px;
 `;
 const FriendAdd = styled.div`
+  cursor: pointer;
   display: flex;
   p {
     color: #8e8e8e;
