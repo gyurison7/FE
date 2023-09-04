@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 const shareKakao = () => {
   const { Kakao } = window;
-  const serviceUrl = "https://memorymingle.shop"
+  const serviceUrl = 'https://memorymingle.shop';
 
   useEffect(() => {
     Kakao.cleanup();
@@ -13,10 +13,10 @@ const shareKakao = () => {
     Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: 'Memory Mingle',
-        description: 'Memory Mingle에 초대되셨어요!',
+        title: 'Memory Mingle에 초대되셨어요!',
+        description: '우리만의 추억 앨범을 만들고 친구와 함께 공유해보세요!',
         imageUrl:
-          'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+          'https://github.com/MemoryMingle/FE/assets/135217349/06d83a75-f69a-4579-8e34-c5cfbed65907',
         link: {
           mobileWebUrl: serviceUrl,
           webUrl: serviceUrl,
@@ -24,7 +24,7 @@ const shareKakao = () => {
       },
       buttons: [
         {
-          title: '참여하기',
+          title: '추억 만들러 가기',
           link: {
             mobileWebUrl: serviceUrl,
             webUrl: serviceUrl,
