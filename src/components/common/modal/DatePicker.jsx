@@ -3,6 +3,7 @@ import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable';
+import { useToast } from '../../../hooks/useToast.jsx';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -16,8 +17,9 @@ function DatePicker({
   endDate,
   setStartDate,
   setEndDate,
+  onSearchClick,
 }) {
-
+  const { showToast } = useToast();
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -120,6 +122,16 @@ function DatePicker({
   };
 
   const applyHandler = () => {
+    if (!startDate && !endDate) {
+      showToast('시작 날짜와 종료 날짜를 설정해주세요');
+      return;
+    }
+
+    if (startDate && !endDate) {
+      showToast('종료날짜도 설정해주세요');
+      return;
+    }
+    onSearchClick?.();
     onClose();
   };
 
@@ -139,7 +151,15 @@ function DatePicker({
         onStop={(e, data) => handleStop(e, data)}
       >
         <DatePickerWrap isopen={ismodalopen}>
-          <ModalButtonWrapper className='drag-handle'>
+        <div
+            style={{
+              width: '100%',
+              padding: '6px',
+            }}
+            className='drag-handle'
+          >
+          </div>
+          <ModalButtonWrapper >
             <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
@@ -483,4 +503,5 @@ DatePicker.propTypes = {
   setStartDate: PropTypes.func,
   endDate: PropTypes.string,
   setEndDate: PropTypes.func,
+  onSearchClick: PropTypes.func,
 };

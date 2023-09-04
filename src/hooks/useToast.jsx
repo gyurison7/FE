@@ -11,7 +11,7 @@ export function useToast() {
 export function ToastProvider({ children }) {
   const [toast, setToast] = useState({ show: false, message: '' });
 
-  const showToast = (message, seconds = 5000) => {
+  const showToast = (message, seconds = 3000) => {
     setToast({ show: true, message });
     setTimeout(() => {
       setToast({ show: false, message: '' });
