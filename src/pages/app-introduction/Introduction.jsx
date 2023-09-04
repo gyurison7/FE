@@ -55,11 +55,14 @@ function Introduction() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const onClickHandler = () => {
-    if (currentSlide === 0 || currentSlide === slideData.length - 1) {
+    if (currentSlide < 4) {
       navigate('/login');
     } else {
       carouselRef.current.next();
     }
+  };
+  const onClickHandlerLogin = () => {
+    navigate('/login');
   };
 
   const goToNextSlide = () => {
@@ -123,7 +126,7 @@ function Introduction() {
                   alignItems: 'center',
                 }}
               >
-                <Button onClick={onClickHandler}>시작하기</Button>
+                <Button onClick={onClickHandlerLogin}>시작하기</Button>
               </div>
             </div>
           </WrapButton>
@@ -208,6 +211,7 @@ const Button = styled.span`
   position: sticky;
   border-radius: 28px;
   bottom: -100px;
+  cursor: pointer;
   font-weight: 600;
   color: #5873fe;
   background: #fff;
