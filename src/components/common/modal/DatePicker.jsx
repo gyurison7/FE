@@ -3,6 +3,7 @@ import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable';
+import { useToast } from '../../../hooks/useToast.jsx';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -18,6 +19,7 @@ function DatePicker({
   setEndDate,
   onSearchClick,
 }) {
+  const { showToast } = useToast();
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -121,12 +123,12 @@ function DatePicker({
 
   const applyHandler = () => {
     if (!startDate && !endDate) {
-      alert('시작날짜와 끝날짜를 모두 입력해주세요');
+      showToast('시작날짜와 종류날짜를 모두 입력해주세요');
       return;
     }
 
     if (startDate && !endDate) {
-      alert('끝날짜도 입력해주세요');
+      showToast('종류날짜도 입력해주세요');
       return;
     }
     onSearchClick?.();
