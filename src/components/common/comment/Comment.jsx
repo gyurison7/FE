@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Avatar from '../avatar/Avatar.jsx';
+import CommentDropDown from '../../commentDropdown/CommentDropDown.jsx';
 
 export default function Comment(prop) {
   const { comment, createdAt, commentDeleta, commentId, commentEdit } = prop;
   const storedUserId = localStorage.getItem('userId');
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
-
+  console.log(editedComment);
   const handleCommentEdit = async () => {
     await commentEdit(commentId, editedComment);
     setIsEditing(false);
   };
-
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleCommentEdit();
+    }
+  };
   return (
     <Wrap>
       <UserInfo>
@@ -28,6 +34,7 @@ export default function Comment(prop) {
               type='text'
               value={editedComment}
               onChange={(e) => setEditedComment(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
           ) : (
             <UserComment>{comment} </UserComment>
@@ -36,12 +43,12 @@ export default function Comment(prop) {
       </UserInfo>
       {storedUserId == prop.userId ? (
         <ButtonWrap>
-          {isEditing ? (
-            <Button onClick={handleCommentEdit}>완료</Button>
-          ) : (
-            <Button onClick={toggleEdit}>수정</Button>
-          )}
-          <Button onClick={commentDeleta}>삭제</Button>
+          <CommentDropDown
+            commentDeleta={commentDeleta}
+            toggleEdit={toggleEdit}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+          />
         </ButtonWrap>
       ) : null}
     </Wrap>
@@ -55,17 +62,7 @@ const Wrap = styled.div`
   border-bottom: 0.5px solid #e4e4e4;
   background: white;
 `;
-const ButtonWrap = styled.div`
-  width: 70px;
-  display: flex;
-  justify-content: space-around;
-`;
-const Button = styled.span`
-  background: transparent;
-  color: #444;
-  font-size: 11px;
-  cursor: pointer;
-`;
+const ButtonWrap = styled.div``;
 
 const UserInfo = styled.div`
   word-break: break-all;
@@ -81,12 +78,15 @@ const NickName = styled.div`
 `;
 const CreatedAt = styled(NickName)`
   color: #8888;
+  padding-top: 3px;
 `;
 const UserComment = styled.div`
   color: #4c4c4c;
   font-size: 14px;
+  width: 290px;
   font-style: normal;
   font-weight: 500;
+  padding-top: 8px;
   line-height: normal;
 `;
 const EditInput = styled.input`
