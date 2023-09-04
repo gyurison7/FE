@@ -41,6 +41,7 @@ import { editGroup } from '../../api/groupMainApi.js';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 function GroupWrite() {
+  const storedUserId = localStorage.getItem('userId');
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,7 +53,10 @@ function GroupWrite() {
       const formattedEndDate = res.data.endDate.slice(0, 10);
       setStartDate(formattedStartDate);
       setEndDate(formattedEndDate);
-      setSelectedFriends(res.data.participants);
+      const filteredFriends = res.data.participants.filter(
+        (participant) => participant.userId !== Number(storedUserId)
+      );
+      setSelectedFriends(filteredFriends);
       setThumbnailUrl(res.data.thumbnailUrl);
       if (res.data.place) {
         const placesArray = JSON.parse(res.data.place);
@@ -81,8 +85,6 @@ function GroupWrite() {
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
 
-  const storedUserId = localStorage.getItem('userId');
-
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -106,6 +108,8 @@ function GroupWrite() {
       }
     }
   };
+
+  console.log('parti', selectedFriends);
 
   //데이터 보내는 로직
   const queryClient = useQueryClient();
@@ -246,10 +250,6 @@ function GroupWrite() {
     setSelectedFriends((prevfri) => prevfri.filter((item) => item.userId !== id));
   };
 
-  const isUserSelected = (userId) => {
-    return selectedFriends.some((friend) => friend.userId === userId);
-  };
-
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
@@ -380,7 +380,6 @@ function GroupWrite() {
                 ismodalopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
-                isUserSelected={isUserSelected}
                 searchResult={searchResult}
                 addFriendHandler={addFriendHandler}
                 participants={participants}

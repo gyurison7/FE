@@ -15,7 +15,6 @@ function FriendSearchModal({
   universalHandler,
   searchResult,
   addFriendHandler,
-  isUserSelected,
   participants,
 }) {
   useEffect(() => {
@@ -75,7 +74,6 @@ function FriendSearchModal({
             />
           </div>
           {searchResult
-            .filter((item) => !isUserSelected(item.userId))
             .map((item) => {
               return (
                 <ResultWrapper key={item.userId}>
@@ -229,7 +227,6 @@ FriendSearchModal.propTypes = {
   universalHandler: PropTypes.func,
   searchResult: PropTypes.array,
   addFriendHandler: PropTypes.func,
-  isUserSelected: PropTypes.func,
   participants: PropTypes.array,
 };
 
