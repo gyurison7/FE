@@ -3,109 +3,99 @@ import { styled } from 'styled-components';
 import { Carousel } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
-import rasm from '../../assets/images/test.png';
-import rasm2 from '../../assets/images/test2.png';
-import rasm3 from '../../assets/images/test3.png';
-import rasm4 from '../../assets/images/test4.png';
-import rasm5 from '../../assets/images/test5.png';
+import introduction from '../../assets/images/introduction.png';
+import introduction1 from '../../assets/images/introduction1.png';
+import introduction2 from '../../assets/images/introduction2.png';
+import introduction3 from '../../assets/images/introduction3.png';
+import introduction4 from '../../assets/images/introduction4.png';
 
-function Itroduction() {
+const slideData = [
+  {
+    skipText: '건너뛰기',
+    content: (
+      <>
+        친구들끼리 <br /> 추억 앨범을 만들어보세요
+      </>
+    ),
+    imageSrc: introduction,
+  },
+  {
+    skipText: '건너뛰기',
+    content: (
+      <>
+        함께 공유하고 싶은 <br />
+        순간들을 올려보세요
+      </>
+    ),
+    imageSrc: introduction1,
+  },
+  {
+    skipText: '건너뛰기',
+    content: (
+      <>
+        친구들과의 소통도 <br /> 할 수 있어요
+      </>
+    ),
+    imageSrc: introduction2,
+  },
+  {
+    skipText: '건너뛰기',
+    content: (
+      <>
+        날짜 검색으로 <br /> 이전 추억들을 돌아봐요
+      </>
+    ),
+    imageSrc: introduction3,
+  },
+];
+
+function Introduction() {
   const navigate = useNavigate();
   const carouselRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+
   const onClickHandler = () => {
-    if (currentSlide === 0) {
-      navigate('/login');
-    } else if (currentSlide === 4) {
-      navigate('/login');
-    } else if (currentSlide === 3) {
-      navigate('/login');
-    } else if (currentSlide === 2) {
-      navigate('/login');
-    } else if (currentSlide === 1) {
+    if (currentSlide === 0 || currentSlide === slideData.length - 1) {
       navigate('/login');
     } else {
       carouselRef.current.next();
     }
   };
+
   const goToNextSlide = () => {
     carouselRef.current.next();
   };
+
   const goToPrevSlide = () => {
     carouselRef.current.prev();
   };
+
   const afterSlideChange = (current) => {
     setCurrentSlide(current);
   };
-  const PP = styled.p`
-    color: #fff;
-    text-align: center;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  `;
+
   return (
     <Wrap>
       <CarouselWrap>
         <Carousel ref={carouselRef} dotPosition='top' afterChange={afterSlideChange}>
-          <div>
-            <Skip onClick={onClickHandler}>건너뛰기</Skip>
-            <PP
-              style={{
-                height: '30vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              친구들끼리 <br /> 추억 앨범을 만들어보세요
-            </PP>
-            <CustomImage src={rasm} alt='introduction' />
-          </div>
-          <div>
-            <Skip onClick={onClickHandler}>건너뛰기</Skip>
-            <PP
-              style={{
-                height: '30vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              함께 공유하고 싶은 <br /> 순간들을 올려보세요
-            </PP>
-            <CustomImage src={rasm2} alt='introduction' />
-          </div>
-          <div>
-            <Skip onClick={onClickHandler}>건너뛰기</Skip>
-            <PP
-              style={{
-                height: '30vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              친구들과의 소통도 <br /> 할 수 있어요
-            </PP>
-            <CustomImage src={rasm3} alt='introduction' />
-          </div>
-          <div>
-            <Skip onClick={onClickHandler}>건너뛰기</Skip>
-            <PP
-              style={{
-                height: '30vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              날짜 검색으로 <br /> 이전 추억들을 돌아봐요
-            </PP>
-            <CustomImage src={rasm4} alt='introduction' />
-          </div>
-
+          {slideData.map((slide, index) => (
+            <div key={index}>
+              {currentSlide === index && (
+                <Skip onClick={onClickHandler}>{slide.skipText}</Skip>
+              )}
+              <Description
+                style={{
+                  height: '30vh',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {slide.content}
+              </Description>
+              <CustomImage src={slide.imageSrc} alt='introduction' />
+            </div>
+          ))}
           <WrapButton>
             <div
               style={{
@@ -113,7 +103,7 @@ function Itroduction() {
                 flexDirection: 'column',
               }}
             >
-              <PP
+              <Description
                 style={{
                   height: '30vh',
                   display: 'flex',
@@ -123,8 +113,8 @@ function Itroduction() {
                 }}
               >
                 지금 바로 <br /> 메모리밍글을 시작해보세요
-              </PP>
-              <CustomImageLast src={rasm5} alt='introduction4' />
+              </Description>
+              <CustomImageLast src={introduction4} alt='introduction4' />
               <div
                 style={{
                   height: '20vh',
@@ -144,7 +134,7 @@ function Itroduction() {
             stroke='white'
             onClick={goToPrevSlide}
           />
-          {currentSlide < 4 && (
+          {currentSlide <= slideData.length - 1 && (
             <IconComponents
               iconType='vectorRight'
               stroke='white'
@@ -158,7 +148,8 @@ function Itroduction() {
   );
 }
 
-export default Itroduction;
+export default Introduction;
+
 const Wrap = styled.div`
   background: #5873fe;
   max-width: 428px;
@@ -189,6 +180,14 @@ const PrevNext = styled.div`
   @media (min-width: 429px) {
     width: 428px;
   }
+`;
+const Description = styled.p`
+  color: #fff;
+  text-align: center;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 `;
 const CustomImage = styled.img`
   width: 70%;
