@@ -20,16 +20,16 @@ import MemberOutModal from '../../components/common/modal/MemberOutModal.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { useMutation } from 'react-query';
 import CropperModal from '../../components/common/modal/CropperModal.jsx';
+import { useToast } from '../../hooks/useToast.jsx';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
-  const [inputNickname, setInputNickname] = useState(); // 유저가 입력한 닉네임
+  const [newNickname, setNewNickname] = useState(); // 변경한 닉네임
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [profileModal, setProfileModal] = useState(false);
   const [loginId, setLoginId] = useState('');
   const [loginType, setLoginType] = useState('');
-  const [width, setWidth] = useState('');
   const [memberOutModal, setMemberOutModal] = useState(false);
   const [selectImage, setSelectImage] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -37,13 +37,14 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const getUserProfilefromApi = async () => {
       try {
         const responseData = await getUserProfile();
         setNickname(responseData.nickname);
-        setInputNickname(responseData.nickname);
+        setNewNickname(responseData.nickname);
         setProfileImage(responseData.profileUrl);
         if (responseData.providerType === 'kakao') {
           setLoginType(responseData.providerType);
@@ -79,37 +80,34 @@ const MyPage = () => {
         setOpenCropper(false);
       },
       onError: (error) => {
-        alert('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        showToast('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       },
     });
   };
 
-  const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setInputNickname);
+  const nicknameChangeUtil = (e) => onChangeNicknameHandler(e, setNewNickname);
 
   const blurHandler = () => {
-    setInputNickname(nickname);
+    setNewNickname(nickname);
     setIsEditing(false);
   };
 
-  const nicknameSubmitHandler = async (e) => {
-    e.preventDefault();
+  const nicknameSubmitHandler = async () => {
     if (!isEditing) {
       setIsEditing(true);
       return;
     }
-    const result = nicknameCheckHandler(inputNickname);
+    const result = nicknameCheckHandler(newNickname);
     if (result) {
       try {
-        const responseData = await updateMyPageNickname(inputNickname);
+        const responseData = await updateMyPageNickname(newNickname);
         if (responseData) {
-          setNickname(inputNickname);
+          setNickname(newNickname);
           setIsEditing(false);
-        } else {
-          alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         }
       } catch (error) {
-        alert('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        showToast('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
         console.error(error);
       }
     }
@@ -121,11 +119,9 @@ const MyPage = () => {
       if (responseData) {
         setProfileImage(null);
         setProfileModal(false);
-      } else {
-        alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };
@@ -144,14 +140,14 @@ const MyPage = () => {
   };
 
   const memberOutHandler = async (memberOutCheck) => {
-    if (memberOutCheck === '') {
-      alert('"떠날래요"를 입력해주세요.');
+    if (memberOutCheck === '' || memberOutCheck !== '떠날래요') {
+      showToast('"떠날래요"를 입력해주세요.');
       return;
     }
     try {
       const responseData = await memberOut(memberOutCheck);
       if (responseData) {
-        alert(
+        showToast(
           '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
         );
         localStorage.removeItem('userId');
@@ -159,16 +155,9 @@ const MyPage = () => {
         navigate('/');
       }
     } catch (error) {
-      alert('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
+      showToast('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
       console.log(error);
     }
-  };
-
-  const dynamicWidth = (e) => {
-    const baseWidth = 63;
-    const addWidth = 21;
-    const newWidth = baseWidth + e.target.value.length * addWidth;
-    setWidth(newWidth);
   };
 
   return (
@@ -208,31 +197,38 @@ const MyPage = () => {
               alt='프로필 사진'
             />
           </ProfileImageButton>
-          <NicknameContainer onSubmit={nicknameSubmitHandler} width={width}>
+          <NicknameContainer>
             {isEditing ? (
               <input
                 type='text'
-                value={inputNickname}
+                value={newNickname}
                 onChange={nicknameChangeUtil}
                 onBlur={blurHandler}
-                //placeholder='10자 이하로 입력해주세요!'
+                placeholder='10자 이하로 입력해주세요!'
                 maxLength={10}
-                onInput={dynamicWidth}
               />
             ) : (
               <span>{nickname}</span>
             )}
-            <NicknameImageButton type='submit'>
-              {!isEditing ? (
+            <NicknameImageButton
+              onTouchStart={nicknameSubmitHandler}
+              onMouseDown={nicknameSubmitHandler}
+            >
+              {isEditing ? (
+                <img
+                  src={`${process.env.PUBLIC_URL}assets/svgs/nickname_check.svg`}
+                  alt='닉네임 바꾸기'
+                />
+              ) : (
                 <img
                   className='pencilButton'
                   src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`}
                   alt='닉네임 바꾸기'
                 />
-              ) : null}
+              )}
             </NicknameImageButton>
           </NicknameContainer>
-          <span>{loginId}</span>
+          <span>{`@${loginId}`}</span>
         </ProfileContainer>
         <ButtonContainer>
           <button
@@ -274,28 +270,29 @@ const MyPage = () => {
 
 export default MyPage;
 
-const Wrapper = styled.div`
+const FlexCenter =`
   display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Wrapper = styled.div`
+  ${FlexCenter}
   flex-direction: column;
   height: 100vh;
   justify-content: space-between;
 `;
 
 const MypageContainer = styled.div`
-  width: 100%;
-  display: flex;
+  ${FlexCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
   padding-bottom: 13vh;
 `;
 
 const ProfileContainer = styled.div`
-  display: flex;
+  ${FlexCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2vh;
   margin-top: 9vh;
 
   span {
@@ -307,52 +304,50 @@ const ProfileContainer = styled.div`
 
 const ProfileImageButton = styled.button`
   position: relative;
-  width: 100%;
   height: auto;
   background: transparent;
   border: none;
+  margin-bottom: 3vh;
 
   .profileImage {
     display: block;
-    width: 31vh;
-    height: 31vh;
+    width: 29vh;
+    height: 29vh;
     border-radius: 100%;
     object-fit: cover;
   }
 
   .cameraIcon {
     position: absolute;
-    top: 80%;
-    left: 77%;
+    top: 84%;
+    left: 75%;
   }
 `;
 
-const NicknameContainer = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
+const NicknameContainer = styled.div`
+  ${FlexCenter}
+  height: 32px;
+  margin-bottom: 2vh;
+  gap: 7px;
 
   input {
-    min-width: 63px;
-    max-width: 224px;
-    width: ${(props) => props.width}px;
-    height: 29px;
+    width: 242px;
+    height: 32px;
     background: transparent;
     border: none;
     border-bottom: 1px solid #cecece;
     color: #4c4c4c;
     font-size: 24px;
     font-weight: 700;
-    padding: 0 1px;
+    padding: 0 2px 3px 2px;
     outline: none;
-    transition: width 0.2s;
     &::placeholder {
       font-size: 16px;
     }
   }
 
   span {
+    height: 32px;
     color: #4c4c4c;
     font-size: 24px;
     font-weight: 700;
@@ -362,18 +357,17 @@ const NicknameContainer = styled.form`
 const NicknameImageButton = styled.button`
   background: transparent;
   border: none;
+  cursor: pointer;
 
   .pencilButton {
-    width: 18px;
-    height: 18px;
+    width: 21px;
+    height: 21px;
   }
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
+  ${FlexCenter}
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 3vh;
   margin-top: 20vh;
   @media (max-height: 750px) {
@@ -400,7 +394,7 @@ const ButtonContainer = styled.div`
 
   div {
     display: flex;
-    gap: 8px;
+    gap: 9px;
 
     .memberOut,
     .logout {

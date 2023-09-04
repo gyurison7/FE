@@ -18,7 +18,6 @@ function FriendSearchModal({
   isUserSelected,
   participants,
 }) {
-
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -30,7 +29,7 @@ function FriendSearchModal({
       document.body.style.overflow = 'unset';
     };
   }, [ismodalopen]);
-  
+
   const handleStop = (e, data) => {
     if (data.y > 100) {
       onClose();
@@ -51,7 +50,15 @@ function FriendSearchModal({
         onStop={(e, data) => handleStop(e, data)}
       >
         <ModalContainer isopen={ismodalopen}>
-          <ModalButtonWrapper className='drag-handle'>
+          <div
+            style={{
+              width: '100%',
+              padding: '8px',
+            }}
+            className='drag-handle'
+          >
+          </div>
+          <ModalButtonWrapper>
             <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}

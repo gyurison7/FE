@@ -56,14 +56,14 @@ function GroupMain() {
                     src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
                     alt='logo'
                   />
-                  추억 만들기
+                  앨범 만들기
                 </PreMainButton>
               </PreMainContentWrapper>
             </PreMainContainer>
           ) : (
             <>
-              <ButtonWrapper>
-                <PlusButton onClick={writeButtonHandler} />
+              <ButtonWrapper onClick={writeButtonHandler} >
+                <PlusButton />
               </ButtonWrapper>
               {groupData.map((item) => {
                 const formattedStartDate = item.startDate
@@ -194,6 +194,7 @@ const ButtonWrapper = styled.div`
   cursor: pointer;
   margin-left: 24px;
   position: relative;
+  word-wrap: break-word;
 
   h5 {
     margin-top: -10px;
@@ -222,7 +223,7 @@ const ButtonWrapper = styled.div`
 
 const PreMainContainer = styled.div`
   width: 100%;
-  top: 6vh;
+  top: 12vh;
   flex-direction: column;
   display: flex;
   position: absolute;

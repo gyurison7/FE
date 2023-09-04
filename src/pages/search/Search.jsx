@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DateInput, DateInputWraper } from '../group/styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import Footer from '../../layout/footer/Footer';
@@ -6,13 +6,14 @@ import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { SearchResult } from '../../recoil/Atom'; 
+import { SearchResult } from '../../recoil/Atom';
 
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Search() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
   const navigate = useNavigate();
@@ -27,28 +28,15 @@ function Search() {
 
   const fetchGroupByDate = async (searchDate) => {
     try {
-      const response = await api.get(`/group/search/${searchDate}`, {
+      const response = await api.get(`/group/search/date/${searchDate}`, {
         withCredentials: true,
       });
-      return response.data
+      return response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
       throw error;
     }
   };
-
-  useEffect(() => {
-    const searchDate = `${startDate}~${endDate}`;
-    if (startDate && endDate) {
-      fetchGroupByDate(searchDate)
-        .then((data) => {
-          setSearchResult(data.searchDateData);
-        })
-        .catch((error) => {
-          console.log('Error:', error);
-        });
-    }
-  }, [startDate, endDate]);
 
   const groupByStartDate = (data) => {
     return data.reduce((acc, item) => {
@@ -59,7 +47,18 @@ function Search() {
       return acc;
     }, {});
   };
-
+  const searchHandler = async () => {
+    setHasSearched(false);
+    const searchDate = `${startDate}~${endDate}`;
+    try {
+      const data = await fetchGroupByDate(searchDate);
+      setSearchResult(data.searchDateData);
+      setHasSearched(true);
+    } catch (error) {
+      console.log('Error:', error);
+      setHasSearched(true);
+    }
+  };
   const groupedData = groupByStartDate(searchResult);
   const sortedEntries = Object.entries(groupedData).sort(
     (a, b) => new Date(a[0]) - new Date(b[0])
@@ -80,7 +79,11 @@ function Search() {
       </Top>
       <InputWrapper>
         <DateInputWraper width='90%'>
-          <IconComponents iconType='date' stroke='#4C4C4C' className='inputIcon' />
+          <img
+          className='inputIcon'
+            src={`${process.env.PUBLIC_URL}/assets/image/calander.png`}
+            alt='calander'
+          />
           <DateInput
             value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
             onClick={() => setDateModal(!isDateModal)}
@@ -98,30 +101,36 @@ function Search() {
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate}
+            onSearchClick={searchHandler}
           />
         )}
       </div>
       <div>
-        {sortedEntries.map(([date, items]) => {
-          const slicedDate = date.slice(0, 10);
-          const day = getdayNames(slicedDate);
+        {hasSearched &&
+          (sortedEntries.length > 0 ? (
+            sortedEntries.map(([date, items]) => {
+              const slicedDate = date.slice(0, 10);
+              const day = getdayNames(slicedDate);
 
-          return (
-            <SearchResutContainer key={date}>
-              <p>{`${slicedDate} (${day})`}</p>
-              <ThumbnailWrapper>
-                {items.map((item) => (
-                  <ThumbNail
-                    key={item.groupId}
-                    src={item.thumbnailUrl}
-                    alt='thumbnail'
-                    onClick={() => navigate(`/postmain/${item.groupId}`)}
-                  />
-                ))}
-              </ThumbnailWrapper>
-            </SearchResutContainer>
-          );
-        })}
+              return (
+                <SearchResutContainer key={date}>
+                  <p>{`${slicedDate} (${day})`}</p>
+                  <ThumbnailWrapper>
+                    {items.map((item) => (
+                      <ThumbNail
+                        key={item.groupId}
+                        src={item.thumbnailUrl}
+                        alt='thumbnail'
+                        onClick={() => navigate(`/postmain/${item.groupId}`)}
+                      />
+                    ))}
+                  </ThumbnailWrapper>
+                </SearchResutContainer>
+              );
+            })
+          ) : (
+            <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+          ))}
       </div>
       <FootWraper>
         <Footer />
@@ -131,6 +140,15 @@ function Search() {
 }
 
 export default Search;
+
+const SearhNotFound = styled.div`
+  width: 100%;
+  padding: 7vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: lightgray;
+`;
 
 const SearchPage = styled.div`
   position: relative;
@@ -172,15 +190,13 @@ const ThumbnailWrapper = styled.div`
 const ThumbNail = styled.img`
   flex: 1;
   cursor: pointer;
-  max-width: calc(
-    33.3333% - 2px
-  );
+  max-width: calc(33.3333% - 2px);
   margin: 1px;
   height: 125px;
   object-fit: cover;
 
   &:hover {
-    transform: scale(1.1); 
+    transform: scale(1.1);
   }
 `;
 
