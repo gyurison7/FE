@@ -113,7 +113,9 @@ export default function PostDetail() {
                   width='12'
                   height='14'
                 />
-                <span>{detail?.memory?.createdAt.slice(0, 10)}</span>
+                <span>
+                  {detail?.memory?.createdAt.slice(0, 10).replace(/-/g, '.')}
+                </span>
               </div>
             </div>
           </UserInfoData>
@@ -139,7 +141,7 @@ export default function PostDetail() {
         <Avatar src={detail?.user?.profileUrl} width='40px' height='40px' />
         <input
           type='text'
-          placeholder='댓글을 작성해주세요...'
+          placeholder='댓글을 작성해주세요'
           value={commentInput}
           onChange={(e) => setCommentInput(e.target.value)}
           onKeyPress={commentSubmit}
@@ -188,7 +190,7 @@ const UserTitle = styled.div`
 
   p {
     color: #4c4c4c;
-    font-size: 20px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -211,10 +213,12 @@ const UserInfoData = styled.div`
 const Footer = styled.div`
   display: flex;
   position: fixed;
+  border-top: 0.5px solid #e4e4e4;
   bottom: 0;
+  align-items: center;
   background-color: white;
   gap: 15px;
-  padding: 19px 17px;
+  padding: 18px 15px 20px 17px;
   @media (max-width: 428px) {
     width: 100%;
   }
@@ -222,11 +226,17 @@ const Footer = styled.div`
     width: 428px;
   }
   input {
-    width: 320px;
+    width: 302px;
+    height: 45px;
     border-radius: 20px;
     border: 0.1px solid #c5c5c7;
     outline: none;
-    padding-left: 15px;
+    color: #4c4c4c;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-left: 18px;
     &::placeholder {
       color: #c5c5c7;
       font-size: 14px;

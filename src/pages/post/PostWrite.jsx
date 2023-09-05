@@ -6,8 +6,6 @@ import { styled } from 'styled-components';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import Button from '../../components/common/button/Button.jsx';
 import Input from '../../components/common/input/Input.jsx';
-import { selectedProfileState } from '../../recoil/Atom.js';
-import { useRecoilValue } from 'recoil';
 import { postWrite } from '../../api/postMainApi.js';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { useToast } from '../../hooks/useToast.jsx';
@@ -18,8 +16,7 @@ function PostWrite() {
   const [file, setFile] = useState(null);
   const { id } = useParams();
   const { showToast } = useToast();
-
-  const postData = useRecoilValue(selectedProfileState);
+  const storedGroupName = localStorage.getItem('groupName');
 
   const navigate = useNavigate();
   const changeHandler = (e) => {
@@ -54,7 +51,7 @@ function PostWrite() {
     formData.append('title', title);
 
     try {
-      await postWrite(id, formData, navigate); // postWrite 함수를 사용하여 API 호출을 처리합니다.
+      await postWrite(id, formData, navigate);
     } catch (error) {
       // 오류 처리
       console.error('Error:', error);
@@ -68,12 +65,15 @@ function PostWrite() {
       <Form style={{ width: '100%' }} onSubmit={submitHandler}>
         <Top>
           <IconComponents
-            iconType='vectorLeft'
+            iconType='iconX'
+            width='20'
+            height='20'
+            viewBox='0 0 20 20'
             stroke='#4C4C4C'
             onClick={() => navigate(-1)}
           />
           <Title>
-            <span>게시하기</span> <p>{postData.groupName}</p>
+            <span>게시하기</span> <p>{storedGroupName}</p>
           </Title>
           <div></div>
         </Top>
@@ -97,6 +97,7 @@ function PostWrite() {
           ) : (
             <WriteImageUpload
               height='40.6vh'
+              borderradius='none'
               bgcolor='#D9D9D9'
               onImageChange={changeHandler}
             >

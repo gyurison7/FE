@@ -19,13 +19,11 @@ export default function PostMain() {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postData, setPostData] = useRecoilState(selectedProfileState);
   const storedUserId = localStorage.getItem('userId');
-  console.log(data);
   console.log('post', postData);
-  console.log('is', isOpen);
   const { id } = useParams();
   const navigate = useNavigate();
   const kakaoShared = shareKakao();
-
+  localStorage.setItem('groupName', data?.groupName);
   const handleProfileClick = (id) => {
     setPostData(id);
     setIsOpen(true);
