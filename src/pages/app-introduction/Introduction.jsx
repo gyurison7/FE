@@ -167,6 +167,7 @@ const ButtonContainer = styled.div`
   button {
     background-color: transparent;
     border: none;
+    font-size: 16px;
     color: #fff;
     cursor: pointer;
   }
@@ -178,6 +179,7 @@ const Slider = styled.div`
   justify-content: space-between;
   flex-direction: column;
   margin-bottom: -2vh;
+  gap: 10vh;
 
   img {
     width: 80%;
