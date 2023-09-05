@@ -104,9 +104,16 @@ export default function PostDetail() {
               height='40px'
             />
             <div>
-              <p>{detail?.memory?.['User.nickname']}</p>
-              <div>
-                <p>{detail?.memory?.createdAt.slice(0, 10)}</p>
+              <span>{detail?.memory?.['User.nickname']}</span>
+              <div style={{ display: 'flex', gap: '5px' }}>
+                <IconComponents
+                  iconType='alarm'
+                  stroke='#666666'
+                  viewBox='0 0 12 10'
+                  width='12'
+                  height='14'
+                />
+                <span>{detail?.memory?.createdAt.slice(0, 10)}</span>
               </div>
             </div>
           </UserInfoData>
@@ -181,7 +188,7 @@ const UserTitle = styled.div`
 
   p {
     color: #4c4c4c;
-    font-size: 18px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -192,7 +199,7 @@ const UserInfoData = styled.div`
   align-items: center;
   gap: 5px;
   padding: 7px 0px 13px 24px;
-  p {
+  span {
     color: #666;
     font-size: 14px;
     font-style: normal;
