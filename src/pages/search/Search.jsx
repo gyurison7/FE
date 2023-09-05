@@ -12,6 +12,16 @@ import SearchDate from './SearchDate.jsx';
 import PlaceResults from './SearchPlace.jsx';
 import AlbumResults from './SearchAlbum.jsx';
 
+const debounce = (func, delay) => {
+  let debounceTimer;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+  };
+};
+
 function Search() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -31,6 +41,28 @@ function Search() {
     place: false,
   });
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  const [placeInput, setPlaceInput] = useState('');
+  const [albumInput, setAlbumInput] = useState('');
+
+  // Debounce the search handlers
+  const debouncedPlaceSearch = debounce(() => {
+    fetchGroupByPlace(placeInput);
+  }, 300); // adjust delay as required
+
+  const debouncedAlbumSearch = debounce(() => {
+    fetchGroupByAlbum(albumInput);
+  }, 300); // adjust delay as required
+
+  const handlePlaceInputChange = (e) => {
+    setPlaceInput(e.target.value);
+    debouncedPlaceSearch();
+  };
+
+  const handleAlbumInputChange = (e) => {
+    setAlbumInput(e.target.value);
+    debouncedAlbumSearch();
+  };
+
   const navigate = useNavigate();
   const setSearchResult = useSetRecoilState(SearchResult);
   const searchResult = useRecoilValue(SearchResult);
@@ -85,9 +117,9 @@ function Search() {
     }
   };
 
-  const fetchGroupByPlace = async (searchDate) => {
+  const fetchGroupByPlace = async (searchPlace) => {
     try {
-      const response = await api.get(`/group/search/place/${searchDate}`, {
+      const response = await api.get(`/group/search/place/${searchPlace}`, {
         withCredentials: true,
       });
       return response.data;
@@ -97,9 +129,9 @@ function Search() {
     }
   };
 
-  const fetchGroupByAlbum= async (searchDate) => {
+  const fetchGroupByAlbum = async (searchGroup) => {
     try {
-      const response = await api.get(`/group/search/groupName/${searchDate}`, {
+      const response = await api.get(`/group/search/groupName/${searchGroup}`, {
         withCredentials: true,
       });
       return response.data;
@@ -120,21 +152,15 @@ function Search() {
   };
   const searchHandler = async () => {
     setHasSearched(false);
-    
+
     try {
-      let data;
-      if (activeNav.date) {
-        const searchDate = `${startDate}~${endDate}`;
-        data = await fetchGroupByDate(searchDate);
-      } else if (activeNav.place) {
-        data = await fetchGroupByPlace(searchPlace);
-      } else if (activeNav.album) {
-        data = await fetchGroupByAlbum(searchAlbum);
-      }
-  
-      // Assume that the data structure received from the server is the same for date, place, and album. 
-      // If not, adjust the code here.
-      setSearchResult(data.searchDateData || data.searchPlaceData || data.searchAlbumData); 
+      if (!activeNav.date) return;
+
+      const searchDate = `${startDate}~${endDate}`;
+      const data = await fetchGroupByDate(searchDate);
+
+      setSearchResult(data.searchDateData);
+      console.log('data', data);
       setHasSearched(true);
     } catch (error) {
       console.log('Error:', error);
@@ -213,53 +239,54 @@ function Search() {
         )}
       </div>
       <div>
-      {hasSearched && (
-  <>
-    {activeNav.date && (
-      sortedEntries.length > 0 ? (
-        sortedEntries.map(([date, items]) => {
-          const slicedDate = date.slice(0, 10);
-          const day = getdayNames(slicedDate);
-          return (
-            <SearchDate
-              key={date}
-              slicedDate={slicedDate}
-              day={day}
-              items={items}
-              navigate={navigate}
-            />
-          );
-        })
-      ) : (
-        <SearhNotFound>검색결과가 없습니다</SearhNotFound>
-      )
-    )}
+        {hasSearched && (
+          <>
+            {activeNav.date &&
+              (sortedEntries.length > 0 ? (
+                sortedEntries.map(([date, items]) => {
+                  const slicedDate = date.slice(0, 10);
+                  const day = getdayNames(slicedDate);
+                  return (
+                    <SearchDate
+                      key={date}
+                      slicedDate={slicedDate}
+                      day={day}
+                      items={items}
+                      navigate={navigate}
+                      onChange={searchHandler}
+                    />
+                  );
+                })
+              ) : (
+                <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+              ))}
 
-    {activeNav.place && (
-      searchResult.length > 0 ? (
-        <PlaceResults
-          placeName={searchPlace}
-          items={searchResult}
-          navigate={navigate}
-        />
-      ) : (
-        <SearhNotFound>검색결과가 없습니다</SearhNotFound>
-      )
-    )}
+            {activeNav.place &&
+              (searchResult.length > 0 ? (
+                <PlaceResults
+                  placeName={searchPlace}
+                  items={searchResult}
+                  navigate={navigate}
+                  onChange={handlePlaceInputChange}
+                />
+              ) : (
+                <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+              ))}
 
-    {activeNav.album && (
-      searchResult.length > 0 ? (
-        <AlbumResults
-          albumName={searchAlbum}
-          items={searchResult}
-          navigate={navigate}
-        />
-      ) : (
-        <SearhNotFound>검색결과가 없습니다</SearhNotFound>
-      )
-    )}
-  </>
-)}
+            {activeNav.album &&
+              (searchResult.length > 0 ? (
+                <AlbumResults
+                  albumName={searchAlbum}
+                  items={searchResult}
+                  navigate={navigate}
+                  onChange={handleAlbumInputChange}
+                  
+                />
+              ) : (
+                <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+              ))}
+          </>
+        )}
       </div>
       <FootWraper>
         <Footer />
