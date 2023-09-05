@@ -66,8 +66,7 @@ const ModalBody = styled.div`
 `;
 
 const ImageButtonContainer = styled.div`
-  margin-bottom: 1vh;
-
+  margin: 0 1vw 1vh 1vw;
   button {
     border-bottom: 1px solid #b2b3b2;
     font-weight: 500;
@@ -83,6 +82,7 @@ const ImageButtonContainer = styled.div`
 `;
 
 const CancelButtonContainer = styled.div`
+  margin: 0 1vw;
   button {
     border-radius: 13px;
     font-weight: 700;
