@@ -212,7 +212,7 @@ export const DateInput = styled.input`
   border-radius: 7px;
   background-color: #F0F2F5;
   border: none;
-
+  padding-left: ${props => props.paddingleft || '0px'};
   &::placeholder {
     color: #c2c2c2;
     font-size: 15px;

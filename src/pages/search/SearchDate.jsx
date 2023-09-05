@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { SearchResutContainer, ThumbNail, ThumbnailWrapper } from "./SearchContainer";
 
 function SearchDate({ slicedDate, day, items, navigate }) {
+    
     return (
       <SearchResutContainer>
         <p>{`${slicedDate} (${day})`}</p>

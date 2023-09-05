@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import { SearchResutContainer, ThumbNail, ThumbnailWrapper } from './SearchContainer';
 
 
-function PlaceResults({ placeName, items, navigate }) {
+function PlaceResults({ items, navigate }) {
     return (
       <SearchResutContainer>
-        <p>{placeName}</p>
         <ThumbnailWrapper>
           {items.map((item) => (
             <ThumbNail
               key={item.groupId}
               src={item.thumbnailUrl}
               alt='thumbnail'
-              onClick={() => navigate(`/placepost/${item.groupId}`)}
+              onClick={() => navigate(`/postmain/${item.groupId}`)}
             />
           ))}
         </ThumbnailWrapper>
@@ -25,7 +24,6 @@ function PlaceResults({ placeName, items, navigate }) {
   
 
 PlaceResults.propTypes = {
-    placeName: PropTypes.string,
     items: PropTypes.array,
     navigate: PropTypes.func,
   };

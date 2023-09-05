@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { DateInput, DateInputWraper } from '../group/styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import Footer from '../../layout/footer/Footer';
@@ -41,27 +41,6 @@ function Search() {
     place: false,
   });
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-  const [placeInput, setPlaceInput] = useState('');
-  const [albumInput, setAlbumInput] = useState('');
-
-  // Debounce the search handlers
-  const debouncedPlaceSearch = debounce(() => {
-    fetchGroupByPlace(placeInput);
-  }, 300); // adjust delay as required
-
-  const debouncedAlbumSearch = debounce(() => {
-    fetchGroupByAlbum(albumInput);
-  }, 300); // adjust delay as required
-
-  const handlePlaceInputChange = (e) => {
-    setPlaceInput(e.target.value);
-    debouncedPlaceSearch();
-  };
-
-  const handleAlbumInputChange = (e) => {
-    setAlbumInput(e.target.value);
-    debouncedAlbumSearch();
-  };
 
   const navigate = useNavigate();
   const setSearchResult = useSetRecoilState(SearchResult);
@@ -78,12 +57,21 @@ function Search() {
 
     if (activeNav.place) {
       setSearchPlace(value);
+      debouncedPlaceSearch(value);
     } else if (activeNav.album) {
       setSearchAlbum(value);
+      debouncedAlbumSearch(value);
     }
   };
 
   const handleNavClick = (navName) => {
+    setSearchResult([]);
+    setStartDate(null);
+    setEndDate(null);
+    setSearchAlbum('');
+    setSearchPlace('');
+    setHasSearched(false);
+
     setActiveNav({
       date: navName === 'date',
       album: navName === 'album',
@@ -104,7 +92,7 @@ function Search() {
       setInputIcon(null);
     }
   };
-
+  console.log('result', searchResult);
   const fetchGroupByDate = async (searchDate) => {
     try {
       const response = await api.get(`/group/search/date/${searchDate}`, {
@@ -117,14 +105,16 @@ function Search() {
     }
   };
 
-  const fetchGroupByPlace = async (searchPlace) => {
+  const fetchGroupByPlace = async (place) => {
+    console.log(`Fetching data for place: ${place}`);
     try {
-      const response = await api.get(`/group/search/place/${searchPlace}`, {
+      const response = await api.get(`/group/search/place/${place}`, {
         withCredentials: true,
       });
+      console.log(`Success fetching data for place: ${place}`, response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error(`Error fetching data for place: ${place}`, error);
       throw error;
     }
   };
@@ -141,6 +131,36 @@ function Search() {
     }
   };
 
+  const debouncedPlaceSearch = useCallback(
+    debounce(async (searchPlace) => {
+      setHasSearched(false);
+      try {
+        const data = await fetchGroupByPlace(searchPlace);
+        setSearchResult(data.searchPlaceData);
+        setHasSearched(true);
+      } catch (error) {
+        console.error('Error fetching data by place:', error);
+        setHasSearched(true);
+      }
+    }, 600),
+    []
+  );
+
+  const debouncedAlbumSearch = useCallback(
+    debounce(async (searchAlbum) => {
+      setHasSearched(false);
+      try {
+        const data = await fetchGroupByAlbum(searchAlbum);
+        setSearchResult(data.searchGroupNameData);
+        setHasSearched(true);
+      } catch (error) {
+        console.error('Error fetching data by album:', error);
+        setHasSearched(true);
+      }
+    }, 600),
+    []
+  );
+
   const groupByStartDate = (data) => {
     return data.reduce((acc, item) => {
       if (!acc[item.startDate]) {
@@ -150,9 +170,10 @@ function Search() {
       return acc;
     }, {});
   };
+
+  // 날짜검색할때
   const searchHandler = async () => {
     setHasSearched(false);
-
     try {
       if (!activeNav.date) return;
 
@@ -167,6 +188,7 @@ function Search() {
       setHasSearched(true);
     }
   };
+
   const groupedData = groupByStartDate(searchResult);
   const sortedEntries = Object.entries(groupedData).sort(
     (a, b) => new Date(a[0]) - new Date(b[0])
@@ -202,6 +224,7 @@ function Search() {
             placeholder={inputPlaceholder}
             onChange={handleInputChange}
             readOnly={activeNav.date ? true : false}
+            paddingleft={activeNav.album || activeNav.place ? '12px' : undefined}
           />
         </DateInputWraper>
       </InputWrapper>
@@ -263,25 +286,14 @@ function Search() {
 
             {activeNav.place &&
               (searchResult.length > 0 ? (
-                <PlaceResults
-                  placeName={searchPlace}
-                  items={searchResult}
-                  navigate={navigate}
-                  onChange={handlePlaceInputChange}
-                />
+                <PlaceResults items={searchResult} navigate={navigate} />
               ) : (
                 <SearhNotFound>검색결과가 없습니다</SearhNotFound>
               ))}
 
             {activeNav.album &&
               (searchResult.length > 0 ? (
-                <AlbumResults
-                  albumName={searchAlbum}
-                  items={searchResult}
-                  navigate={navigate}
-                  onChange={handleAlbumInputChange}
-                  
-                />
+                <AlbumResults items={searchResult} navigate={navigate} />
               ) : (
                 <SearhNotFound>검색결과가 없습니다</SearhNotFound>
               ))}
@@ -376,6 +388,6 @@ const NavButton = styled.button`
   line-height: normal;
   color: #c2c2c2;
 
-  text-decoration: ${(props) => (props.active ? 'underline' : 'none')};
-  color: ${(props) => (props.active ? 'blue' : '#C2C2C2')};
+  border-bottom: ${(props) => (props.active ? ' 1px solid #5873FE;' : 'none')};
+  color: ${(props) => (props.active ? '#5873FE' : '#C2C2C2')};
 `;
