@@ -28,7 +28,9 @@ const Router = () => {
     <BrowserRouter>
       <GoogleAnalytics />
       <Routes>
-        <Route path='/' element={<Introduction />} />
+        <Route path='/' element={<NotProtectedRoute />}>
+          <Route index element={<Introduction />} />
+        </Route>
         <Route path='/login' element={<NotProtectedRoute />}>
           <Route index element={<Login />} />
         </Route>

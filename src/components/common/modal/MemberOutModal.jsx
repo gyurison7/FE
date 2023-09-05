@@ -10,18 +10,22 @@ const MemberOutModal = ({ setMemberOutModal, memberOutHandler }) => {
     <ModalWrapper>
       <ModalBackground></ModalBackground>
       <ModalBody>
-        <img
-          src={`${process.env.PUBLIC_URL}assets/svgs/member_out.svg`}
-          alt='회원탈퇴'
-        />
-        <TextContainer>
+        <TitleContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}assets/svgs/member_out.svg`}
+            alt='회원탈퇴'
+          />
           <h2>회원 탈퇴</h2>
-          <p className='first'>
+          <p>
             회원 탈퇴 시 계정 정보 및 추억은
             <br />
             삭제되어 복구가 불가능해요.
           </p>
-          <p className='second'>그래도 탈퇴하시려면 &quot;떠날래요&quot;를 입력해주세요.</p>
+        </TitleContainer>
+        <InputContainer>
+          <p className='second'>
+            그래도 탈퇴하시려면 &quot;떠날래요&quot;를 입력해주세요.
+          </p>
           <input
             onChange={(e) => setMemberOutCheck(e.target.value)}
             type='text'
@@ -29,7 +33,7 @@ const MemberOutModal = ({ setMemberOutModal, memberOutHandler }) => {
             value={memberOutCheck}
             placeholder='"떠날래요"를 입력해주세요.'
           />
-        </TextContainer>
+        </InputContainer>
         <ButtonContainer>
           <Button
             onClick={() => setMemberOutModal(false)}
@@ -74,8 +78,8 @@ const ModalBackground = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  opacity: 0.8;
-  background-color: #000;
+  opacity: 0.6;
+  background-color: #000000;
   z-index: 1;
 `;
 
@@ -86,40 +90,48 @@ const ModalBody = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 16px 28px;
+  padding: 24px 16px 28px 16px;
   border-radius: 28px;
   background: #fff;
   flex-shrink: 0;
   z-index: 2;
-  img {
-    margin-top: 24px;
-  }
 `;
 
-const TextContainer = styled.div`
+const TitleContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
-  gap: 24px;
+  gap: 16px;
   color: #4c4c4c;
   line-height: 129.336%;
   h2 {
     font-size: 24px;
     font-weight: 700;
   }
-  .first {
+  p {
     font-weight: 500;
   }
-  .second {
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4c4c4c;
+  gap: 24px;
+  margin-bottom: 5vh;
+  p {
     font-weight: 600;
   }
   input {
     width: 100%;
     border: none;
     border-bottom: 1px solid #cecece;
+    padding-bottom: 7px;
+    font-size: 16px;
     &:focus {
       outline: none;
     }
