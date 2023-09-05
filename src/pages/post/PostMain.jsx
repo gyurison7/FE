@@ -18,14 +18,13 @@ export default function PostMain() {
   const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postData, setPostData] = useRecoilState(selectedProfileState);
+  const storedUserId = localStorage.getItem('userId');
   console.log('post', postData);
-  console.log('is', isOpen);
   const { id } = useParams();
   const navigate = useNavigate();
   const kakaoShared = shareKakao();
-
+  localStorage.setItem('groupName', data?.groupName);
   const handleProfileClick = (id) => {
-    console.log('Working...');
     setPostData(id);
     setIsOpen(true);
   };
@@ -62,6 +61,16 @@ export default function PostMain() {
             <GroupTitle>
               <Title>
                 <h4>{data?.groupName}</h4>
+                {Number(storedUserId) === data?.userId ? (
+                  <IconComponents
+                    iconType='vectorRight'
+                    stroke='#9C9C9C'
+                    viewBox='0 0 10 15'
+                    width=' 6.302px'
+                    height='19px'
+                    onClick={() => navigate(`/groupedit/${id}`)}
+                  />
+                ) : null}
               </Title>
               <FriendAdd onClick={() => kakaoShared()}>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
@@ -183,6 +192,7 @@ const Title = styled.div`
 const FriendAdd = styled.div`
   cursor: pointer;
   display: flex;
+  gap: 5px;
   p {
     color: #8e8e8e;
     font-size: 12px;
@@ -203,7 +213,7 @@ const WrapDate = styled.div`
     color: #666;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: normal;
   }
 `;
@@ -214,7 +224,7 @@ const WrapLocation = styled.div`
     color: #666;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: normal;
   }
 `;
@@ -227,6 +237,7 @@ const AvatarContainer = styled.div`
 const Content = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+
   gap: 1px;
   background: white;
 `;
