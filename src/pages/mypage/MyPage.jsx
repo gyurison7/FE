@@ -319,7 +319,7 @@ const ProfileImageButton = styled.button`
 
   .cameraIcon {
     position: absolute;
-    top: 84%;
+    top: 81%;
     left: 75%;
   }
 `;

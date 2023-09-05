@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { DropdownState } from '../../../recoil/Atom';
 import { styled } from 'styled-components';
@@ -6,10 +6,12 @@ import IconComponents from '../iconComponent/IconComponents.jsx';
 import api from '../../../api/index.jsx';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import CommonModal from '../modal/CommonModal.jsx';
 
 export default function Drop({ detail, groupId }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useRecoilState(DropdownState);
+  const [deleteModal, setDeleteModal] = useState(false);
   const dropdownRef = useRef();
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -49,9 +51,20 @@ export default function Drop({ detail, groupId }) {
         <Dropdown>
           <DropdownContent>게시물 수정하기</DropdownContent>
           <Line></Line>
-          <DropdownContent onClick={memoryDelete}>게시물 삭제하기</DropdownContent>
+          <DropdownContent onClick={() => setDeleteModal(true)}>
+            게시물 삭제하기
+          </DropdownContent>
         </Dropdown>
       ) : null}
+      {deleteModal && (
+        <CommonModal
+          title={'게시물 삭제하기'}
+          description={'정말 게시물을 삭제하시겠어요?'}
+          onCancel={() => setDeleteModal(false)}
+          onFunction={memoryDelete}
+          buttonText={'삭제하기'}
+        ></CommonModal>
+      )}
     </Wrap>
   );
 }
