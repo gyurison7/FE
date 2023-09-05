@@ -83,7 +83,6 @@ const CreatedAt = styled(NickName)`
 const UserComment = styled.div`
   color: #4c4c4c;
   font-size: 14px;
-  width: 290px;
   font-style: normal;
   font-weight: 500;
   padding-top: 8px;

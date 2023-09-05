@@ -17,6 +17,7 @@ import Notice from '../pages/notice/Notice.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import NotProtectedRoute from './NotProtectedRoute.jsx';
 import GoogleAnalytics from '../utils/GoogleAnalytics.js';
+import PostEdit from '../pages/post/PostEdit.jsx';
 
 function isLogin() {
   return !!localStorage.getItem('userId');
@@ -61,6 +62,9 @@ const Router = () => {
         <Route path='/postmain/:groupId/:postId' element={<ProtectedRoute />}>
           <Route index element={<PostDetail />} />
         </Route>
+        <Route path='/postedit/:groupId/:memoryId' element={<ProtectedRoute />}>
+          <Route index element={<PostEdit />} />
+        </Route>
         <Route path='/search' element={<ProtectedRoute />}>
           <Route index element={<Search />} />
         </Route>
@@ -68,7 +72,12 @@ const Router = () => {
         <Route path='/notice' element={<ProtectedRoute />}>
           <Route index element={<Notice />} />
         </Route>
-        <Route path='*' element={isLogin() ? <Navigate to='/groupmain' />: <Navigate to='/login' />} />
+        <Route
+          path='*'
+          element={
+            isLogin() ? <Navigate to='/groupmain' /> : <Navigate to='/login' />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

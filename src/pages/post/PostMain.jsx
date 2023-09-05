@@ -18,6 +18,8 @@ export default function PostMain() {
   const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postData, setPostData] = useRecoilState(selectedProfileState);
+  const storedUserId = localStorage.getItem('userId');
+  console.log(data);
   console.log('post', postData);
   console.log('is', isOpen);
   const { id } = useParams();
@@ -25,7 +27,6 @@ export default function PostMain() {
   const kakaoShared = shareKakao();
 
   const handleProfileClick = (id) => {
-    console.log('Working...');
     setPostData(id);
     setIsOpen(true);
   };
@@ -62,13 +63,16 @@ export default function PostMain() {
             <GroupTitle>
               <Title>
                 <h4>{data?.groupName}</h4>
-                <IconComponents
-                  iconType='vectorRight'
-                  stroke='#9C9C9C'
-                  viewBox='0 0 10 15'
-                  width=' 6.302px'
-                  height='19px'
-                />
+                {Number(storedUserId) === data?.userId ? (
+                  <IconComponents
+                    iconType='vectorRight'
+                    stroke='#9C9C9C'
+                    viewBox='0 0 10 15'
+                    width=' 6.302px'
+                    height='19px'
+                    onClick={() => navigate(`/groupedit/${id}`)}
+                  />
+                ) : null}
               </Title>
               <FriendAdd onClick={() => kakaoShared()}>
                 <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
