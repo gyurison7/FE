@@ -28,7 +28,7 @@ export default function Comment(prop) {
         <Avatar src={prop['User.profileUrl']} width='40px' height='40px' />
         <div>
           <NickName>{prop['User.nickname']}</NickName>
-          <CreatedAt>{createdAt.slice(0, 10)}</CreatedAt>
+          <CreatedAt>{createdAt.slice(0, 10).replace(/-/g, '.')}</CreatedAt>
           {isEditing ? (
             <EditInput
               type='text'
@@ -87,11 +87,18 @@ const UserComment = styled.div`
   font-weight: 500;
   padding-top: 8px;
   line-height: normal;
+  color: #4c4c4c;
 `;
 const EditInput = styled.input`
   border-top: none;
   border-left: none;
   border-right: none;
+  width: 240px;
   border-bottom: 0.1px solid #6666;
+  color: #4c4c4c;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   outline: none;
 `;

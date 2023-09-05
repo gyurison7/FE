@@ -43,9 +43,9 @@ export default function Drop({ detail, groupId }) {
     <Wrap ref={dropdownRef}>
       <IconComponents
         iconType='menu'
-        width='20px'
-        height='20px'
-        stroke='#787878'
+        width='21'
+        height='10'
+        viewBox='0 0 21 5'
         onClick={toggleModal}
       />
 

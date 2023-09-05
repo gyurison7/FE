@@ -7,14 +7,17 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import Button from '../../components/common/button/Button.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 export default function PostEdit() {
   const navigate = useNavigate();
   const { groupId, memoryId } = useParams();
+  const [isLoading, setLoading] = useState(false);
   const [editData, setEditData] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
-  const [editedImage, setEditedImage] = useState(null); // 추가: 이미지를 저장하는 상태
-  console.log(editedImage);
+  const [editedImage, setEditedImage] = useState(null);
+  const storedGroupName = localStorage.getItem('groupName');
+
   useEffect(() => {
     api
       .get(`/group/${groupId}/memory/${memoryId}/update`, {
@@ -36,6 +39,8 @@ export default function PostEdit() {
       formData.append('imageUrl', editedImage);
     }
 
+    setLoading(true);
+
     api
       .put(`/group/${groupId}/memory/${memoryId}`, formData, {
         headers: {
@@ -46,9 +51,11 @@ export default function PostEdit() {
       .then((res) => {
         console.log(res);
         navigate(`/postmain/${groupId}`);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('수정 실패:', error);
+        setLoading(false);
       });
   };
 
@@ -60,15 +67,19 @@ export default function PostEdit() {
 
   return (
     <Layout>
+      {isLoading && <LoadingSpinner />}
       <Form style={{ width: '100%' }} onSubmit={handleFormSubmit}>
         <Top>
           <IconComponents
-            iconType='vectorLeft'
+            iconType='iconX'
+            width='20'
+            height='20'
+            viewBox='0 0 20 20'
             stroke='#4C4C4C'
             onClick={() => navigate(-1)}
           />
           <Title>
-            <span>게시하기</span> <p>게시하기</p>
+            <span>게시하기</span> <p>{storedGroupName}</p>
           </Title>
           <div></div>
         </Top>
@@ -91,7 +102,22 @@ export default function PostEdit() {
                 alt='Uploaded Thumbnail'
               />
             ) : editData ? (
-              <ThumbedImage src={editData?.data.imageUrl} alt='Uploaded Thumbnail' />
+              <div style={{ position: 'relative' }}>
+                <EditWrap htmlFor='imageInput'>
+                  <IconComponents
+                    iconType='editCamera'
+                    width='19'
+                    height='14'
+                    viewBox='0 0 19 14'
+                  />
+                  <p>사진 변경하기</p>
+                </EditWrap>
+                <ThumbedImage
+                  filter='brightness(60%)'
+                  src={editData?.data.imageUrl}
+                  alt='Uploaded Thumbnail'
+                />
+              </div>
             ) : (
               <WriteImageUpload
                 height='40.6vh'
@@ -101,8 +127,12 @@ export default function PostEdit() {
                 사진 추가하기
               </WriteImageUpload>
             )}
-            <ImageInput type='file' accept='image/*' onChange={handleImageChange} />{' '}
-            {/* 추가: 파일 선택 입력 필드 */}
+            <ImageInput
+              type='file'
+              accept='image/*'
+              id='imageInput'
+              onChange={handleImageChange}
+            />
           </div>
         </div>
         <ButtonWrap>
@@ -120,6 +150,28 @@ export default function PostEdit() {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+`;
+const EditWrap = styled.label`
+  width: 114px;
+  height: 32px;
+  cursor: pointer;
+  background: #4c4946;
+  border-radius: 8.079px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 1;
+  top: 18px;
+  left: 24px;
+  gap: 7.5px;
+  p {
+    color: #fff;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
 `;
 const Top = styled.div`
   padding: 54px 25px 0 25px;
@@ -147,7 +199,7 @@ const Title = styled.div`
 const ThumbedImage = styled.img`
   width: 100%;
   height: 40vh;
-  filter: brightness(60%);
+  filter: ${(props) => props.filter};
   object-fit: cover;
 `;
 const ImageInput = styled.input`
