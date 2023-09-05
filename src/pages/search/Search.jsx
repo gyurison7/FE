@@ -11,6 +11,7 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import SearchDate from './SearchDate.jsx';
 import PlaceResults from './SearchPlace.jsx';
 import AlbumResults from './SearchAlbum.jsx';
+import NoSearch from '../../components/common/nosearchresult/NoSearch.jsx';
 
 const debounce = (func, delay) => {
   let debounceTimer;
@@ -281,21 +282,21 @@ function Search() {
                   );
                 })
               ) : (
-                <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+             <NoSearch/>
               ))}
 
             {activeNav.place &&
               (searchResult.length > 0 ? (
                 <PlaceResults items={searchResult} navigate={navigate} />
               ) : (
-                <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+                <NoSearch/>
               ))}
 
             {activeNav.album &&
               (searchResult.length > 0 ? (
                 <AlbumResults items={searchResult} navigate={navigate} />
               ) : (
-                <SearhNotFound>검색결과가 없습니다</SearhNotFound>
+                <NoSearch/>
               ))}
           </>
         )}
@@ -309,14 +310,7 @@ function Search() {
 
 export default React.memo(Search);
 
-const SearhNotFound = styled.div`
-  width: 100%;
-  padding: 7vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: lightgray;
-`;
+
 
 const SearchPage = styled.div`
   position: relative;
