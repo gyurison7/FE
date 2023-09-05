@@ -66,7 +66,7 @@ const PasswordChange = () => {
     try {
       const responseData = await changePassword(oldPassword, password, confirm);
       if (responseData) {
-        showToast('비밀번호가 변경되었습니다!', 3000);
+        showToast('비밀번호가 변경되었습니다!');
         navigate('/mypage');
       }
     } catch (error) {

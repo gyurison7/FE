@@ -13,22 +13,22 @@ function Footer() {
     <Wrap>
       <div>
         <StyledNavLink to='/groupmain'>
-          <IconComponents iconType='home' stroke='#4C4C4C' />
+          <IconComponents iconType='home' stroke='#4C4C4C' width="23" height="23" viewBox="0 0 23 23" />
         </StyledNavLink>
       </div>
-      <div style={{height:'23px'}}>
+      <div>
         <StyledNavLink to='/search'>
-          <IconComponents iconType='search' stroke='#4C4C4C' />
+          <IconComponents iconType='search' stroke='#4C4C4C' width="22" height="22" viewBox="0 0 22 22" />
         </StyledNavLink>
       </div>
       <div>
         <StyledNavLink to='/notice' onClick={showAlert}>
-          <IconComponents iconType='inbox' stroke='#4C4C4C' />
+          <IconComponents iconType='inbox' stroke='#4C4C4C' width="23" height="23" viewBox="0 0 23 23" />
         </StyledNavLink>
       </div>
       <div>
         <StyledNavLink to='/mypage'>
-          <IconComponents iconType='user' stroke='#4C4C4C' />
+          <IconComponents iconType='user' stroke='#4C4C4C' width="22" height="22" viewBox="0 0 22 22" />
         </StyledNavLink>
       </div>
     </Wrap>
@@ -41,9 +41,9 @@ const Wrap = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 72px;
+  height: 60px;
   background: #fff;
-  box-shadow: 8px 4px 23px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px -4px 23px 0px rgba(129, 129, 129, 0.25);
   margin-top: auto;
 `;
 
