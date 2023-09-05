@@ -1,46 +1,61 @@
 import { styled } from 'styled-components';
-import { SearchResutContainer } from './SearchContainer';
 import PropTypes from 'prop-types';
 
 function AlbumResults({ items, navigate }) {
   return (
-    <SearchResutContainer>
+    <ResultContainer>
       <AlbumContainer>
-        {items.map((item) => (
-          <AlbumWrapper key={item.groupId}>
-            <Content>
-              <ThumbNail
-                src={item.thumbnailUrl}
-                alt='thumbnail'
-                onClick={() => navigate(`/postmain/${item.groupId}`)}
-              />
-              <TextContainer>
-                <Text>
-                  <Title> {item.groupName} </Title>
-                  <Date> {item.startDate}</Date>
-                  <Place> Name, Name , Name</Place>
-                </Text>
-              </TextContainer>
-            </Content>
-          </AlbumWrapper>
-        ))}
+        {items.map((item) => {
+          const startDate = item.startDate.slice(0, 10);
+          const endDate = item.endDate.slice(0, 10);
+          let placesArray = [];
+
+          if (item.place) {
+            placesArray = JSON.parse(item.place);
+          }
+
+          return (
+            <AlbumWrapper key={item.groupId}>
+              <Content onClick={() => navigate(`/postmain/${item.groupId}`)}>
+                <ThumbNail src={item.thumbnailUrl} alt='thumbnail' />
+                <TextContainer>
+                  <Text>
+                    <Title> {item.groupName} </Title>
+                    <Date>
+                      {startDate} - {endDate}
+                    </Date>
+                    <Place> {placesArray.join(', ')} </Place>
+                  </Text>
+                </TextContainer>
+              </Content>
+            </AlbumWrapper>
+          );
+        })}
       </AlbumContainer>
-    </SearchResutContainer>
+    </ResultContainer>
   );
 }
 
 export default AlbumResults;
 
+const ResultContainer = styled.div`
+  width: 100%;
+`;
+
 const AlbumContainer = styled.div`
   width: 100%;
-  height: 150px;
-  background-color: red;
 `;
 
 const AlbumWrapper = styled.div`
-  background-color: yellow;
+  width: 100%;
   align-items: center;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  /* :hover {
+    background-color: rgba(76, 76, 76, 0.1);
+  } */
 `;
+
 const Content = styled.div`
   display: flex;
 `;
@@ -54,33 +69,33 @@ const ThumbNail = styled.img`
 
 const TextContainer = styled.div`
   display: flex;
-  position: relative;
   align-items: center;
-  left: 0;
   justify-items: center;
 `;
 
 const Text = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: column;
-  left: 0;
 `;
 
 const Title = styled.text`
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
+  padding-bottom: 2px;
 `;
 
 const Date = styled.text`
-    font-size: 14px;
-    font-weight: 500;
-`
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  padding-bottom: 8px;
+`;
 
 const Place = styled.text`
-    
-`
+  font-size: 14px;
+  color: #666;
+`;
 
 AlbumResults.propTypes = {
   items: PropTypes.array,

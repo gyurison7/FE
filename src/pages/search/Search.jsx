@@ -84,12 +84,12 @@ function Search() {
       setInputPlaceholder('추억을 나눈 날짜를 설정해주세요');
       setInputIcon(`${process.env.PUBLIC_URL}/assets/image/calander.png`);
     } else if (navName === 'album') {
-      setInputPlaceholder('앨범명을 입력해주세요');
+      setInputPlaceholder('앨범 이름을 검색해주세요');
       setInputValue(searchAlbum);
       setInputIcon(null);
     } else if (navName === 'place') {
       setInputValue(searchPlace);
-      setInputPlaceholder('장소를 입력해주세요');
+      setInputPlaceholder('장소를 검색해주세요');
       setInputIcon(null);
     }
   };

@@ -7,6 +7,7 @@ import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import { createGroup } from '../../api/groupMainApi';
 import { useMutation, useQueryClient } from 'react-query';
+import { useToast } from '../../hooks/useToast.jsx';
 import {
   BackButton,
   DivHeaderText,
@@ -61,6 +62,8 @@ function GroupWrite() {
   const [thumbnailError, setThumbnailError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
+
+  const { showToast } = useToast();
 
   const searchUser = async (nickname) => {
     try {
@@ -204,6 +207,10 @@ function GroupWrite() {
 
   const placeButtonHandler = () => {
     const newPlaces = place;
+    if (places.includes(place)) {
+      showToast('이미 추가하신 장소 입니다');
+      return;
+    }
     setPlaces((prevPlaces) => [...prevPlaces, newPlaces]);
     setPlace('');
   };
@@ -328,7 +335,10 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={(e) => deletePlaceHandler(index, e)}>
+                <PlaceRemoveButton
+                  type='button'
+                  onClick={(e) => deletePlaceHandler(index, e)}
+                >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'

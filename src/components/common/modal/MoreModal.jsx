@@ -4,6 +4,8 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import api from '../../../api/index.jsx';
 import CommonModal from './CommonModal.jsx';
+import { useToast } from '../../../hooks/useToast.jsx';
+
 
 function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
@@ -11,6 +13,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [deleteModal, setDeleteModal] = useState(false);
   const modalRef = useRef(null);
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const storedUserId = localStorage.getItem('userId');
 
   const handleOverlayClick = () => {
@@ -46,7 +49,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         setDeleteModal(false);
         setErrorMessage(response.data.message);
       } else if (response.data.success) {
-        alert('앨범에서 나갔습니다');
+        showToast('앨범에서 나갔습니다');
         setDeleteModal(false);
         setErrorMessage(null);
       }
