@@ -282,21 +282,34 @@ function Search() {
                   );
                 })
               ) : (
-             <NoSearch/>
+                <NoSearch />
               ))}
 
             {activeNav.place &&
-              (searchResult.length > 0 ? (
-                <PlaceResults items={searchResult} navigate={navigate} />
+              (sortedEntries.length > 0 ? (
+                sortedEntries.map(([date, items]) => {
+                  const slicedDate = date.slice(0, 10);
+                  const day = getdayNames(slicedDate);
+                  return (
+                    <PlaceResults
+                      key={date}
+                      slicedDate={slicedDate}
+                      day={day}
+                      items={items}
+                      navigate={navigate}
+                      onChange={searchHandler}
+                    />
+                  );
+                })
               ) : (
-                <NoSearch/>
+                <NoSearch />
               ))}
 
             {activeNav.album &&
               (searchResult.length > 0 ? (
                 <AlbumResults items={searchResult} navigate={navigate} />
               ) : (
-                <NoSearch/>
+                <NoSearch />
               ))}
           </>
         )}
@@ -309,8 +322,6 @@ function Search() {
 }
 
 export default React.memo(Search);
-
-
 
 const SearchPage = styled.div`
   position: relative;
