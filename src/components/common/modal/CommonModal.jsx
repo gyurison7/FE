@@ -19,7 +19,7 @@ const CommonModal = ({
       <ModalBody height={height} padding={padding}>
         <TextContainer>
           <img
-            src={`${process.env.PUBLIC_URL}assets/svgs/delete.svg`}
+            src={`${process.env.PUBLIC_URL}/assets/svgs/delete.svg`}
             alt={title}
           />
           <h2>{title}</h2>
@@ -104,9 +104,10 @@ const TextContainer = styled.div`
     line-height: 129.336%;
   }
   p {
-    white-space: pre-line;
+    font-size: 16px;
     font-weight: 500;
     line-height: 129.336%;
+    white-space: pre-line;
   }
 `;
 
