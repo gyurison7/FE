@@ -27,6 +27,10 @@ export default function Drop({ detail, groupId }) {
       setIsModalOpen(false);
     }
   };
+  const handleEditClick = () => {
+    navigate(`/postedit/${groupId}/${detail.memory.memoryId}`); // 수정 페이지로 이동
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     window.addEventListener('click', handleClickOutside);
@@ -47,7 +51,9 @@ export default function Drop({ detail, groupId }) {
 
       {isModalOpen ? (
         <Dropdown>
-          <DropdownContent>게시물 수정하기</DropdownContent>
+          <DropdownContent onClick={handleEditClick}>
+            게시물 수정하기
+          </DropdownContent>
           <Line></Line>
           <DropdownContent onClick={memoryDelete}>게시물 삭제하기</DropdownContent>
         </Dropdown>

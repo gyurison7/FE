@@ -10,12 +10,14 @@ import { selectedProfileState } from '../../recoil/Atom.js';
 import { useRecoilValue } from 'recoil';
 import { postWrite } from '../../api/postMainApi.js';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { useToast } from '../../hooks/useToast.jsx';
 function PostWrite() {
   const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [file, setFile] = useState(null);
   const { id } = useParams();
+  const { showToast } = useToast();
 
   const postData = useRecoilValue(selectedProfileState);
 
@@ -38,7 +40,11 @@ function PostWrite() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (isLoading || title.trim() === '') {
-      alert('제목을 입력해주세요');
+      showToast('제목을 입력해주세요');
+      return;
+    }
+    if (title.length > 50) {
+      showToast('제목은 50자 이하여야 합니다');
       return;
     }
 
@@ -69,16 +75,9 @@ function PostWrite() {
           <Title>
             <span>게시하기</span> <p>{postData.groupName}</p>
           </Title>
-          <Button
-            size='small'
-            type='submit'
-            color='white'
-            background={thumbnailUrl ? '#5873FE' : '#929292'}
-          >
-            게시하기
-          </Button>
+          <div></div>
         </Top>
-        <div>
+        <div style={{ padding: '0px 24px 0px 24px' }}>
           <Input
             type='text'
             value={title}
@@ -98,24 +97,34 @@ function PostWrite() {
           ) : (
             <WriteImageUpload
               height='40.6vh'
-              bgcolor='#D7D7D7'
+              bgcolor='#D9D9D9'
               onImageChange={changeHandler}
             >
               사진 추가하기
             </WriteImageUpload>
           )}
         </div>
+        <ButtonWrap>
+          <Button
+            size='large'
+            type='submit'
+            color='white'
+            background={thumbnailUrl ? '#5873FE' : '#929292'}
+          >
+            게시하기
+          </Button>
+        </ButtonWrap>
       </Form>
     </Layout>
   );
 }
 export default PostWrite;
 const Form = styled.form`
-  padding: 56px 24px;
   display: flex;
   flex-direction: column;
 `;
 const Top = styled.div`
+  padding: 54px 25px 0 25px;
   display: flex;
   justify-content: space-between;
 `;
@@ -141,7 +150,6 @@ const ThumbedImage = styled.img`
   width: 100%;
   height: 40vh;
   object-fit: cover;
-  border-radius: 7px;
 `;
 const ImageInput = styled.input`
   position: absolute;
@@ -152,4 +160,10 @@ const ImageInput = styled.input`
   left: 0;
   opacity: 0;
   cursor: pointer;
+`;
+const ButtonWrap = styled.div`
+  padding-top: 142px;
+
+  display: flex;
+  justify-content: center;
 `;
