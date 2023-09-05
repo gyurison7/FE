@@ -9,6 +9,7 @@ import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation';
+import { useToast } from '../../hooks/useToast.jsx';
 
 const UserProfile = () => {
   const [nickname, setNickname] = useState('');
@@ -18,6 +19,7 @@ const UserProfile = () => {
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
+  const { showToast } = useToast();
 
   const nicknameChangeUtil = (e) =>
     onChangeNicknameHandler(e, setNickname, setNicknameError);
@@ -39,13 +41,13 @@ const UserProfile = () => {
 
     const loginId = localStorage.getItem('loginId');
     if (loginId === null || loginId === '') {
-      alert('회원 정보가 존재하지 않습니다.');
+      showToast('회원 정보가 존재하지 않습니다.');
       navigate('/login');
       return;
     }
 
     if (profileImage === '') {
-      alert('프로필 사진을 등록해주세요!');
+      showToast('프로필 사진을 등록해주세요!');
       return;
     }
 
@@ -61,12 +63,11 @@ const UserProfile = () => {
     try {
       const responseData = await uploadUserProfile(formData);
       if (responseData) {
+        showToast('프로필 등록이 완료되었습니다!');
         navigate('/groupmain');
-      } else {
-        alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };
