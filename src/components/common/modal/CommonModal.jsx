@@ -61,6 +61,7 @@ const ModalWrapper = styled.div`
   width: 100%;
   height: 100vh;
   max-width: 428px;
+  z-index: 1;
 `;
 
 const ModalBackground = styled.div`
@@ -71,7 +72,6 @@ const ModalBackground = styled.div`
   height: 100vh;
   opacity: 0.6;
   background-color: #000000;
-  z-index: 1;
 `;
 
 const ModalBody = styled.div`
