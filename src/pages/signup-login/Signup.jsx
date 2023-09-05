@@ -9,20 +9,20 @@ import {
   onChangePasswordHandler,
   passwordCheckHandler,
 } from '../../utils/passwordValidation';
+import { useToast } from '../../hooks/useToast.jsx';
 
 function Signup() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-
   const [openModal, setOpenModal] = useState(false);
-
   const [isIdCheck, setIsIdCheck] = useState(false); // 중복 검사를 했는지 안했는지
   const [isIdAvailable, setIsIdAvailable] = useState(false); // 아이디 사용 가능한지 아닌지
+
+  const { showToast } = useToast();
 
   const onChangeIdHandler = (e) => {
     const idValue = e.target.value;
@@ -61,7 +61,7 @@ function Signup() {
         return false;
       }
     } catch (error) {
-      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+      showToast('서버 오류입니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
       return false;
     }
@@ -74,7 +74,7 @@ function Signup() {
     if (idCheckresult) setIdError('');
     else return;
     if (!isIdCheck || !isIdAvailable) {
-      alert('아이디 중복 검사를 해주세요.');
+      showToast('아이디 중복 검사를 해주세요.');
       return;
     }
 
@@ -86,11 +86,9 @@ function Signup() {
         localStorage.setItem('loginId', id);
         localStorage.setItem('userId', responseData.userId);
         setOpenModal(true);
-      } else {
-        alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       console.error(error);
     }
   };

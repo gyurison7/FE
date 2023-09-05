@@ -70,6 +70,7 @@ const ImageButtonContainer = styled.div`
   button {
     border-bottom: 1px solid #b2b3b2;
     font-weight: 500;
+    cursor: pointer;
 
     &:first-child {
       border-radius: 13px 13px 0 0;
@@ -86,6 +87,7 @@ const CancelButtonContainer = styled.div`
   button {
     border-radius: 13px;
     font-weight: 700;
+    cursor: pointer;
   }
 `;
 

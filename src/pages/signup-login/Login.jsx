@@ -5,6 +5,7 @@ import { login } from '../../api/auth';
 import Input from '../../components/common/input/Input.jsx';
 import KakaoLogin from '../kakao-login/KakaoLogin.jsx';
 import Button from '../../components/common/button/Button.jsx';
+import { useToast } from '../../hooks/useToast.jsx'
 
 function Login() {
   const [id, setId] = useState('');
@@ -12,6 +13,7 @@ function Login() {
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const onChangeIdHandelr = (e) => {
     setId(e.target.value);
@@ -38,11 +40,9 @@ function Login() {
       if (responseData) {
         localStorage.setItem('userId',responseData.userId);
         navigate('/groupmain');
-      } else {
-        alert('아이디 또는 비밀번호를 다시 확인해주세요.');
       }
     } catch (error) {
-      alert('아이디 또는 비밀번호를 다시 확인해주세요.');
+      showToast('아이디 또는 비밀번호를 다시 확인해주세요.');
       console.error(error);
     }
   };

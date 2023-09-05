@@ -105,6 +105,7 @@ const Wrapper = styled.div`
     border: none;
     color: #fff;
     z-index: 1;
+    cursor: pointer;
   }
 
   .backButton {
