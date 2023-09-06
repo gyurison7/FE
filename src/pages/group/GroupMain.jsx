@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import GroupPageHeader from '../../layout/header/GroupPageHeader';
@@ -8,9 +8,12 @@ import { useQuery } from 'react-query';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
 import MoreModal from '../../components/common/modal/MoreModal.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { useRecoilState } from 'recoil';
+import { groupDataState } from '../../recoil/Atom';
 
 function GroupMain() {
   const [isMoreModalId, setMoreModalId] = useState(null);
+  const [groupData, setGroupData] = useRecoilState(groupDataState);
   const navigate = useNavigate();
   const parentRef = useRef(null);
 
@@ -19,11 +22,13 @@ function GroupMain() {
   };
 
   // groupdata 가져오기
-  const {
-    data: groupData,
-    isError,
-    isLoading,
-  } = useQuery('groupData', getGroupData);
+  const { data, isError, isLoading } = useQuery('groupData', getGroupData);
+
+  useEffect(() => {
+    if (data) {
+      setGroupData(data);
+    }
+  }, [data, setGroupData]);
 
   const moreEditHandler = (groupId) => {
     if (isMoreModalId === groupId) {

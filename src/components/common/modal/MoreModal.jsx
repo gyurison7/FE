@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import api from '../../../api/index.jsx';
 import CommonModal from './CommonModal.jsx';
 import { useToast } from '../../../hooks/useToast.jsx';
+import { useRecoilState } from 'recoil';
+import { groupDataState } from '../../../recoil/Atom.js';
 
 function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
@@ -14,11 +16,11 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const storedUserId = localStorage.getItem('userId');
-
+  const [groupData, setGroupData] = useRecoilState(groupDataState);
   const handleOverlayClick = () => {
     onClose && onClose();
   };
-
+  console.log('modal', groupData);
   useEffect(() => {
     if (modalRef.current && parentRef.current) {
       const rect = modalRef.current.getBoundingClientRect();
@@ -51,12 +53,15 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         showToast('앨범에서 나갔습니다');
         setDeleteModal(false);
         setErrorMessage(null);
+        setGroupData((prevData) => prevData.filter((group) => group.groupId !== id));
       }
     } catch (error) {
       console.log(error);
       setErrorMessage('서버 에러 입니다');
     }
-    navigate('/groupmain');
+
+    onClose();
+    navigate('/groupmain', { replace: true });
   };
 
   return (
