@@ -226,7 +226,7 @@ function Search() {
             {activeNav.date &&
               (sortedEntries.length > 0 ? (
                 sortedEntries.map(([date, items]) => {
-                  const slicedDate = date.slice(0, 10);
+                  const slicedDate = date.slice(0, 10).replace(/-/g, '.');
                   const day = getdayNames(slicedDate);
                   return (
                     <SearchDate
@@ -246,7 +246,7 @@ function Search() {
             {activeNav.place &&
               (sortedEntries.length > 0 ? (
                 sortedEntries.map(([date, items]) => {
-                  const slicedDate = date.slice(0, 10);
+                  const slicedDate = date.slice(0, 10).replace(/-/g, '.');
                   const day = getdayNames(slicedDate);
                   return (
                     <PlaceResults

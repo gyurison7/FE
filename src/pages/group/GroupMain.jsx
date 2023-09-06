@@ -39,7 +39,7 @@ function GroupMain() {
         <GroupWrapper>
           {isLoading ? (
             <>
-             <LoadingSpinner/>
+              <LoadingSpinner />
             </>
           ) : isError ? (
             <div>Error fetching group data</div>
@@ -62,15 +62,15 @@ function GroupMain() {
             </PreMainContainer>
           ) : (
             <>
-              <ButtonWrapper onClick={writeButtonHandler} >
+              <ButtonWrapper onClick={writeButtonHandler}>
                 <PlusButton />
               </ButtonWrapper>
               {groupData.map((item) => {
                 const formattedStartDate = item.startDate
-                  ? item.startDate.slice(0, 10)
+                  ? item.startDate.slice(0, 10).replace(/-/g, '.')
                   : '';
                 const formattedEndDate = item.endDate
-                  ? item.endDate.slice(0, 10)
+                  ? item.endDate.slice(0, 10).replace(/-/g, '.')
                   : '';
 
                 return (
@@ -98,21 +98,13 @@ function GroupMain() {
                     </GroupDetailButton>
                     <div
                       style={{
-                        lineHeight: '7px',
                         paddingLeft: '2px',
-                        marginTop: '12px',
                       }}
                     >
-                      <h5> {item.groupName}</h5>
-                      <p
-                        style={{
-                          fontSize: '10px',
-                          color: 'gray',
-                          marginTop: '4px',
-                        }}
-                      >
+                      <Title> {item.groupName}</Title>
+                      <Date>
                         {formattedStartDate}~{formattedEndDate}
-                      </p>
+                      </Date>
                     </div>
                   </ButtonWrapper>
                 );
@@ -139,6 +131,19 @@ const FixedHeader = styled(GroupPageHeader)`
   z-index: 10;
 `;
 
+const Title = styled.p`
+  color: #4c4c4c;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding-top: 6px;
+`;
+const Date = styled.p`
+  font-size: 12px;
+  color: #606060;
+  padding-top: 2px;
+`;
 const GroupEditButton = styled.button`
   position: absolute;
   padding: 3px 5px 12px 30px;
@@ -188,7 +193,6 @@ const GroupWrapper = styled.div`
   }
 `;
 const ButtonWrapper = styled.div`
-  margin-top: 12px;
   width: 40%;
   padding-bottom: 24px;
   cursor: pointer;

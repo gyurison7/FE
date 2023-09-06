@@ -6,8 +6,8 @@ function AlbumResults({ items, navigate }) {
     <ResultContainer>
       <AlbumContainer>
         {items.map((item) => {
-          const startDate = item.startDate.slice(0, 10);
-          const endDate = item.endDate.slice(0, 10);
+          const startDate = item.startDate.slice(0, 10).replace(/-/g, '.');
+          const endDate = item.endDate.slice(0, 10).replace(/-/g, '.');
           let placesArray = [];
 
           if (item.place) {
