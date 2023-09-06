@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
@@ -12,9 +12,8 @@ import {
   DivHeaderText,
   ErrorText,
   Form,
-  FriendContentWrap,
   FriendSearchButton,
-  FriendSearchText,
+  FriendSearchInput,
   GroupWriteInput,
   ImageInput,
   PlaceAddButton,
@@ -40,6 +39,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import { editGroup } from '../../api/groupMainApi.js';
 import { useToast } from '../../hooks/useToast.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { debounce } from '../../hooks/debounce.js';
+import { fetchNickname } from '../../api/searchApi.js';
 
 function GroupWrite() {
   const storedUserId = localStorage.getItem('userId');
@@ -85,31 +86,23 @@ function GroupWrite() {
   const [groupNameError, setGroupNameError] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
   const [dateError, setDateError] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const [placeError, setPlaceError] = useState(false);
 
-  const searchUser = async (nickname) => {
-    try {
-      const response = await api.get(`/nickname/${nickname}`, {
-        withCredentials: true,
-      });
-
-      const userData = response.data;
-      console.log('nickname', response);
-      console.log(userData);
-      setSearchResult(response.data.findByNicknameData);
-    } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message === '로그인이 필요한 기능입니다.'
-      ) {
-        console.error('User needs to log in to access this feature.');
-      } else {
-        console.error('Error fetching user data:', error);
+  const debounceNicknameSearch = useCallback(
+    debounce(async (searchAlbum) => {
+      setHasSearched(false);
+      try {
+        const data = await fetchNickname(searchAlbum);
+        setSearchResult(data.findByNicknameData);
+        setHasSearched(true);
+      } catch (error) {
+        console.error('Error fetching data by album:', error);
+        setHasSearched(true);
       }
-    }
-  };
+    }, 600),
+    []
+  );
 
   console.log('parti', selectedFriends);
 
@@ -174,7 +167,7 @@ function GroupWrite() {
 
   const placeEnterAdd = (e) => {
     if (e.key === 'Enter' && place.trim() !== '') {
-      placeButtonHandler();
+      placeButtonHandler(e);
       e.preventDefault();
     }
   };
@@ -213,7 +206,7 @@ function GroupWrite() {
         break;
       case 'participants':
         setParticipant(value);
-        searchUser(value);
+        debounceNicknameSearch(value);
         break;
       default:
         break;
@@ -230,7 +223,8 @@ function GroupWrite() {
     navigate('/groupmain');
   };
 
-  const placeButtonHandler = () => {
+  const placeButtonHandler = (e) => {
+    e.preventDefault()
     const newPlaces = place;
     if (places.includes(place)) {
       showToast('이미 추가하신 장소 입니다');
@@ -371,18 +365,13 @@ function GroupWrite() {
           <div style={{ width: '100%' }}>
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
-              <FriendContentWrap>
-                <IconComponents
-                  iconType='search'
-                  width='22px'
-                  stroke='#4C4C4C'
-                  className='inputIcon'
-                />
-                <FriendSearchText>
-                  {' '}
-                  추억을 나눈 친구를 검색해주세요{' '}
-                </FriendSearchText>
-              </FriendContentWrap>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
+                alt='left'
+              />
+              <FriendSearchInput
+              placeholder='추억을 나눈 친구를 검색해주세요'
+              />
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
@@ -392,6 +381,7 @@ function GroupWrite() {
                 searchResult={searchResult}
                 addFriendHandler={addFriendHandler}
                 participants={participants}
+                hasSearched={hasSearched}
               />
             )}
           </div>
