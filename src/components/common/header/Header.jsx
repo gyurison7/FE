@@ -9,7 +9,7 @@ const Header = ({ icon, title }) => {
   return (
     <HeaderContainer>
       <BackButton
-        src={`${process.env.PUBLIC_URL}assets/svgs/${icon || 'back'}.svg`}
+        src={`${process.env.PUBLIC_URL}/assets/svgs/${icon || 'back'}.svg`}
         alt='back'
         onClick={() => navigate(-1)}
       />
