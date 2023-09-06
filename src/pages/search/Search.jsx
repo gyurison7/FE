@@ -331,6 +331,7 @@ const InputWrapper = styled.div`
 const NavBar = styled.div`
   width: 100%;
   display: flex;
+  gap: 24px;
   padding-left: 23px;
   padding-bottom: 12px;
   border-bottom: 1px solid #dddddd;
