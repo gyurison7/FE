@@ -6,7 +6,6 @@ import api from '../../../api/index.jsx';
 import CommonModal from './CommonModal.jsx';
 import { useToast } from '../../../hooks/useToast.jsx';
 
-
 function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
@@ -57,6 +56,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
       console.log(error);
       setErrorMessage('서버 에러 입니다');
     }
+    navigate('/groupmain');
   };
 
   return (

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable';
 import { useEffect } from 'react';
+import NoSearch from '../nosearchresult/NoSearch.jsx';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -16,7 +17,9 @@ function FriendSearchModal({
   searchResult,
   addFriendHandler,
   participants,
+  hasSearched,
 }) {
+  console.log('modal', hasSearched);
   useEffect(() => {
     if (ismodalopen) {
       document.body.style.overflow = 'hidden';
@@ -55,8 +58,7 @@ function FriendSearchModal({
               padding: '8px',
             }}
             className='drag-handle'
-          >
-          </div>
+          ></div>
           <ModalButtonWrapper>
             <ModalButton onClick={onClose}>
               <img
@@ -73,21 +75,17 @@ function FriendSearchModal({
               onChange={universalHandler}
             />
           </div>
-          {searchResult
-            .map((item) => {
-              return (
+          {hasSearched &&
+            (searchResult.length > 0 ? (
+              searchResult.map((item) => (
                 <ResultWrapper key={item.userId}>
                   <div
-                    style={{
-                      display: 'flex',
-                      gap: '30px',
-                      alignItems: 'center',
-                    }}
+                    style={{ display: 'flex', gap: '30px', alignItems: 'center' }}
                   >
                     <ResultProfileImage src={item.profileUrl} alt='profileImg' />
                     <div>
                       <LoginId>{item.loginId ? item.loginId : item.kakaoId}</LoginId>
-                      <p>{item.nickname} </p>
+                      <p>{item.nickname}</p>
                     </div>
                   </div>
                   <ResultAddButton
@@ -96,12 +94,13 @@ function FriendSearchModal({
                       onClose();
                     }}
                   >
-                    {' '}
                     추가
                   </ResultAddButton>
                 </ResultWrapper>
-              );
-            })}
+              ))
+            ) : (
+              <NoSearch/>
+            ))}
         </ModalContainer>
       </Draggable>
     </Portal>
@@ -211,6 +210,7 @@ const ModalWriteInput = styled.input`
   width: 100%;
   height: 44px;
   padding-right: 50px;
+  padding-left: 12px;
   border-radius: 7px;
   background-color: #f5f5f5;
   border: none;
@@ -228,6 +228,7 @@ FriendSearchModal.propTypes = {
   searchResult: PropTypes.array,
   addFriendHandler: PropTypes.func,
   participants: PropTypes.array,
+  hasSearched: PropTypes.bool,
 };
 
 const Overlay = styled.div`

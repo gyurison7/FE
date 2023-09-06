@@ -3,7 +3,6 @@ import { DateInput, DateInputWraper } from '../group/styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import Footer from '../../layout/footer/Footer';
 import { styled } from 'styled-components';
-import api from '../../api/index.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { SearchResult } from '../../recoil/Atom';
@@ -12,16 +11,8 @@ import SearchDate from './SearchDate.jsx';
 import PlaceResults from './SearchPlace.jsx';
 import AlbumResults from './SearchAlbum.jsx';
 import NoSearch from '../../components/common/nosearchresult/NoSearch.jsx';
-
-const debounce = (func, delay) => {
-  let debounceTimer;
-  return function () {
-    const context = this;
-    const args = arguments;
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => func.apply(context, args), delay);
-  };
-};
+import { debounce } from '../../hooks/debounce';
+import { fetchGroupByAlbum, fetchGroupByDate, fetchGroupByPlace } from '../../api/searchApi';
 
 function Search() {
   const [startDate, setStartDate] = useState(null);
@@ -93,44 +84,7 @@ function Search() {
       setInputIcon(null);
     }
   };
-  console.log('result', searchResult);
-  const fetchGroupByDate = async (searchDate) => {
-    try {
-      const response = await api.get(`/group/search/date/${searchDate}`, {
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
-    }
-  };
 
-  const fetchGroupByPlace = async (place) => {
-    console.log(`Fetching data for place: ${place}`);
-    try {
-      const response = await api.get(`/group/search/place/${place}`, {
-        withCredentials: true,
-      });
-      console.log(`Success fetching data for place: ${place}`, response.data);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching data for place: ${place}`, error);
-      throw error;
-    }
-  };
-
-  const fetchGroupByAlbum = async (searchGroup) => {
-    try {
-      const response = await api.get(`/group/search/groupName/${searchGroup}`, {
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
-    }
-  };
 
   const debouncedPlaceSearch = useCallback(
     debounce(async (searchPlace) => {

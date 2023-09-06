@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api/index.jsx';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
@@ -40,6 +39,8 @@ import {
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { debounce } from '../../hooks/debounce.js';
+import { fetchNickname } from '../../api/searchApi.js';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -62,32 +63,24 @@ function GroupWrite() {
   const [thumbnailError, setThumbnailError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
-
+  const [hasSearched, setHasSearched] = useState(false);
   const { showToast } = useToast();
 
-  const searchUser = async (nickname) => {
-    try {
-      const response = await api.get(`/nickname/${nickname}`, {
-        withCredentials: true,
-      });
-
-      const userData = response.data;
-      console.log('nickname', response);
-      console.log(userData);
-      setSearchResult(response.data.findByNicknameData);
-    } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message === '로그인이 필요한 기능입니다.'
-      ) {
-        console.error('User needs to log in to access this feature.');
-      } else {
-        console.error('Error fetching user data:', error);
+  const debounceNicknameSearch = useCallback(
+    debounce(async (searchAlbum) => {
+      setHasSearched(false);
+      try {
+        const data = await fetchNickname(searchAlbum);
+        setSearchResult(data.findByNicknameData);
+        setHasSearched(true);
+      } catch (error) {
+        console.error('Error fetching data by album:', error);
+        setHasSearched(true);
       }
-    }
-  };
+    }, 600),
+    []
+  );
+
   const placeEnterAdd = (e) => {
     if (e.key === 'Enter' && place.trim() !== '') {
       placeButtonHandler();
@@ -102,7 +95,6 @@ function GroupWrite() {
   };
 
   //데이터 보내는 로직
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation(createGroup, {
@@ -186,7 +178,7 @@ function GroupWrite() {
         break;
       case 'participants':
         setParticipant(value);
-        searchUser(value);
+        debounceNicknameSearch(value);
         break;
       default:
         break;
@@ -373,6 +365,7 @@ function GroupWrite() {
                 searchResult={searchResult}
                 addFriendHandler={addFriendHandler}
                 participants={participants}
+                hasSearched={hasSearched}
               />
             )}
           </div>
