@@ -38,10 +38,13 @@ import {
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import { useMutation, useQueryClient } from 'react-query';
 import { editGroup } from '../../api/groupMainApi.js';
+import { useToast } from '../../hooks/useToast.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 function GroupWrite() {
+  const storedUserId = localStorage.getItem('userId');
   const { id } = useParams();
+  const { showToast } = useToast();
   const navigate = useNavigate();
   useEffect(() => {
     console.log(id);
@@ -52,7 +55,10 @@ function GroupWrite() {
       const formattedEndDate = res.data.endDate.slice(0, 10);
       setStartDate(formattedStartDate);
       setEndDate(formattedEndDate);
-      setSelectedFriends(res.data.participants);
+      const filteredFriends = res.data.participants.filter(
+        (participant) => participant.userId !== Number(storedUserId)
+      );
+      setSelectedFriends(filteredFriends);
       setThumbnailUrl(res.data.thumbnailUrl);
       if (res.data.place) {
         const placesArray = JSON.parse(res.data.place);
@@ -81,8 +87,6 @@ function GroupWrite() {
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
 
-  const storedUserId = localStorage.getItem('userId');
-
   const searchUser = async (nickname) => {
     try {
       const response = await api.get(`/nickname/${nickname}`, {
@@ -106,6 +110,8 @@ function GroupWrite() {
       }
     }
   };
+
+  console.log('parti', selectedFriends);
 
   //데이터 보내는 로직
   const queryClient = useQueryClient();
@@ -226,6 +232,10 @@ function GroupWrite() {
 
   const placeButtonHandler = () => {
     const newPlaces = place;
+    if (places.includes(place)) {
+      showToast('이미 추가하신 장소 입니다');
+      return;
+    }
     setPlaces((prevPlaces) => [...prevPlaces, newPlaces]);
     setPlace('');
   };
@@ -244,10 +254,6 @@ function GroupWrite() {
 
   const removeFriendHandler = (id) => {
     setSelectedFriends((prevfri) => prevfri.filter((item) => item.userId !== id));
-  };
-
-  const isUserSelected = (userId) => {
-    return selectedFriends.some((friend) => friend.userId === userId);
   };
 
   return (
@@ -349,7 +355,10 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={() => deletePlaceHandler(index)}>
+                <PlaceRemoveButton
+                  type='button'
+                  onClick={() => deletePlaceHandler(index)}
+                >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'
@@ -380,7 +389,6 @@ function GroupWrite() {
                 ismodalopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
-                isUserSelected={isUserSelected}
                 searchResult={searchResult}
                 addFriendHandler={addFriendHandler}
                 participants={participants}
