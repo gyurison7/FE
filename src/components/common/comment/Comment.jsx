@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Avatar from '../avatar/Avatar.jsx';
 import CommentDropDown from '../../commentDropdown/CommentDropDown.jsx';
+import days from 'dayjs';
+import 'dayjs/locale/ko';
+import relativeTime from 'dayjs/plugin/relativeTime.js';
 
 export default function Comment(prop) {
   const { comment, createdAt, commentDeleta, commentId, commentEdit } = prop;
@@ -19,16 +22,20 @@ export default function Comment(prop) {
   };
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleCommentEdit();
     }
   };
+  days.extend(relativeTime).locale('ko');
+  const commentTime = days(createdAt).fromNow();
+
   return (
     <Wrap>
       <UserInfo>
         <Avatar src={prop['User.profileUrl']} width='40px' height='40px' />
         <div>
           <NickName>{prop['User.nickname']}</NickName>
-          <CreatedAt>{createdAt.slice(0, 10).replace(/-/g, '.')}</CreatedAt>
+          <CreatedAt>{commentTime}</CreatedAt>
           {isEditing ? (
             <EditInput
               type='text'
