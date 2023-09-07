@@ -43,13 +43,15 @@ export default function Drop({ detail, groupId }) {
 
   return (
     <Wrap ref={dropdownRef}>
-      <IconComponents
-        iconType='menu'
-        width='21'
-        height='10'
-        viewBox='0 0 21 5'
-        onClick={toggleModal}
-      />
+      <div style={{ cursor: 'pointer' }}>
+        <IconComponents
+          iconType='menu'
+          width='21'
+          height='10'
+          viewBox='0 0 21 5'
+          onClick={toggleModal}
+        />
+      </div>
 
       {isModalOpen ? (
         <Dropdown>

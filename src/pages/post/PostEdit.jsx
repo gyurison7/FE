@@ -70,14 +70,16 @@ export default function PostEdit() {
       {isLoading && <LoadingSpinner />}
       <Form style={{ width: '100%' }} onSubmit={handleFormSubmit}>
         <Top>
-          <IconComponents
-            iconType='iconX'
-            width='20'
-            height='20'
-            viewBox='0 0 20 20'
-            stroke='#4C4C4C'
-            onClick={() => navigate(-1)}
-          />
+          <div style={{ cursor: 'pointer' }}>
+            <IconComponents
+              iconType='iconX'
+              width='20'
+              height='20'
+              viewBox='0 0 20 20'
+              stroke='#4C4C4C'
+              onClick={() => navigate(-1)}
+            />
+          </div>
           <Title>
             <span>게시하기</span> <p>{storedGroupName}</p>
           </Title>

@@ -88,11 +88,13 @@ export default function PostDetail() {
   return (
     <Wrap>
       <Head>
-        <IconComponents
-          iconType='vectorLeft'
-          stroke='white'
-          onClick={() => navigate(-1)}
-        />
+        <div style={{ cursor: 'pointer' }}>
+          <IconComponents
+            iconType='vectorLeft'
+            stroke='white'
+            onClick={() => navigate(-1)}
+          />
+        </div>
         <p>게시물</p>
         <div></div>
       </Head>
