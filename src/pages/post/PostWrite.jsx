@@ -19,7 +19,6 @@ function PostWrite() {
   const [titleError, setTitleError] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
   const storedGroupName = localStorage.getItem('groupName');
-  console.log(titleError);
   const navigate = useNavigate();
 
   // 이미지 업로드 시간을 측정하기 위한 useRef 사용

@@ -19,7 +19,7 @@ export default function PostMain() {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postData, setPostData] = useRecoilState(selectedProfileState);
   const storedUserId = localStorage.getItem('userId');
-  console.log('post', postData);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const kakaoShared = shareKakao();
@@ -36,6 +36,7 @@ export default function PostMain() {
       setData(res.data);
       setPostData(res.data);
     });
+    console.log('post', postData);
   }, []);
   const processedPlace = data?.place
     ? JSON.parse(data.place)

@@ -6,14 +6,15 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import Comment from '../../components/common/comment/Comment.jsx';
 import Avatar from '../../components/common/avatar/Avatar.jsx';
 import Drop from '../../components/common/dropdown/Drop.jsx';
+import { useToast } from '../../hooks/useToast.jsx';
 
 export default function PostDetail() {
   const [detail, setDetail] = useState(null);
   const storedUserId = localStorage.getItem('userId');
   const [commentInput, setCommentInput] = useState('');
   const { groupId, postId } = useParams();
-
   const [commenteError, setCommentError] = useState(false);
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function PostDetail() {
       ...prevDetail,
       comments: updatedComments,
     }));
+    showToast('뎃글이 삭제 되었습니다.');
   };
   const commentEdit = async (commentId, editedComment) => {
     await api.put(

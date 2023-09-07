@@ -12,10 +12,10 @@ export default function Comment(prop) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
-  console.log(editedComment);
   const handleCommentEdit = async () => {
     await commentEdit(commentId, editedComment);
     setIsEditing(false);
