@@ -6,8 +6,8 @@ function AlbumResults({ items, navigate }) {
     <ResultContainer>
       <AlbumContainer>
         {items.map((item) => {
-          const startDate = item.startDate.slice(0, 10);
-          const endDate = item.endDate.slice(0, 10);
+          const startDate = item.startDate.slice(0, 10).replace(/-/g, '.');
+          const endDate = item.endDate.slice(0, 10).replace(/-/g, '.');
           let placesArray = [];
 
           if (item.place) {
@@ -78,21 +78,21 @@ const Text = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.text`
+const Title = styled.p`
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
   padding-bottom: 2px;
 `;
 
-const Date = styled.text`
+const Date = styled.p`
   font-size: 14px;
   font-weight: 500;
   color: #666;
   padding-bottom: 8px;
 `;
 
-const Place = styled.text`
+const Place = styled.p`
   font-size: 14px;
   color: #666;
 `;

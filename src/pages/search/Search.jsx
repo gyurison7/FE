@@ -12,7 +12,11 @@ import PlaceResults from './SearchPlace.jsx';
 import AlbumResults from './SearchAlbum.jsx';
 import NoSearch from '../../components/common/nosearchresult/NoSearch.jsx';
 import { debounce } from '../../hooks/debounce';
-import { fetchGroupByAlbum, fetchGroupByDate, fetchGroupByPlace } from '../../api/searchApi';
+import {
+  fetchGroupByAlbum,
+  fetchGroupByDate,
+  fetchGroupByPlace,
+} from '../../api/searchApi';
 
 function Search() {
   const [startDate, setStartDate] = useState(null);
@@ -84,7 +88,6 @@ function Search() {
       setInputIcon(null);
     }
   };
-
 
   const debouncedPlaceSearch = useCallback(
     debounce(async (searchPlace) => {
@@ -163,7 +166,7 @@ function Search() {
         <div></div>
       </Top>
       <InputWrapper>
-        <DateInputWraper width='90%'>
+        <DateInputWraper width='90%' borderradious='12px'>
           {activeNav.date && (
             <img className='inputIcon' src={inputIcon} alt='input icon' />
           )}
@@ -178,8 +181,9 @@ function Search() {
             onClick={() => activeNav.date && setDateModal(!isDateModal)}
             placeholder={inputPlaceholder}
             onChange={handleInputChange}
+            borderradious='12px'
             readOnly={activeNav.date ? true : false}
-            paddingleft={activeNav.album || activeNav.place ? '12px' : undefined}
+            paddingleft={activeNav.album || activeNav.place ? '16px' : undefined}
           />
         </DateInputWraper>
       </InputWrapper>
@@ -222,7 +226,7 @@ function Search() {
             {activeNav.date &&
               (sortedEntries.length > 0 ? (
                 sortedEntries.map(([date, items]) => {
-                  const slicedDate = date.slice(0, 10);
+                  const slicedDate = date.slice(0, 10).replace(/-/g, '.');
                   const day = getdayNames(slicedDate);
                   return (
                     <SearchDate
@@ -242,7 +246,7 @@ function Search() {
             {activeNav.place &&
               (sortedEntries.length > 0 ? (
                 sortedEntries.map(([date, items]) => {
-                  const slicedDate = date.slice(0, 10);
+                  const slicedDate = date.slice(0, 10).replace(/-/g, '.');
                   const day = getdayNames(slicedDate);
                   return (
                     <PlaceResults
@@ -331,8 +335,9 @@ const InputWrapper = styled.div`
 const NavBar = styled.div`
   width: 100%;
   display: flex;
+  gap: 24px;
   padding-left: 23px;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #dddddd;
 `;
 
@@ -347,6 +352,6 @@ const NavButton = styled.button`
   line-height: normal;
   color: #c2c2c2;
 
-  border-bottom: ${(props) => (props.active ? ' 1px solid #5873FE;' : 'none')};
+  border-bottom: ${(props) => (props.active ? ' 1.75px solid #5873FE;' : 'none')};
   color: ${(props) => (props.active ? '#5873FE' : '#C2C2C2')};
 `;
