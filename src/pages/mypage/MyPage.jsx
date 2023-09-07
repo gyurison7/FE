@@ -138,6 +138,7 @@ const MyPage = () => {
       if (responseData) {
         localStorage.removeItem('userId');
         localStorage.removeItem('loginId');
+        localStorage.removeItem('groupName');
         navigate('/login');
       }
     } catch (error) {
