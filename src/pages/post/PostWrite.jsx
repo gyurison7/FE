@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Layout from '../../layout';
@@ -8,22 +8,31 @@ import Button from '../../components/common/button/Button.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import { postWrite } from '../../api/postMainApi.js';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
-import { useToast } from '../../hooks/useToast.jsx';
+
 function PostWrite() {
   const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [file, setFile] = useState(null);
   const { id } = useParams();
-  const { showToast } = useToast();
-  const storedGroupName = localStorage.getItem('groupName');
 
+  const [titleError, setTitleError] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
+  const storedGroupName = localStorage.getItem('groupName');
   const navigate = useNavigate();
+
+  // 이미지 업로드 시간을 측정하기 위한 useRef 사용
+  const uploadStartTimeRef = useRef(null);
+
   const changeHandler = (e) => {
     const selectedFile = e.target.files[0];
 
     if (selectedFile) {
       setFile(selectedFile);
+
+      // 이미지 업로드 시작 시간 기록
+      uploadStartTimeRef.current = performance.now();
+
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -36,21 +45,29 @@ function PostWrite() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (isLoading || title.trim() === '') {
-      showToast('제목을 입력해주세요');
-      return;
-    }
-    if (title.length > 50) {
-      showToast('제목은 50자 이하여야 합니다');
-      return;
-    }
 
+    setTitleError(false);
+    setThumbnailError(false);
+    let validationPassed = true;
+    if (!title) {
+      setTitleError(true);
+      validationPassed = false;
+    }
+    if (!file) {
+      setThumbnailError(true);
+      validationPassed = false;
+    }
+    if (!validationPassed) return;
     setLoading(true);
     const formData = new FormData();
     formData.append('imageUrl', file);
     formData.append('title', title);
 
     try {
+      // 이미지 업로드 완료 시간 기록
+      const uploadEndTime = performance.now();
+      const uploadTime = uploadEndTime - (uploadStartTimeRef.current || 0);
+      console.log('이미지 업로드 시간: ' + uploadTime + 'ms');
       await postWrite(id, formData, navigate);
     } catch (error) {
       // 오류 처리
@@ -87,6 +104,7 @@ function PostWrite() {
             bordercolor='#DDDDDD'
             color='#4C4C4C'
           />
+          {titleError && <ErrorText>제목을 입력해주세요</ErrorText>}
         </div>
         <div style={{ marginTop: '28px' }}>
           {thumbnailUrl ? (
@@ -104,6 +122,7 @@ function PostWrite() {
               사진 추가하기
             </WriteImageUpload>
           )}
+          {thumbnailError && <ErrorText>썸네일을 추가해주세요</ErrorText>}
         </div>
         <ButtonWrap>
           <Button
@@ -167,4 +186,9 @@ const ButtonWrap = styled.div`
 
   display: flex;
   justify-content: center;
+`;
+const ErrorText = styled.div`
+  color: #ff7e62;
+  font-size: 12px;
+  padding-top: 5px;
 `;

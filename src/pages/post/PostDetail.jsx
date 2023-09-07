@@ -6,12 +6,15 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import Comment from '../../components/common/comment/Comment.jsx';
 import Avatar from '../../components/common/avatar/Avatar.jsx';
 import Drop from '../../components/common/dropdown/Drop.jsx';
+import { useToast } from '../../hooks/useToast.jsx';
 
 export default function PostDetail() {
   const [detail, setDetail] = useState(null);
   const storedUserId = localStorage.getItem('userId');
   const [commentInput, setCommentInput] = useState('');
   const { groupId, postId } = useParams();
+  const [commenteError, setCommentError] = useState(false);
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +27,13 @@ export default function PostDetail() {
   const commentSubmit = async (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+      let validationPassed = true;
+      setCommentError(false);
+      if (!commentInput) {
+        setCommentError(true);
+        validationPassed = false;
+      }
+      if (!validationPassed) return;
       const newComment = {
         comment: commentInput,
       };
@@ -52,6 +62,7 @@ export default function PostDetail() {
       ...prevDetail,
       comments: updatedComments,
     }));
+    showToast('댓글이 삭제 되었습니다.');
   };
   const commentEdit = async (commentId, editedComment) => {
     await api.put(
@@ -137,15 +148,25 @@ export default function PostDetail() {
           </div>
         </CommentWrap>
       </div>
-      <Footer>
-        <Avatar src={detail?.user?.profileUrl} width='40px' height='40px' />
-        <input
-          type='text'
-          placeholder='댓글을 작성해주세요'
-          value={commentInput}
-          onChange={(e) => setCommentInput(e.target.value)}
-          onKeyPress={commentSubmit}
-        />
+      <Footer iserror={commenteError.toString()}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '15px',
+            padding: '0',
+            margin: '0',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar src={detail?.user?.profileUrl} width='40px' height='40px' />
+          <input
+            type='text'
+            placeholder='댓글을 작성해주세요'
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value, setCommentError(false))}
+            onKeyPress={commentSubmit}
+          />
+        </div>
       </Footer>
     </Wrap>
   );
@@ -161,6 +182,7 @@ const Wrap = styled.div`
 const Head = styled.div`
   padding: 56px 24px 18px 25px;
   position: sticky;
+  z-index: 2;
   top: 0;
   display: flex;
   align-items: center;
@@ -211,13 +233,12 @@ const UserInfoData = styled.div`
 `;
 
 const Footer = styled.div`
-  display: flex;
   position: fixed;
   border-top: 0.5px solid #e4e4e4;
   bottom: 0;
   align-items: center;
   background-color: white;
-  gap: 15px;
+
   padding: 18px 15px 20px 17px;
   @media (max-width: 428px) {
     width: 100%;
@@ -238,7 +259,8 @@ const Footer = styled.div`
     line-height: normal;
     padding-left: 18px;
     &::placeholder {
-      color: #c5c5c7;
+      color: ${(props) => (props.iserror === 'true' ? '#ff7e62' : '#c5c5c7')};
+      /* color: #c5c5c7; */
       font-size: 14px;
       font-style: normal;
       font-weight: 500;

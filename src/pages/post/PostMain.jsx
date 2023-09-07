@@ -19,7 +19,7 @@ export default function PostMain() {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postData, setPostData] = useRecoilState(selectedProfileState);
   const storedUserId = localStorage.getItem('userId');
-  console.log('post', postData);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const kakaoShared = shareKakao();
@@ -36,6 +36,7 @@ export default function PostMain() {
       setData(res.data);
       setPostData(res.data);
     });
+    console.log('post', postData);
   }, []);
   const processedPlace = data?.place
     ? JSON.parse(data.place)
@@ -86,7 +87,8 @@ export default function PostMain() {
                   stroke='#8E8E8E'
                 />
                 <p>
-                  {data?.startDate.substr(0, 10)}~{data?.endDate.substr(0, 10)}
+                  {data?.startDate.substr(0, 10).replace(/-/g, '.')}-
+                  {data?.endDate.substr(0, 10).replace(/-/g, '.')}
                 </p>
               </WrapDate>
               <WrapLocation>
@@ -104,6 +106,7 @@ export default function PostMain() {
                 return (
                   <Profile
                     key={element.userId}
+                    userId={element.userId}
                     url={element.profileUrl}
                     name={element.nickname}
                     onClick={() => handleProfileClick(element)}
@@ -187,7 +190,7 @@ const GroupTitle = styled.div`
 `;
 const Title = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 10px;
 `;
 const FriendAdd = styled.div`
   cursor: pointer;
@@ -237,7 +240,6 @@ const AvatarContainer = styled.div`
 const Content = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-
   gap: 1px;
   background: white;
 `;
