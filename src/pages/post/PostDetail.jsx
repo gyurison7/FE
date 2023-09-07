@@ -62,7 +62,7 @@ export default function PostDetail() {
       ...prevDetail,
       comments: updatedComments,
     }));
-    showToast('뎃글이 삭제 되었습니다.');
+    showToast('댓글이 삭제 되었습니다.');
   };
   const commentEdit = async (commentId, editedComment) => {
     await api.put(
