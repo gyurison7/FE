@@ -10,6 +10,7 @@ import {
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation';
 import { useToast } from '../../hooks/useToast.jsx';
+import { uploadImage } from '../../api/profileImageUpload';
 
 const UserProfile = () => {
   const [nickname, setNickname] = useState('');
@@ -53,23 +54,21 @@ const UserProfile = () => {
 
     if (!nicknameCheckHandler(nickname, setNicknameError)) return;
 
-    const formData = new FormData();
-    formData.append('loginId', loginId);
-    formData.append('nickname', nickname);
-    if (chosenFile) {
-      formData.append('profileUrl', chosenFile);
-    }
-
-    try {
-      const responseData = await uploadUserProfile(formData);
-      if (responseData) {
-        showToast('프로필 등록이 완료되었습니다!');
-        navigate('/groupmain');
+    uploadImage(chosenFile).then(async (url) => {
+      const config = {
+        profileUrl: url,
       }
-    } catch (error) {
-      showToast('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.', 5000);
-      console.error(error);
-    }
+      try {
+        const responseData = await uploadUserProfile(loginId, nickname, config);
+        if (responseData) {
+          showToast('프로필 등록이 완료되었습니다!');
+          navigate('/groupmain');
+        }
+      } catch (error) {
+        showToast('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.', 5000);
+        console.error(error);
+      }
+    });
   };
 
   return (
