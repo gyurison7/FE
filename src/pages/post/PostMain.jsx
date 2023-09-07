@@ -63,18 +63,26 @@ export default function PostMain() {
               <Title>
                 <h4>{data?.groupName}</h4>
                 {Number(storedUserId) === data?.userId ? (
-                  <IconComponents
-                    iconType='vectorRight'
-                    stroke='#9C9C9C'
-                    viewBox='0 0 10 15'
-                    width=' 6.302px'
-                    height='19px'
-                    onClick={() => navigate(`/groupedit/${id}`)}
-                  />
+                  <div style={{ cursor: 'pointer' }}>
+                    <IconComponents
+                      iconType='vectorRight'
+                      stroke='#9C9C9C'
+                      viewBox='0 0 10 15'
+                      width=' 6.302px'
+                      height='19px'
+                      onClick={() => navigate(`/groupedit/${id}`)}
+                    />
+                  </div>
                 ) : null}
               </Title>
               <FriendAdd onClick={() => kakaoShared()}>
-                <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
+                <IconComponents
+                  iconType='inviteFriends'
+                  stroke='#8E8E8E'
+                  width='15px'
+                  height='15px'
+                  viewBox='0 0 15 15'
+                />
                 <p>공유하기</p>
               </FriendAdd>
             </GroupTitle>
@@ -136,7 +144,7 @@ export default function PostMain() {
             })}
           </Content>
         </div>
-        <div style={{ height: '72px' }}></div>
+        <div style={{ height: '59px' }}></div>
       </Wrap>
       <Foot>
         <Footer />
@@ -176,6 +184,7 @@ const Head = styled.div`
 const CamereButton = styled.button`
   border: none;
   background: transparent;
+  cursor: pointer;
 `;
 const BackButton = styled(CamereButton)``;
 const Side = styled.div`
@@ -191,6 +200,9 @@ const GroupTitle = styled.div`
 const Title = styled.div`
   display: flex;
   gap: 10px;
+  h4 {
+    color: #4c4c4c;
+  }
 `;
 const FriendAdd = styled.div`
   cursor: pointer;
@@ -198,7 +210,7 @@ const FriendAdd = styled.div`
   gap: 5px;
   p {
     color: #8e8e8e;
-    font-size: 12px;
+    font-size: 13px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;

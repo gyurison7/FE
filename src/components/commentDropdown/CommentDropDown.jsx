@@ -38,14 +38,16 @@ export default function CommentDropDown({
   };
   return (
     <Wrap ref={dropdownRef}>
-      <IconComponents
-        iconType='menuComment'
-        width='25px'
-        height='25px'
-        stroke='#C1C1C1'
-        viewBox='0 0 25 25'
-        onClick={toggleModal}
-      />
+      <div style={{ cursor: 'pointer' }}>
+        <IconComponents
+          iconType='menuComment'
+          width='25px'
+          height='25px'
+          stroke='#C1C1C1'
+          viewBox='0 0 25 25'
+          onClick={toggleModal}
+        />
+      </div>
       {isDropdownOpen ? (
         <Dropdown>
           <DropdownContent onClick={handleToggleEdit}>댓글 수정하기</DropdownContent>

@@ -42,6 +42,7 @@ export default function Comment(prop) {
               value={editedComment}
               onChange={(e) => setEditedComment(e.target.value)}
               onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
             />
           ) : (
             <UserComment>{comment} </UserComment>
