@@ -61,7 +61,7 @@ function Signup() {
         return false;
       }
     } catch (error) {
-      showToast('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+      showToast('서버 오류입니다. 잠시 후 다시 시도해주세요.', 5000);
       console.error(error);
       return false;
     }
@@ -88,7 +88,7 @@ function Signup() {
         setOpenModal(true);
       }
     } catch (error) {
-      showToast('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.', 5000);
       console.error(error);
     }
   };
