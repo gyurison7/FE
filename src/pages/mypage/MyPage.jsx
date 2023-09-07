@@ -80,7 +80,10 @@ const MyPage = () => {
         setOpenCropper(false);
       },
       onError: (error) => {
-        showToast('프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        showToast(
+          '프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
+          5000
+        );
         console.error(error);
       },
     });
@@ -107,7 +110,7 @@ const MyPage = () => {
           setIsEditing(false);
         }
       } catch (error) {
-        showToast('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        showToast('닉네임 변경에 실패했습니다. 잠시 후 다시 시도해주세요.', 5000);
         console.error(error);
       }
     }
@@ -121,7 +124,10 @@ const MyPage = () => {
         setProfileModal(false);
       }
     } catch (error) {
-      showToast('프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast(
+        '프로필 이미지 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        5000
+      );
       console.error(error);
     }
   };
@@ -148,14 +154,16 @@ const MyPage = () => {
       const responseData = await memberOut(memberOutCheck);
       if (responseData) {
         showToast(
-          '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.'
+          '탈퇴가 완료되었습니다. 남아있는 추억들을 정리하는데 시간이 조금 소요될 수 있습니다.',
+          5000
         );
         localStorage.removeItem('userId');
         localStorage.removeItem('loginId');
+        localStorage.removeItem('groupName');
         navigate('/');
       }
     } catch (error) {
-      showToast('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.');
+      showToast('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.', 5000);
       console.log(error);
     }
   };
@@ -270,7 +278,7 @@ const MyPage = () => {
 
 export default MyPage;
 
-const FlexCenter =`
+const FlexCenter = `
   display: flex;
   justify-content: center;
   align-items: center;
