@@ -59,7 +59,7 @@ const PasswordChange = () => {
       return;
 
     if (oldPassword === password) {
-      showToast('새로운 비밀번호는 기존 비밀번호와 다르게 설정해주세요!');
+      showToast('새로운 비밀번호는 기존 비밀번호와 다르게 설정해주세요!', 5000);
       return;
     }
 
@@ -70,7 +70,7 @@ const PasswordChange = () => {
         navigate('/mypage');
       }
     } catch (error) {
-      showToast('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.');
+      showToast('비밀번호 변경에 실패했습니다. 확인 후 다시 입력해주세요.', 5000);
       console.error(error);
     }
   };

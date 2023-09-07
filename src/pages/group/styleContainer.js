@@ -105,6 +105,7 @@ export const SubmitButton = styled.button`
   font-style: normal;
   line-height: normal;
   margin-right: 20px;
+  cursor: pointer;
 `;
 
 export const BackButton = styled.button`
@@ -113,6 +114,7 @@ export const BackButton = styled.button`
   border: none;
   position: relative;
   top: 5px;
+  cursor: pointer;
 `;
 
 export const WriteImageWrapper = styled.div`
@@ -166,6 +168,7 @@ export const PlaceRemoveButton = styled.button`
   img {
     width: 15px;
     height: 15px;
+    cursor: pointer;
   }
 `;
 
@@ -219,7 +222,7 @@ export const FriendSearchInput = styled.input`
     font-style: normal;
     line-height: normal;
   }
-    &:focus {
+  &:focus {
     outline: none;
   }
 `;

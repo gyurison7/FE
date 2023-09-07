@@ -224,7 +224,7 @@ function GroupWrite() {
   };
 
   const placeButtonHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const newPlaces = place;
     if (places.includes(place)) {
       showToast('이미 추가하신 장소 입니다');
@@ -328,10 +328,10 @@ function GroupWrite() {
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
-              <IconComponents
-                iconType='location'
-                stroke='#4C4C4C'
+              <img
                 className='inputIcon'
+                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
+                alt='calander'
               />
               <GroupWriteInput
                 name='place'
@@ -369,9 +369,7 @@ function GroupWrite() {
                 src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
                 alt='left'
               />
-              <FriendSearchInput
-              placeholder='추억을 나눈 친구를 검색해주세요'
-              />
+              <FriendSearchInput placeholder='추억을 나눈 친구를 검색해주세요' />
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal

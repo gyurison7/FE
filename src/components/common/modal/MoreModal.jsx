@@ -49,6 +49,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         console.log(response.data.success);
         setDeleteModal(false);
         setErrorMessage(response.data.message);
+        console.log('error',response.data.message)
       } else if (response.data.success) {
         showToast('앨범에서 나갔습니다');
         setDeleteModal(false);
@@ -59,8 +60,7 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
       console.log(error);
       setErrorMessage('서버 에러 입니다');
     }
-
-    onClose();
+    
     navigate('/groupmain', { replace: true });
   };
 
