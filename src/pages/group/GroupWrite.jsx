@@ -40,6 +40,7 @@ import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { debounce } from '../../hooks/debounce.js';
 import { fetchNickname } from '../../api/searchApi.js';
+// import { uploadImage } from '../../api/imageUpload.js';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -134,6 +135,16 @@ function GroupWrite() {
     }
 
     if (!validationPassed) return;
+
+    // let imageUrl;
+    // try {
+    //   imageUrl = await uploadImage(chosenFile);
+    // } catch (error) {
+    //   console.error('Error uploading image:', error);
+    //   return;
+    // }
+
+
 
     const data = new FormData();
     data.append('thumbnailUrl', chosenFile);
@@ -347,9 +358,7 @@ function GroupWrite() {
                 src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
                 alt='left'
               />
-              <FriendSearchInput
-              placeholder='추억을 나눈 친구를 검색해주세요'
-              />
+              <FriendSearchInput placeholder='추억을 나눈 친구를 검색해주세요' />
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
