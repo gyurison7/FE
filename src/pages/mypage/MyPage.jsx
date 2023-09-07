@@ -21,6 +21,7 @@ import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { useMutation } from 'react-query';
 import CropperModal from '../../components/common/modal/CropperModal.jsx';
 import { useToast } from '../../hooks/useToast.jsx';
+import { uploadImage } from '../../api/profileImageUpload.js';
 
 const MyPage = () => {
   const [nickname, setNickname] = useState(''); // 원래 닉네임
@@ -71,21 +72,24 @@ const MyPage = () => {
   const mutation = useMutation(updateMyPageProfileImage);
 
   const imageSubmitHandler = async () => {
-    const formData = new FormData();
-    formData.append('profileUrl', croppedImage);
-    mutation.mutate(formData, {
-      onSuccess: (data) => {
-        setProfileImage(data);
-        setProfileModal(false);
-        setOpenCropper(false);
-      },
-      onError: (error) => {
-        showToast(
-          '프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
-          5000
-        );
-        console.error(error);
-      },
+    uploadImage(croppedImage).then((url) => {
+      const config = {
+        profileUrl: url,
+      };
+      mutation.mutate(config, {
+        onSuccess: (data) => {
+          setProfileImage(data);
+          setProfileModal(false);
+          setOpenCropper(false);
+        },
+        onError: (error) => {
+          showToast(
+            '프로필 이미지 등록에 실패했습니다. 잠시 후 다시 시도해주세요.',
+            5000
+          );
+          console.error(error);
+        },
+      });
     });
   };
 
