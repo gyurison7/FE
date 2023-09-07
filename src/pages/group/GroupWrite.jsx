@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api/index.jsx';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
 import Input from '../../components/common/input/Input.jsx';
 import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import { createGroup } from '../../api/groupMainApi';
 import { useMutation, useQueryClient } from 'react-query';
+import { useToast } from '../../hooks/useToast.jsx';
 import {
   BackButton,
   DivHeaderText,
-  FriendContentWrap,
   FriendSearchButton,
-  FriendSearchText,
   GroupWriteInput,
   ImageInput,
   PlaceAddButton,
@@ -36,9 +34,12 @@ import {
   TitleWraper,
   WordCount,
   ErrorText,
+  FriendSearchInput,
 } from './styleContainer';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { debounce } from '../../hooks/debounce.js';
+import { fetchNickname } from '../../api/searchApi.js';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -61,33 +62,27 @@ function GroupWrite() {
   const [thumbnailError, setThumbnailError] = useState(false);
   const [dateError, setDateError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const { showToast } = useToast();
 
-  const searchUser = async (nickname) => {
-    try {
-      const response = await api.get(`/nickname/${nickname}`, {
-        withCredentials: true,
-      });
-
-      const userData = response.data;
-      console.log('nickname', response);
-      console.log(userData);
-      setSearchResult(response.data.findByNicknameData);
-    } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message === '로그인이 필요한 기능입니다.'
-      ) {
-        console.error('User needs to log in to access this feature.');
-      } else {
-        console.error('Error fetching user data:', error);
+  const debounceNicknameSearch = useCallback(
+    debounce(async (searchAlbum) => {
+      setHasSearched(false);
+      try {
+        const data = await fetchNickname(searchAlbum);
+        setSearchResult(data.findByNicknameData);
+        setHasSearched(true);
+      } catch (error) {
+        console.error('Error fetching data by album:', error);
+        setHasSearched(true);
       }
-    }
-  };
+    }, 600),
+    []
+  );
+
   const placeEnterAdd = (e) => {
     if (e.key === 'Enter' && place.trim() !== '') {
-      placeButtonHandler();
+      placeButtonHandler(e);
       e.preventDefault();
     }
   };
@@ -99,7 +94,6 @@ function GroupWrite() {
   };
 
   //데이터 보내는 로직
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation(createGroup, {
@@ -183,7 +177,7 @@ function GroupWrite() {
         break;
       case 'participants':
         setParticipant(value);
-        searchUser(value);
+        debounceNicknameSearch(value);
         break;
       default:
         break;
@@ -202,8 +196,13 @@ function GroupWrite() {
     navigate('/groupmain');
   };
 
-  const placeButtonHandler = () => {
+  const placeButtonHandler = (e) => {
+    e.preventDefault();
     const newPlaces = place;
+    if (places.includes(place)) {
+      showToast('이미 추가하신 장소 입니다');
+      return;
+    }
     setPlaces((prevPlaces) => [...prevPlaces, newPlaces]);
     setPlace('');
   };
@@ -307,10 +306,10 @@ function GroupWrite() {
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
-              <IconComponents
-                iconType='location'
-                stroke='#4C4C4C'
+              <img
                 className='inputIcon'
+                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
+                alt='calander'
               />
               <GroupWriteInput
                 name='place'
@@ -328,7 +327,10 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={(e) => deletePlaceHandler(index, e)}>
+                <PlaceRemoveButton
+                  type='button'
+                  onClick={(e) => deletePlaceHandler(index, e)}
+                >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'
@@ -341,18 +343,13 @@ function GroupWrite() {
           <div style={{ width: '100%' }}>
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
-              <FriendContentWrap>
-                <IconComponents
-                  iconType='search'
-                  width='22px'
-                  stroke='#4C4C4C'
-                  className='inputIcon'
-                />
-                <FriendSearchText>
-                  {' '}
-                  추억을 나눈 친구를 검색해주세요{' '}
-                </FriendSearchText>
-              </FriendContentWrap>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
+                alt='left'
+              />
+              <FriendSearchInput
+              placeholder='추억을 나눈 친구를 검색해주세요'
+              />
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
@@ -363,6 +360,7 @@ function GroupWrite() {
                 searchResult={searchResult}
                 addFriendHandler={addFriendHandler}
                 participants={participants}
+                hasSearched={hasSearched}
               />
             )}
           </div>

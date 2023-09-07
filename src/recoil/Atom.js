@@ -18,3 +18,8 @@ export const SearchResult = atom({
   key: 'searchResult',
   default: [],
 });
+
+export const groupDataState = atom({
+  key: 'groupDataState',
+  default: [], 
+});

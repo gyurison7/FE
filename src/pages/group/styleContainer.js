@@ -1,8 +1,7 @@
 import { styled } from 'styled-components';
 
 export const DivHeaderText = styled.p`
-  margin-top: 12px;
-  margin-bottom: 2px;
+  margin-bottom: 12px;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -62,9 +61,10 @@ export const StDateWrapper = styled.div`
 export const GroupWriteInput = styled.input`
   width: 100%;
   height: 44px;
+  color: #4c4c4c;
   padding-right: 50px;
   border-radius: 7px;
-  background-color: #F0F2F5;
+  background-color: #f0f2f5;
   border: none;
 
   &:focus {
@@ -86,13 +86,13 @@ export const PlaceInputWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: #F0F2F5;
+  background-color: #f0f2f5;
   border-radius: 7px;
 
   .inputIcon {
-    margin-right: 8px;
-    margin-left: 10px;
-    margin-top: 7px;
+    margin: 13px 10.85px 13px 13px;
+    width: 13.154px;
+    height: 19px;
   }
 `;
 
@@ -151,7 +151,7 @@ export const PlaceResult = styled.div`
   background-color: #5873fe;
   border-radius: 20px;
   color: #fff;
-  padding: 8px 4px 8px 10px;
+  padding: 8px 8px 8px 10px;
   font-size: 13px;
   align-items: center;
 `;
@@ -162,6 +162,11 @@ export const PlaceRemoveButton = styled.button`
   align-items: center;
   border: none;
   background-color: transparent;
+
+  img {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 export const PlaceAddButton = styled.button`
@@ -182,7 +187,13 @@ export const FriendSearchButton = styled.div`
   justify-content: center;
   align-items: center;
   height: 44px;
-  background-color: #F0F2F5;
+  background-color: #f0f2f5;
+
+  img {
+    width: 18px;
+    height: 18px;
+    margin: 13px 8px 13px 13px;
+  }
 `;
 
 export const FriendContentWrap = styled.div`
@@ -192,12 +203,25 @@ export const FriendContentWrap = styled.div`
   gap: 9px;
 `;
 
-export const FriendSearchText = styled.p`
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  color: #c2c2c2;
+export const FriendSearchInput = styled.input`
+  width: 100%;
+  height: 44px;
+  color: #4c4c4c;
+  padding-right: 50px;
+  border-radius: ${(props) => props.borderradious || '7px'};
+  background-color: #f0f2f5;
+  border: none;
+  padding-left: ${(props) => props.paddingleft || '0px'};
+
+  &::placeholder {
+    color: #c2c2c2;
+    font-size: 15px;
+    font-style: normal;
+    line-height: normal;
+  }
+    &:focus {
+    outline: none;
+  }
 `;
 
 export const Form = styled.form`
@@ -208,11 +232,12 @@ export const Form = styled.form`
 export const DateInput = styled.input`
   width: 100%;
   height: 44px;
+  color: #4c4c4c;
   padding-right: 50px;
-  border-radius: 7px;
-  background-color: #F0F2F5;
+  border-radius: ${(props) => props.borderradious || '7px'};
+  background-color: #f0f2f5;
   border: none;
-
+  padding-left: ${(props) => props.paddingleft || '0px'};
   &::placeholder {
     color: #c2c2c2;
     font-size: 15px;
@@ -226,16 +251,16 @@ export const DateInput = styled.input`
 
 export const DateInputWraper = styled.div`
   position: relative;
-  width: ${props => props.width || '100%'};
+  width: ${(props) => props.width || '100%'};
   display: flex;
   align-items: center;
-  background-color: #F0F2F5;
-  border-radius: 7px;
+  background-color: #f0f2f5;
+  border-radius: ${(props) => props.borderradious || '7px'};
 
   .inputIcon {
     width: 18px;
     height: 18px;
-    margin: 13px;
+    margin: 13px 8px 13px 13px;
   }
 `;
 
