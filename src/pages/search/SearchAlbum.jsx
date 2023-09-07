@@ -6,13 +6,9 @@ function AlbumResults({ items, navigate }) {
     <ResultContainer>
       <AlbumContainer>
         {items.map((item) => {
+          console.log(item)
           const startDate = item.startDate.slice(0, 10).replace(/-/g, '.');
           const endDate = item.endDate.slice(0, 10).replace(/-/g, '.');
-          let placesArray = [];
-
-          if (item.place) {
-            placesArray = JSON.parse(item.place);
-          }
 
           return (
             <AlbumWrapper key={item.groupId}>
@@ -24,7 +20,11 @@ function AlbumResults({ items, navigate }) {
                     <Date>
                       {startDate} - {endDate}
                     </Date>
-                    <Place> {placesArray.join(', ')} </Place>
+                    <Place>
+                      {item.participants
+                        .map((participant) => participant)
+                        .join(', ')}
+                    </Place>
                   </Text>
                 </TextContainer>
               </Content>
