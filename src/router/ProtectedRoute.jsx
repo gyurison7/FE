@@ -1,16 +1,28 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import secureLocalStorage from 'react-secure-storage';
+import api from '../api/index.jsx';
 
 function ProtectedRoute() {
   const navigate = useNavigate();
-  const userId = secureLocalStorage.getItem('userId');
 
   useEffect(() => {
-    if (!userId) navigate('/login');
-  }, [userId, navigate]);
+    const loginCheck = async () => {
+      try {
+        const response = await api.get('/auth/login', {
+          withCredentials: true,
+        });
+        if (!response.data.success) {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error(error);
+        navigate('/login');
+      }
+    };
+    loginCheck();
+  }, [navigate]);
 
-  return userId ? <Outlet /> : null;
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

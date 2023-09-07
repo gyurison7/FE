@@ -2,17 +2,23 @@ import React from 'react';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
-const MyPageProfileModal = ({ setOpenModal, imageUploadInput, deleteProfileImage }) => {
+const MyPageProfileModal = ({
+  setProfileModal,
+  imageUploadInput,
+  deleteProfileImage,
+}) => {
   return (
     <ModalWrapper>
-      <ModalBackground onClick={() => setOpenModal(false)}></ModalBackground>
+      <ModalBackground onClick={() => setProfileModal(false)}></ModalBackground>
       <ModalBody>
         <ImageButtonContainer>
-          <button onClick={() => imageUploadInput.current.click()}>앨범에서 사진 선택</button>
+          <button onClick={() => imageUploadInput.current.click()}>
+            앨범에서 사진 선택
+          </button>
           <button onClick={deleteProfileImage}>프로필 사진 삭제</button>
         </ImageButtonContainer>
         <CancelButtonContainer>
-          <button onClick={() => setOpenModal(false)}>취소하기</button>
+          <button onClick={() => setProfileModal(false)}>취소하기</button>
         </CancelButtonContainer>
       </ModalBody>
     </ModalWrapper>
@@ -38,7 +44,7 @@ const ModalBackground = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
 `;
 
@@ -60,11 +66,11 @@ const ModalBody = styled.div`
 `;
 
 const ImageButtonContainer = styled.div`
-  margin-bottom: 1vh;
-
+  margin: 0 1vw 1vh 1vw;
   button {
     border-bottom: 1px solid #b2b3b2;
     font-weight: 500;
+    cursor: pointer;
 
     &:first-child {
       border-radius: 13px 13px 0 0;
@@ -77,14 +83,16 @@ const ImageButtonContainer = styled.div`
 `;
 
 const CancelButtonContainer = styled.div`
+  margin: 0 1vw;
   button {
     border-radius: 13px;
     font-weight: 700;
+    cursor: pointer;
   }
 `;
 
 MyPageProfileModal.propTypes = {
-    setOpenModal: PropTypes.func.isRequired,
-    imageUploadInput: PropTypes.object.isRequired,
-    deleteProfileImage: PropTypes.func.isRequired,
-  };
+  setProfileModal: PropTypes.func.isRequired,
+  imageUploadInput: PropTypes.object.isRequired,
+  deleteProfileImage: PropTypes.func.isRequired,
+};

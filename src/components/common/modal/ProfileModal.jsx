@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useRecoilValue } from 'recoil';
 import { selectedProfileState } from '../../../recoil/Atom';
 import { styled } from 'styled-components';
+import IconComponents from '../iconComponent/IconComponents.jsx';
 
 export default function ProfileModal({ isOpen, closeModal }) {
   const postData = useRecoilValue(selectedProfileState);
@@ -12,22 +13,29 @@ export default function ProfileModal({ isOpen, closeModal }) {
   }
 
   return (
-    <>
-      <StyledModal
-        open={isOpen}
-        footer={null}
-        onCancel={closeModal}
-        closable={false}
-        wrapClassName={'con'}
-        maskStyle={{ background: 'black', opacity: '0.9' }}
-      >
-        <Wrap>
-          <ProfileImage src={postData.profileUrl} alt='' />
-          <ProfileName>{postData.nickname}</ProfileName>
-          <CloseButton onClick={closeModal}>x</CloseButton>
-        </Wrap>
-      </StyledModal>
-    </>
+    <StyledModal
+      open={isOpen}
+      footer={null}
+      onCancel={closeModal}
+      closable={false}
+      wrapClassName={'con'}
+      maskStyle={{ background: 'black', opacity: '0.6' }}
+    >
+      <Wrap>
+        <ProfileImage src={postData.profileUrl} alt='ProfileImage' />
+        <ProfileName>{postData.nickname}</ProfileName>
+        <IconWrap>
+          <IconComponents
+            iconType='OxButton'
+            stroke='white'
+            width='29px'
+            height='29px'
+            viewBox='0 0 29 29'
+            onClick={closeModal}
+          />
+        </IconWrap>
+      </Wrap>
+    </StyledModal>
   );
 }
 ProfileModal.propTypes = {
@@ -39,6 +47,7 @@ const StyledModal = styled(Modal)`
     box-shadow: none;
     background-color: transparent;
     padding: 0;
+    margin-top: 50px;
   }
 `;
 const Wrap = styled.div`
@@ -60,20 +69,9 @@ const ProfileImage = styled.img`
   height: 300px;
   border-radius: 50%;
 `;
-const CloseButton = styled.button`
+const IconWrap = styled.div`
   position: absolute;
-  bottom: 60px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  padding: 15px;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  color: white;
-  border: 1px solid white;
-  border-radius: 50%;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;

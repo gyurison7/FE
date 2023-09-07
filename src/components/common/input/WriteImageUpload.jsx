@@ -2,14 +2,27 @@ import React from 'react';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
-function WriteImageUpload({ height, bgcolor, children, onImageChange ,color}) {
+function WriteImageUpload({
+  height,
+  bgcolor,
+  children,
+  onImageChange,
+  color,
+  borderradius,
+}) {
   return (
     <>
-      <ThumbnailLabel htmlFor='imageUpload' height={height} bgcolor={bgcolor} color={color}>
+      <ThumbnailLabel
+        htmlFor='imageUpload'
+        height={height}
+        bgcolor={bgcolor}
+        color={color}
+        borderradius={borderradius}
+      >
         <img
           src={`${process.env.PUBLIC_URL}/assets/image/photo.png`}
           alt='thumbnail'
-        /> 
+        />
         <p>{children}</p>
       </ThumbnailLabel>
       <ThumbNail id='imageUpload' onChange={onImageChange} />
@@ -29,7 +42,7 @@ const ThumbnailLabel = styled.label`
   align-items: center;
   border: none;
   background-color: ${(prop) => prop.bgcolor};
-  border-radius: 15px;
+  border-radius: ${(prop) => (prop.borderradius ? prop.borderradius : '15px')};
   padding: 50px;
 
   img {
@@ -38,7 +51,7 @@ const ThumbnailLabel = styled.label`
   }
 
   p {
-    color: ${(prop) => prop.color? prop.color : "white"};
+    color: ${(prop) => (prop.color ? prop.color : 'white')};
     font-size: 16px;
     font-weight: 600;
   }
@@ -65,7 +78,8 @@ WriteImageUpload.propTypes = {
     PropTypes.string,
   ]),
   onImageChange: PropTypes.func,
-  color: PropTypes.string
+  color: PropTypes.string,
+  borderradius: PropTypes.string,
 };
 
 export default WriteImageUpload;

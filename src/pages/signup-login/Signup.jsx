@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { signup, idDuplicateCheck } from '../../api/auth';
 import SignupModal from '../../components/common/modal/SignupModal.jsx';
@@ -9,29 +9,42 @@ import {
   onChangePasswordHandler,
   passwordCheckHandler,
 } from '../../utils/passwordValidation';
-import secureLocalStorage from 'react-secure-storage';
+import { useToast } from '../../hooks/useToast.jsx';
+import { debounce } from '../../hooks/debounce.js';
 
 function Signup() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-
   const [openModal, setOpenModal] = useState(false);
-
   const [isIdCheck, setIsIdCheck] = useState(false); // 중복 검사를 했는지 안했는지
   const [isIdAvailable, setIsIdAvailable] = useState(false); // 아이디 사용 가능한지 아닌지
+
+  const { showToast } = useToast();
 
   const onChangeIdHandler = (e) => {
     const idValue = e.target.value;
     setId(idValue);
-    idCheckHandler(idValue);
   };
 
   const passwordChangeUtil = (e) => onChangePasswordHandler(e, password, confirm, setPassword, setConfirm, setPasswordError, setConfirmError);
+
+  useEffect (() => {
+    if(passwordError === '' && confirmError === '' && id) {
+      //idCheckHandler(id);
+      idCheckHandlerDebounced(id);
+    }
+  }, [passwordError, confirmError, id]);
+
+  const idCheckHandlerDebounced = useCallback(
+    debounce(async (id) => {
+      await idCheckHandler(id);
+    }, 500),
+    []
+  );
 
   const idCheckHandler = async (id) => {
     const idRegex = /^[a-zA-Z\d]{5,20}$/;
@@ -57,7 +70,7 @@ function Signup() {
         return false;
       }
     } catch (error) {
-      alert('서버 오류입니다. 잠시 후 다시 시도해주세요.');
+      showToast('서버 오류입니다. 잠시 후 다시 시도해주세요.', 5000);
       console.error(error);
       return false;
     }
@@ -70,7 +83,7 @@ function Signup() {
     if (idCheckresult) setIdError('');
     else return;
     if (!isIdCheck || !isIdAvailable) {
-      alert('아이디 중복 검사를 해주세요.');
+      showToast('아이디 중복 검사를 해주세요.');
       return;
     }
 
@@ -79,14 +92,12 @@ function Signup() {
     try {
       const responseData = await signup(id, password, confirm);
       if (responseData) {
-        secureLocalStorage.setItem('loginId', id);
-        secureLocalStorage.setItem('userId', responseData.userId);
+        localStorage.setItem('loginId', id);
+        localStorage.setItem('userId', responseData.userId);
         setOpenModal(true);
-      } else {
-        alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
-      alert('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      showToast('회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.', 5000);
       console.error(error);
     }
   };
@@ -215,9 +226,9 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: -27vh;
+  bottom: -23vh;
   @media (max-height: 750px) {
-    bottom: -17vh;
+    bottom: -13vh;
   }
 
   button {

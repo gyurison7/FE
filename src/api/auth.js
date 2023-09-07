@@ -39,13 +39,18 @@ export const idDuplicateCheck = async (loginId) => {
   return response.data.idCheck;
 };
 
-export const uploadUserProfile = async (formData) => {
-  const response = await api.put('/auth/signup/update', formData, {
-    withCredentials: true,
-    headers: {
-      'Content-Type': 'multipart/form-data',
+export const uploadUserProfile = async (loginId, nickname, profileUrl) => {
+  const response = await api.put(
+    '/auth/signup/update',
+    {
+      loginId,
+      nickname,
+      ...profileUrl,
     },
-  });
+    {
+      withCredentials: true,
+    }
+  );
 
   return response.data;
 };
@@ -58,12 +63,9 @@ export const getUserProfile = async () => {
   return response.data.userInfoData;
 };
 
-export const updateMyPageProfileImage = async (formData) => {
-  const response = await api.put('/auth/me/profile', formData, {
+export const updateMyPageProfileImage = async (config) => {
+  const response = await api.put('/auth/me/profile', config, {
     withCredentials: true,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
   });
 
   return response.data.profileUrl;
@@ -125,9 +127,9 @@ export const logout = async () => {
   return response.data;
 };
 
-export const memberOut = async (password) => {
+export const memberOut = async (deleteCheck) => {
   const response = await api.delete('/auth/me/delete', {
-    data: { password },
+    data: { deleteCheck },
     withCredentials: true,
   });
 
