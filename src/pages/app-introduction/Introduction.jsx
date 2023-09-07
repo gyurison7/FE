@@ -178,14 +178,13 @@ const Slider = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  margin-bottom: -2vh;
-  gap: 10vh;
+  gap: 12vh;
 
   img {
     width: 80%;
     &.last {
-      width: 267px;
-      height: 261px;
+      width: 240.923px;
+      height: 234.231px;
       margin-top: -19vh;
     }
   }
@@ -194,7 +193,7 @@ const Slider = styled.div`
 const H1 = styled.h1`
   margin-top: 15vh;
   text-align: center;
-  font-size: 30px;
+  font-size: 28px;
   color: #fff;
   font-weight: 700;
 `;
@@ -205,7 +204,7 @@ const StartButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  bottom: 25vh;
+  bottom: 22vh;
 
   button {
     width: 100%;

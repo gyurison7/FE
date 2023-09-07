@@ -92,12 +92,12 @@ const UserProfile = () => {
           <ImageButton onClick={() => imageUploadInput.current.click()}>
             <img
               className='profileImage'
-              src={profileImage || `${process.env.PUBLIC_URL}assets/image/user.png`}
+              src={profileImage || `${process.env.PUBLIC_URL}/assets/image/user.png`}
               alt='프로필 사진'
             />
             <img
               className='cameraIcon'
-              src={`${process.env.PUBLIC_URL}assets/svgs/camera.svg`}
+              src={`${process.env.PUBLIC_URL}/assets/svgs/camera.svg`}
               alt='프로필 사진'
             />
           </ImageButton>
@@ -171,8 +171,8 @@ const ImageButton = styled.button`
 
   .cameraIcon {
     position: absolute;
-    top: 75%;
-    left: 75%;
+    top: 76%;
+    left: 73%;
   }
 `;
 

@@ -193,7 +193,7 @@ const MyPage = () => {
             />
             <img
               className='cameraIcon'
-              src={`${process.env.PUBLIC_URL}assets/svgs/camera.svg`}
+              src={`${process.env.PUBLIC_URL}/assets/svgs/camera.svg`}
               alt='프로필 사진'
             />
           </ProfileImageButton>
@@ -216,13 +216,13 @@ const MyPage = () => {
             >
               {isEditing ? (
                 <img
-                  src={`${process.env.PUBLIC_URL}assets/svgs/nickname_check.svg`}
+                  src={`${process.env.PUBLIC_URL}/assets/svgs/nickname_check.svg`}
                   alt='닉네임 바꾸기'
                 />
               ) : (
                 <img
                   className='pencilButton'
-                  src={`${process.env.PUBLIC_URL}assets/svgs/pencil.svg`}
+                  src={`${process.env.PUBLIC_URL}/assets/svgs/pencil.svg`}
                   alt='닉네임 바꾸기'
                 />
               )}
@@ -319,8 +319,8 @@ const ProfileImageButton = styled.button`
 
   .cameraIcon {
     position: absolute;
-    top: 81%;
-    left: 75%;
+    top: 80%;
+    left: 77%;
   }
 `;
 

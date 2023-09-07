@@ -43,7 +43,7 @@ const Wrap = styled.div`
   align-items: center;
   height: 60px;
   background: #fff;
-  box-shadow: 0px -4px 23px 0px rgba(129, 129, 129, 0.25);
+  box-shadow: 0px -4px 30px 0px rgba(129, 129, 129, 0.10);
   margin-top: auto;
 `;
 
