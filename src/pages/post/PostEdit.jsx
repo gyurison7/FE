@@ -8,6 +8,7 @@ import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx
 import Input from '../../components/common/input/Input.jsx';
 import Button from '../../components/common/button/Button.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { uploadImage } from '../../api/imageUpload.js';
 
 export default function PostEdit() {
   const navigate = useNavigate();
@@ -29,34 +30,26 @@ export default function PostEdit() {
       });
   }, [groupId, memoryId]);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    // 추가: 이미지 업로드 API 요청 보내기
-    const formData = new FormData();
-    formData.append('title', editedTitle);
-    if (editedImage) {
-      formData.append('imageUrl', editedImage);
-    }
 
     setLoading(true);
 
-    api
-      .put(`/group/${groupId}/memory/${memoryId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    try {
+      const url = await uploadImage(editedImage);
+      const config = {
+        imageUrl: url,
+        title: editedTitle,
+      };
+      await api.put(`/group/${groupId}/memory/${memoryId}`, config, {
         withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-        navigate(`/postmain/${groupId}`);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('수정 실패:', error);
-        setLoading(false);
       });
+      navigate(`/postmain/${groupId}`);
+    } catch (error) {
+      console.error('수정 실패:', error);
+    } finally {
+      setLoading(false); // 로딩 상태 업데이트
+    }
   };
 
   // 추가: 이미지 변경 핸들러

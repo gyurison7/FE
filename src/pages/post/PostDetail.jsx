@@ -18,11 +18,9 @@ export default function PostDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api
-      .get(`/group/${groupId}/memory/${postId}`, { withCredentials: true })
-      .then((res) => {
-        setDetail(res.data);
-      });
+    api.get(`/group/${groupId}/memory/${postId}`).then((res) => {
+      setDetail(res.data);
+    });
   }, []);
   const commentSubmit = async (e) => {
     if (e.key === 'Enter') {
@@ -37,23 +35,16 @@ export default function PostDetail() {
       const newComment = {
         comment: commentInput,
       };
-      await api.post(`/group/${groupId}/memory/${postId}/comment`, newComment, {
-        withCredentials: true,
+      await api.post(`/group/${groupId}/memory/${postId}/comment`, newComment);
+      api.get(`/group/${groupId}/memory/${postId}`).then((res) => {
+        setDetail(res.data);
+        setCommentInput('');
       });
-      api
-        .get(`/group/${groupId}/memory/${postId}`, { withCredentials: true })
-        .then((res) => {
-          setDetail(res.data);
-          setCommentInput('');
-        });
     }
   };
   const commentDeleta = async (commentId) => {
     await api.delete(
-      `/group/${groupId}/memory/${detail.memory.memoryId}/comment/${commentId}`,
-      {
-        withCredentials: true,
-      }
+      `/group/${groupId}/memory/${detail.memory.memoryId}/comment/${commentId}`
     );
     const updatedComments = detail.comments.filter(
       (comment) => comment.commentId !== commentId
@@ -67,10 +58,7 @@ export default function PostDetail() {
   const commentEdit = async (commentId, editedComment) => {
     await api.put(
       `/group/${groupId}/memory/${detail.memory.memoryId}/comment/${commentId}`,
-      { comment: editedComment },
-      {
-        withCredentials: true,
-      }
+      { comment: editedComment }
     );
 
     // 수정 완료 후 detail 상태 업데이트하여 화면 다시 그리기

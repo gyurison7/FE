@@ -5,6 +5,7 @@ import CommentDropDown from '../../commentDropdown/CommentDropDown.jsx';
 import days from 'dayjs';
 import 'dayjs/locale/ko';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
+import IconComponents from '../iconComponent/IconComponents.jsx';
 
 export default function Comment(prop) {
   const { comment, createdAt, commentDeleta, commentId, commentEdit } = prop;
@@ -37,13 +38,24 @@ export default function Comment(prop) {
           <NickName>{prop['User.nickname']}</NickName>
           <CreatedAt>{commentTime}</CreatedAt>
           {isEditing ? (
-            <EditInput
-              type='text'
-              value={editedComment}
-              onChange={(e) => setEditedComment(e.target.value)}
-              onKeyPress={handleKeyPress}
-              onKeyDown={handleKeyPress}
-            />
+            <EditInputWrap>
+              <EditInput
+                type='text'
+                value={editedComment}
+                onChange={(e) => setEditedComment(e.target.value)}
+                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
+              />
+              <BTN onClick={handleCommentEdit}>
+                <IconComponents
+                  iconType='myPageCheck'
+                  stroke='#4C4C4C'
+                  width='17'
+                  height='13'
+                  viewBox='0 0 17 13'
+                />
+              </BTN>
+            </EditInputWrap>
           ) : (
             <UserComment>{comment} </UserComment>
           )}
@@ -109,4 +121,12 @@ const EditInput = styled.input`
   font-weight: 500;
   line-height: normal;
   outline: none;
+`;
+const EditInputWrap = styled.div``;
+const BTN = styled.button`
+  margin-left: 8px;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
 `;
