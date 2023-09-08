@@ -1,3 +1,4 @@
+import { uploadImage } from './imageUpload.js';
 import api from './index.jsx';
 
 const getGroupData = async () => {
@@ -19,23 +20,31 @@ const getGroupData = async () => {
 };
 
 const createGroup = async (data) => {
-  const response = await api.post('/group', data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+  const imageUrl = await uploadImage(data.chosenFile);
+
+  const dataToPost = {
+    ...data,
+    thumbnailUrl: imageUrl,
+  };
+  delete dataToPost.chosenFile;
+  const response = await api.post('/group', dataToPost, {
     withCredentials: true,
   });
-  return response.data;
-}
 
-const editGroup = async ({data, id}) => {
-  const response = await api.put(`/group/${id}`,data,{
-    headers:{
-      'Content-Type': 'multipart/form-data',
-    },
-    withCredentials:true,
+  return response.data;
+};
+
+const editGroup = async ({ data, id, chosenFile }) => {
+
+  if (chosenFile) {
+    data.thumbnailUrl = await uploadImage(chosenFile); 
+  }
+
+  const response = await api.put(`/group/${id}`, data, {
+    withCredentials: true,
   });
-  return response.data
-}
+
+  return response.data;
+};
 
 export { getGroupData, createGroup, editGroup };

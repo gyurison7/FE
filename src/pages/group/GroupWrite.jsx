@@ -98,7 +98,9 @@ function GroupWrite() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(createGroup, {
-    onMutate: () => {},
+    onMutate: () => {
+      console.log("Mutation started");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries('groupList');
       navigate('/groupmain');
@@ -136,27 +138,18 @@ function GroupWrite() {
 
     if (!validationPassed) return;
 
-    // let imageUrl;
-    // try {
-    //   imageUrl = await uploadImage(chosenFile);
-    // } catch (error) {
-    //   console.error('Error uploading image:', error);
-    //   return;
-    // }
+    const payload = {
+      chosenFile, 
+      groupName: groupName,
+      place: JSON.stringify(places),
+      participant: JSON.stringify(
+        selectedFriends.map((friend) => friend.userId.toString())
+      ),
+      startDate: startDate,
+      endDate: endDate,
+    };
 
-
-
-    const data = new FormData();
-    data.append('thumbnailUrl', chosenFile);
-    data.append('groupName', groupName);
-    data.append('place', JSON.stringify(places));
-    data.append(
-      'participant',
-      JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
-    );
-    data.append('startDate', startDate);
-    data.append('endDate', endDate);
-    mutation.mutate(data);
+    mutation.mutate(payload);
   };
 
   //이미지 처리하는 로직
