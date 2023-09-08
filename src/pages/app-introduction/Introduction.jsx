@@ -21,11 +21,11 @@ function Introduction() {
     introduction5,
   ];
   const texts = [
-    '친구들끼리<br/>추억 앨범을 만들어보세요',
-    '함께 공유하고 싶은<br/>순간들을 올려보세요',
-    '친구들과의 소통도<br/>할 수 있어요',
-    '날짜 검색으로<br/>이전 추억들을 돌아봐요',
-    '지금 바로<br/>메모리밍글을 시작해보세요!',
+    '친구들끼리\n추억 앨범을 만들어보세요',
+    '함께 공유하고 싶은\n순간들을 올려보세요',
+    '친구들과의 소통도\n할 수 있어요',
+    '날짜 검색으로\n이전 추억들을 돌아봐요',
+    '지금 바로\n메모리밍글을 시작해보세요!',
   ];
 
   useEffect(() => {
@@ -72,20 +72,11 @@ function Introduction() {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
-  const renderText = (text) => {
-    return text.split('<br/>').map((part, index) => (
-      <React.Fragment key={index}>
-        {part}
-        {index !== text.split('<br/>').length - 1 && <br />}
-      </React.Fragment>
-    ));
-  };
-
   return (
     <Wrapper>
       <Dots>
         {images.map((_, index) => (
-          <Dot key={index} active={currentIndex === index} />
+          <Dot key={index} className={currentIndex === index ? 'active' : ''} />
         ))}
       </Dots>
       {currentIndex !== images.length - 1 && (
@@ -100,7 +91,7 @@ function Introduction() {
         onTouchEnd={handleTouchEnd}
         onMouseUp={handleTouchEnd}
       >
-        <H1>{renderText(texts[currentIndex])}</H1>
+        <H1>{texts[currentIndex]}</H1>
         <img
           src={images[currentIndex]}
           alt={`slide ${currentIndex}`}
@@ -150,8 +141,12 @@ const Dot = styled.span`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? '#FFF' : '#A5B3FF')};
+  background-color: #A5B3FF;
   transition: background-color 0.3s;
+
+  &.active {
+    background-color: #FFF;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -196,6 +191,7 @@ const H1 = styled.h1`
   font-size: 28px;
   color: #fff;
   font-weight: 700;
+  white-space: pre-line;
 `;
 
 const StartButtonContainer = styled.div`
