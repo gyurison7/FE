@@ -14,14 +14,14 @@ const CommonModal = ({
   children,
   height,
   padding,
-  firstGap,
-  secondGap,
+  firstgap,
+  secondgap,
 }) => {
   return (
     <ModalWrapper>
       <ModalBackground></ModalBackground>
       <ModalBody height={height} padding={padding}>
-        <TitleContainer firstGap={firstGap} secondGap={secondGap}>
+        <TitleContainer firstgap={firstgap} secondgap={secondgap}>
           <img
             src={`${process.env.PUBLIC_URL}/assets/svgs/${img || 'delete'}.svg`}
             alt={title}
@@ -103,14 +103,14 @@ const TitleContainer = styled.div`
   align-items: center;
   flex-direction: column;
   text-align: center;
-  gap: ${(props) => (props.firstGap || props.secondGap ? '' : '16px')};
+  gap: ${(props) => (props.firstgap || props.secondgap ? '' : '16px')};
   color: #4c4c4c;
   > :nth-child(1) {
-    margin-bottom: ${(props) => props.firstGap || ''};
+    margin-bottom: ${(props) => props.firstgap || ''};
   }
 
   > :nth-child(2) {
-    margin-bottom: ${(props) => props.secondGap || ''};
+    margin-bottom: ${(props) => props.secondgap || ''};
   }
   h2 {
     font-size: 24px;
@@ -146,6 +146,6 @@ CommonModal.propTypes = {
   children: PropTypes.node,
   height: PropTypes.string,
   padding: PropTypes.string,
-  firstGap: PropTypes.string,
-  secondGap: PropTypes.string,
+  firstgap: PropTypes.string,
+  secondgap: PropTypes.string,
 };

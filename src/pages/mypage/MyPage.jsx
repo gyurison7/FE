@@ -169,7 +169,7 @@ const MyPage = () => {
       }
     } catch (error) {
       showToast('회원 탈퇴에 실패했습니다. 확인 후 다시 입력해주세요.', 5000);
-      console.log(error);
+      console.error(error);
     }
   };
 
