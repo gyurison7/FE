@@ -40,6 +40,7 @@ import DatePicker from '../../components/common/modal/DatePicker.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 import { debounce } from '../../hooks/debounce.js';
 import { fetchNickname } from '../../api/searchApi.js';
+// import { uploadImage } from '../../api/imageUpload.js';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -97,7 +98,9 @@ function GroupWrite() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(createGroup, {
-    onMutate: () => {},
+    onMutate: () => {
+      console.log("Mutation started");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries('groupList');
       navigate('/groupmain');
@@ -135,17 +138,18 @@ function GroupWrite() {
 
     if (!validationPassed) return;
 
-    const data = new FormData();
-    data.append('thumbnailUrl', chosenFile);
-    data.append('groupName', groupName);
-    data.append('place', JSON.stringify(places));
-    data.append(
-      'participant',
-      JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
-    );
-    data.append('startDate', startDate);
-    data.append('endDate', endDate);
-    mutation.mutate(data);
+    const payload = {
+      chosenFile, 
+      groupName: groupName,
+      place: JSON.stringify(places),
+      participant: JSON.stringify(
+        selectedFriends.map((friend) => friend.userId.toString())
+      ),
+      startDate: startDate,
+      endDate: endDate,
+    };
+
+    mutation.mutate(payload);
   };
 
   //이미지 처리하는 로직
@@ -347,9 +351,7 @@ function GroupWrite() {
                 src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
                 alt='left'
               />
-              <FriendSearchInput
-              placeholder='추억을 나눈 친구를 검색해주세요'
-              />
+              <FriendSearchInput placeholder='추억을 나눈 친구를 검색해주세요' />
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
