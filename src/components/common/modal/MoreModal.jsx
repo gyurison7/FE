@@ -42,7 +42,6 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const leaveGroupHandler = async (id) => {
     try {
       const response = await api.delete(`/group/${id}/groupout`, {
-        withCredentials: true,
       });
 
       if (response.data.success === false) {
