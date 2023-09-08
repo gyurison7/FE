@@ -3,7 +3,7 @@ import api from './index.jsx';
 
 const getGroupData = async () => {
   try {
-    const response = await api.get('/group', { withCredentials: true });
+    const response = await api.get('/group');
     const groupData = response.data.findMyGroupData || [];
     const userId = response.data.userId;
 
@@ -27,22 +27,17 @@ const createGroup = async (data) => {
     thumbnailUrl: imageUrl,
   };
   delete dataToPost.chosenFile;
-  const response = await api.post('/group', dataToPost, {
-    withCredentials: true,
-  });
+  const response = await api.post('/group', dataToPost, {});
 
   return response.data;
 };
 
 const editGroup = async ({ data, id, chosenFile }) => {
-
   if (chosenFile) {
-    data.thumbnailUrl = await uploadImage(chosenFile); 
+    data.thumbnailUrl = await uploadImage(chosenFile);
   }
 
-  const response = await api.put(`/group/${id}`, data, {
-    withCredentials: true,
-  });
+  const response = await api.put(`/group/${id}`, data, {});
 
   return response.data;
 };

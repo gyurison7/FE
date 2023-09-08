@@ -2,9 +2,7 @@ import api from './index.jsx';
 
 const fetchGroupByAlbum = async (searchGroup) => {
   try {
-    const response = await api.get(`/group/search/groupName/${searchGroup}`, {
-      withCredentials: true,
-    });
+    const response = await api.get(`/group/search/groupName/${searchGroup}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -15,9 +13,7 @@ const fetchGroupByAlbum = async (searchGroup) => {
 const fetchGroupByPlace = async (place) => {
   console.log(`Fetching data for place: ${place}`);
   try {
-    const response = await api.get(`/group/search/place/${place}`, {
-      withCredentials: true,
-    });
+    const response = await api.get(`/group/search/place/${place}`);
     console.log(`Success fetching data for place: ${place}`, response.data);
     return response.data;
   } catch (error) {
@@ -28,9 +24,7 @@ const fetchGroupByPlace = async (place) => {
 
 const fetchGroupByDate = async (searchDate) => {
   try {
-    const response = await api.get(`/group/search/date/${searchDate}`, {
-      withCredentials: true,
-    });
+    const response = await api.get(`/group/search/date/${searchDate}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -40,10 +34,8 @@ const fetchGroupByDate = async (searchDate) => {
 
 const fetchNickname = async (nickname) => {
   try {
-    const response = await api.get(`/nickname/${nickname}`, {
-      withCredentials: true,
-    });
-    console.log(response)
+    const response = await api.get(`/nickname/${nickname}`);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
