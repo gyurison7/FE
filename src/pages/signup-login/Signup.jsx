@@ -78,7 +78,6 @@ function Signup() {
 
   const signupHandler = async (e) => {
     e.preventDefault();
-    //setOpenModal(true); // TODO : 테스트 완료 후 삭제하기
     const idCheckresult = await idCheckHandler(id);
     if (idCheckresult) setIdError('');
     else return;
