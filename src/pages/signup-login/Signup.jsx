@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { signup, idDuplicateCheck } from '../../api/auth';
 import SignupModal from '../../components/common/modal/SignupModal.jsx';
@@ -10,6 +10,7 @@ import {
   passwordCheckHandler,
 } from '../../utils/passwordValidation';
 import { useToast } from '../../hooks/useToast.jsx';
+import { debounce } from '../../hooks/debounce.js';
 
 function Signup() {
   const [id, setId] = useState('');
@@ -33,9 +34,17 @@ function Signup() {
 
   useEffect (() => {
     if(passwordError === '' && confirmError === '' && id) {
-      idCheckHandler(id);
+      //idCheckHandler(id);
+      idCheckHandlerDebounced(id);
     }
-  }, [passwordError, confirmError, id])
+  }, [passwordError, confirmError, id]);
+
+  const idCheckHandlerDebounced = useCallback(
+    debounce(async (id) => {
+      await idCheckHandler(id);
+    }, 500),
+    []
+  );
 
   const idCheckHandler = async (id) => {
     const idRegex = /^[a-zA-Z\d]{5,20}$/;
@@ -69,7 +78,6 @@ function Signup() {
 
   const signupHandler = async (e) => {
     e.preventDefault();
-    //setOpenModal(true); // TODO : 테스트 완료 후 삭제하기
     const idCheckresult = await idCheckHandler(id);
     if (idCheckresult) setIdError('');
     else return;

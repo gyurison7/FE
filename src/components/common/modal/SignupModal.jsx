@@ -26,8 +26,8 @@ const SignupModal = () => {
       }
       height={'436px'}
       padding={'69px 21px 32px'}
-      firstGap={'28px'}
-      secondGap={'38px'}
+      firstgap={'28px'}
+      secondgap={'38px'}
     ></CommonModal>
   );
 };
