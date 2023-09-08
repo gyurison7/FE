@@ -6,15 +6,18 @@ import { styled } from 'styled-components';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import Button from '../../components/common/button/Button.jsx';
 import Input from '../../components/common/input/Input.jsx';
-import { postWrite } from '../../api/postMainApi.js';
+import api from '../../api/index.jsx';
 import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { uploadImage } from '../../api/imageUpload.js';
 
 function PostWrite() {
   const [isLoading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [file, setFile] = useState(null);
+  const [uploadTime, setUploadTime] = useState(0);
   const { id } = useParams();
+  console.log(uploadTime);
 
   const [titleError, setTitleError] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
@@ -23,6 +26,7 @@ function PostWrite() {
 
   // 이미지 업로드 시간을 측정하기 위한 useRef 사용
   const uploadStartTimeRef = useRef(null);
+  const uploadEndTimeRef = useRef(null);
 
   const changeHandler = (e) => {
     const selectedFile = e.target.files[0];
@@ -42,7 +46,6 @@ function PostWrite() {
       reader.readAsDataURL(selectedFile);
     }
   };
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -58,24 +61,37 @@ function PostWrite() {
       validationPassed = false;
     }
     if (!validationPassed) return;
+
     setLoading(true);
-    const formData = new FormData();
-    formData.append('imageUrl', file);
-    formData.append('title', title);
 
     try {
-      // 이미지 업로드 완료 시간 기록
-      const uploadEndTime = performance.now();
-      const uploadTime = uploadEndTime - (uploadStartTimeRef.current || 0);
-      console.log('이미지 업로드 시간: ' + uploadTime + 'ms');
-      await postWrite(id, formData, navigate);
+      const url = await uploadImage(file);
+
+      const config = {
+        imageUrl: url,
+        title: title,
+      };
+
+      uploadEndTimeRef.current = performance.now(); // 업로드 완료 시간 기록
+
+      const uploadStartTime = uploadStartTimeRef.current || 0;
+      const uploadEndTime = uploadEndTimeRef.current || 0;
+      const uploadTime = uploadEndTime - uploadStartTime;
+
+      console.log('이미지 업로드 시간:', uploadTime.toFixed(2) + 'ms'); // 업로드 시간 콘솔 출력
+
+      setUploadTime(uploadTime);
+
+      await api.post(`/group/${id}/memory`, config, {
+        withCredentials: true,
+      });
+      navigate(`/postmain/${id}`);
     } catch (error) {
-      // 오류 처리
+      setLoading(false); // 에러 발생 시에도 isLoading을 false로 설정합니다.
       console.error('Error:', error);
     }
-
-    setLoading(false);
   };
+
   return (
     <Layout>
       {isLoading && <LoadingSpinner />}

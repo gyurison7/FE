@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Footer from '../../layout/footer/Footer';
 import useStickyMode from '../../hooks/useStickyMode.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../api/index.jsx';
+// import api from '../../api/index.jsx';
 import Photo from '../../components/common/photo/Photo.jsx';
 import Profile from '../../components/common/profile/Profile.jsx';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
@@ -12,18 +12,22 @@ import { useRecoilState } from 'recoil';
 import { selectedProfileState, modalState } from '../../recoil/Atom';
 import ProfileModal from '../../components/common/modal/ProfileModal.jsx';
 import shareKakao from '../../utils/shareKakao';
+import { useGroupData } from '../../api/postMainApi.js';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 export default function PostMain() {
   const stkicky = useStickyMode(115);
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
-  const [postData, setPostData] = useRecoilState(selectedProfileState);
-  const storedUserId = localStorage.getItem('userId');
+  const [, setPostData] = useRecoilState(selectedProfileState);
 
   const { id } = useParams();
   const navigate = useNavigate();
   const kakaoShared = shareKakao();
+  const { data, isLoading, isError } = useGroupData(id);
+  const storedUserId = localStorage.getItem('userId');
   localStorage.setItem('groupName', data?.groupName);
+
   const handleProfileClick = (id) => {
     setPostData(id);
     setIsOpen(true);
@@ -31,13 +35,10 @@ export default function PostMain() {
   const closeModal = () => {
     setIsOpen(false);
   };
-  useEffect(() => {
-    api.get(`group/${id}`, { withCredentials: true }).then((res) => {
-      setData(res.data);
-      setPostData(res.data);
-    });
-    console.log('post', postData);
-  }, []);
+  console.log(data);
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <div>Error fetching data</div>;
+
   const processedPlace = data?.place
     ? JSON.parse(data.place)
         .map((item) => item.replace(/["]/g, ''))
