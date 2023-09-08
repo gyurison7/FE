@@ -50,7 +50,6 @@ function GroupWrite() {
   useEffect(() => {
     console.log(id);
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
-      console.log(res.data);
       setGroupName(res.data.groupName);
       const formattedStartDate = res.data.startDate.slice(0, 10);
       const formattedEndDate = res.data.endDate.slice(0, 10);
@@ -148,21 +147,24 @@ function GroupWrite() {
 
     if (!validationPassed) return;
 
-    const data = new FormData();
+    const payload = {};
+
     if (chosenFile) {
-      data.append('thumbnailUrl', chosenFile);
+      payload.thumbnailUrl = '';
     } else if (thumbnailUrl) {
-      data.append('thumbnailUrl', thumbnailUrl);
+      payload.thumbnailUrl = thumbnailUrl;
     }
-    data.append('groupName', groupName);
-    data.append('place', JSON.stringify(places));
-    data.append(
-      'participant',
-      JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
+
+    payload.groupName = groupName;
+    payload.place = JSON.stringify(places);
+    payload.participant = JSON.stringify(
+      selectedFriends.map((friend) => friend.userId.toString())
     );
-    data.append('startDate', startDate);
-    data.append('endDate', endDate);
-    mutation.mutate({ id, data });
+    payload.startDate = startDate;
+    payload.endDate = endDate;
+
+    mutation.mutate({ data: payload, id, chosenFile });
+
   };
 
   const placeEnterAdd = (e) => {
