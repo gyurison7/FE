@@ -4,11 +4,6 @@ import { NavLink } from 'react-router-dom';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Footer() {
-  // const showAlert = (e) => {
-  //   e.preventDefault();
-  //   alert('준비중입니다. 잠시만 기다려주세요!');
-  // }
-
   return (
     <Wrap>
       <div>
