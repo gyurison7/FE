@@ -1,21 +1,73 @@
-import React from 'react';
-import { styled } from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { css, styled } from 'styled-components';
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
+import api from '../../api/index.jsx';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko'; // 한국어 로케일 추가
+import relativeTime from 'dayjs/plugin/relativeTime'; // relativeTime 플러그인 추가
+
+dayjs.extend(relativeTime); // relativeTime 플러그인 활성화
+dayjs.locale('ko');
 
 const Notice = () => {
+  const [activeNav, setActiveNav] = useState('new');
+  const [noticeList, setNoticeList] = useState([]);
+  const navigate = useNavigate();
+
+  const noticeClickHandler = (name) => {
+    setActiveNav(name);
+  };
+
+  useEffect(() => {
+    const getNotification = async () => {
+      try {
+        const response = await api.get('/notification');
+        console.log(response.data.data);
+        setNoticeList(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getNotification();
+  }, []);
+
   return (
     <Wrapper>
       <Header title='알림' />
       <Navbar>
-        <button>새로운 알림</button>
-        <button>지난 알림</button>
+        <button
+          className={activeNav === 'new' ? 'active' : ''}
+          onClick={() => noticeClickHandler('new')}
+        >
+          새로운 알림
+        </button>
+        <button
+          className={activeNav === 'past' ? 'active' : ''}
+          onClick={() => noticeClickHandler('past')}
+        >
+          지난 알림
+        </button>
       </Navbar>
       <NoticeContainer>
-        <div>
-          <p>앨범 `찐친즈모임`에 초대되셨습니다.</p>
-          <p>날짜</p>
-        </div>
+        {noticeList
+          .slice()
+          .reverse()
+          .map((notice) => {
+            const relativeDate = dayjs(notice['Participants.createdAt']).fromNow();
+            return (
+              <NoticeItem key={notice['Participants.participantid']}>
+                <img src={notice.thumbnailUrl} alt='썸네일' />
+                <button onClick={() => navigate(`/postmain/${notice.groupId}`)}>
+                  <p className='message'>
+                    앨범 {notice.groupName}에 초대되셨습니다.
+                  </p>
+                  <p className='date'>{relativeDate}</p>
+                </button>
+              </NoticeItem>
+            );
+          })}
       </NoticeContainer>
       <Foot>
         <Footer />
@@ -25,6 +77,12 @@ const Notice = () => {
 };
 
 export default Notice;
+
+const buttonStyle = css`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,15 +101,49 @@ const Navbar = styled.div`
   margin: 30px 0 0 24px;
 
   button {
-    background-color: transparent;
-    border: none;
+    ${buttonStyle};
+    color: #c2c2c2;
     font-size: 16px;
     font-weight: 600;
+  }
+
+  .active {
+    color: #5873fe;
+    padding: 6px 4px;
+    border-bottom: 1px solid #5873fe;
   }
 `;
 
 const NoticeContainer = styled.div`
   margin: 18px 0 0 24px;
+`;
+
+const NoticeItem = styled.div`
+  display: flex;
+  gap: 9px;
+  margin-bottom: 1vh;
+
+  img {
+    width: 49px;
+    height: 49px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  button {
+    ${buttonStyle};
+    font-size: 14px;
+    text-align: left;
+
+    .message {
+      color: #4c4c4c;
+      font-weight: 600;
+    }
+
+    .date {
+      color: #a6a6a6;
+    }
+  }
 `;
 
 const Foot = styled.div`

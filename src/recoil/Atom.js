@@ -23,3 +23,8 @@ export const groupDataState = atom({
   key: 'groupDataState',
   default: [], 
 });
+
+export const isConnectSocketState = atom({
+  key: 'isConnectSocketState',
+  default: false,
+});
