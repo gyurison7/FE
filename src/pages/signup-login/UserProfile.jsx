@@ -9,7 +9,8 @@ import {
   nicknameCheckHandler,
   onChangeNicknameHandler,
 } from '../../utils/nicknameValidation';
-import secureLocalStorage from 'react-secure-storage';
+import { useToast } from '../../hooks/useToast.jsx';
+import { uploadImage } from '../../api/profileImageUpload';
 
 const UserProfile = () => {
   const [nickname, setNickname] = useState('');
@@ -19,6 +20,7 @@ const UserProfile = () => {
 
   const navigate = useNavigate();
   const imageUploadInput = useRef(null);
+  const { showToast } = useToast();
 
   const nicknameChangeUtil = (e) =>
     onChangeNicknameHandler(e, setNickname, setNicknameError);
@@ -38,38 +40,35 @@ const UserProfile = () => {
   const userProfileUploadHandler = async (e) => {
     e.preventDefault();
 
-    const loginId = secureLocalStorage.getItem('loginId');
+    const loginId = localStorage.getItem('loginId');
     if (loginId === null || loginId === '') {
-      alert('회원 정보가 존재하지 않습니다.');
+      showToast('회원 정보가 존재하지 않습니다.');
       navigate('/login');
       return;
     }
 
     if (profileImage === '') {
-      alert('프로필 사진을 등록해주세요!');
+      showToast('프로필 사진을 등록해주세요!');
       return;
     }
 
     if (!nicknameCheckHandler(nickname, setNicknameError)) return;
 
-    const formData = new FormData();
-    formData.append('loginId', loginId);
-    formData.append('nickname', nickname);
-    if (chosenFile) {
-      formData.append('profileUrl', chosenFile);
-    }
-
-    try {
-      const responseData = await uploadUserProfile(formData);
-      if (responseData) {
-        navigate('/groupmain');
-      } else {
-        alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    uploadImage(chosenFile).then(async (url) => {
+      const config = {
+        profileUrl: url,
       }
-    } catch (error) {
-      alert('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.');
-      console.error(error);
-    }
+      try {
+        const responseData = await uploadUserProfile(loginId, nickname, config);
+        if (responseData) {
+          showToast('프로필 등록이 완료되었습니다!');
+          navigate('/groupmain');
+        }
+      } catch (error) {
+        showToast('프로필 등록에 실패했습니다. 잠시 후 다시 시도해주세요.', 5000);
+        console.error(error);
+      }
+    });
   };
 
   return (
@@ -81,25 +80,27 @@ const UserProfile = () => {
           <br />
           사진과 닉네임을 등록해주세요.
         </Text>
-        <input
-          type='file'
-          ref={imageUploadInput}
-          accept='image/*'
-          onChange={imageHandler}
-          style={{ display: 'none' }}
-        />
-        <ImageButton onClick={() => imageUploadInput.current.click()}>
-          <img
-            className='profileImage'
-            src={profileImage || `${process.env.PUBLIC_URL}assets/image/user.png`}
-            alt='프로필 사진'
+        <ProfileImageContainer>
+          <input
+            type='file'
+            ref={imageUploadInput}
+            accept='image/*'
+            onChange={imageHandler}
+            style={{ display: 'none' }}
           />
-          <img
-            className='cameraIcon'
-            src={`${process.env.PUBLIC_URL}assets/svgs/camera.svg`}
-            alt='프로필 사진'
-          />
-        </ImageButton>
+          <ImageButton onClick={() => imageUploadInput.current.click()}>
+            <img
+              className='profileImage'
+              src={profileImage || `${process.env.PUBLIC_URL}/assets/image/user.png`}
+              alt='프로필 사진'
+            />
+            <img
+              className='cameraIcon'
+              src={`${process.env.PUBLIC_URL}/assets/svgs/camera.svg`}
+              alt='프로필 사진'
+            />
+          </ImageButton>
+        </ProfileImageContainer>
         <FormContainer onSubmit={userProfileUploadHandler}>
           <InputContainer>
             <Input
@@ -113,8 +114,8 @@ const UserProfile = () => {
           </InputContainer>
           {nicknameError && <small>{nicknameError}</small>}
           <p>
-            프로필 정보(사진, 닉네임)는 회원 식별, 친구간 커뮤니케이션 등의 목적으로
-            활용되며, Memory Mingle 이용기간 동안 보관됩니다.
+            프로필 정보(사진, 닉네임)는 회원 식별, 친구 간 커뮤니케이션 동의 목적으로
+            활용되며, Memory Mingle 이용 기간 동안 보관됩니다.
           </p>
           <Button type='submit' size='large' background='#5873FE' color='#FFF'>
             등록하기
@@ -136,34 +137,41 @@ const UserProfileContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 9vh;
+  margin-top: 7.5vh;
+  padding: 0 24px;
 `;
 
 const Text = styled.h2`
+  width: 100%;
   text-align: left;
   color: #4c4c4c;
   font-size: 24px;
   font-weight: 600;
+  line-height: 129.336%;
+`;
+
+const ProfileImageContainer = styled.div`
+  position: relative;
+  margin-top: 6vh;
 `;
 
 const ImageButton = styled.button`
-  position: relative;
-  margin-top: 5vh;
   background: transparent;
   border: none;
+  cursor: pointer;
 
   .profileImage {
     display: block;
     width: 20vh;
     height: 20vh;
-    border-radius: 100%;
+    border-radius: 50%;
     object-fit: cover;
   }
 
   .cameraIcon {
     position: absolute;
     top: 76%;
-    left: 75%;
+    left: 73%;
   }
 `;
 
@@ -172,18 +180,17 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5vw;
-  margin-bottom: 10vw;
+  gap: 2vh;
 
   small {
-    width: 90%;
+    width: 100%;
+    text-align: left;
     color: #ff7e62;
     font-size: 13px;
     font-weight: 600;
   }
 
   p {
-    width: 90%;
     color: #959595;
     font-size: 13px;
     font-weight: 400;
@@ -192,12 +199,13 @@ const FormContainer = styled.form`
   button {
     position: relative;
     bottom: -4vh;
+    width: 100%;
     font-weight: 700;
   }
 `;
 
 const InputContainer = styled.div`
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -207,11 +215,12 @@ const InputContainer = styled.div`
 
 const SkipButton = styled.div`
   position: relative;
-  bottom: -6vh;
+  bottom: -10vh;
   background: transparent;
   border: none;
   border-bottom: 1px solid #4c4c4c;
   color: #4c4c4c;
   font-size: 16px;
   font-weight: 600;
+  cursor: pointer;
 `;

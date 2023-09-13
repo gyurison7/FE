@@ -1,39 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Footer from '../../layout/footer/Footer';
 import useStickyMode from '../../hooks/useStickyMode.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../api/index.jsx';
+// import api from '../../api/index.jsx';
 import Photo from '../../components/common/photo/Photo.jsx';
 import Profile from '../../components/common/profile/Profile.jsx';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
 import { useRecoilState } from 'recoil';
 import { selectedProfileState, modalState } from '../../recoil/Atom';
 import ProfileModal from '../../components/common/modal/ProfileModal.jsx';
+import shareKakao from '../../utils/shareKakao';
+import { useGroupData } from '../../api/postMainApi.js';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
 
 export default function PostMain() {
   const stkicky = useStickyMode(115);
-  const [data, setData] = useState(null);
-  const [postData, setPostData] = useRecoilState(selectedProfileState);
-  console.log(postData);
+  // const [data, setData] = useState(null);
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [, setPostData] = useRecoilState(selectedProfileState);
+
   const { id } = useParams();
   const navigate = useNavigate();
+  const kakaoShared = shareKakao();
+  const { data, isLoading, isError } = useGroupData(id);
+  const storedUserId = localStorage.getItem('userId');
+  localStorage.setItem('groupName', data?.groupName);
 
   const handleProfileClick = (id) => {
     setPostData(id);
     setIsOpen(true);
   };
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
   const closeModal = () => {
     setIsOpen(false);
   };
-  useEffect(() => {
-    api.get(`group/${id}`, { withCredentials: true }).then((res) => {
-      setData(res.data);
-      setPostData(res.data);
-    });
-  }, []);
+  console.log(data);
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <div>Error fetching data</div>;
+
   const processedPlace = data?.place
     ? JSON.parse(data.place)
         .map((item) => item.replace(/["]/g, ''))
@@ -44,7 +49,7 @@ export default function PostMain() {
       <Wrap>
         <ProfileModal isOpen={isOpen} closeModal={closeModal} />
         <Head $heady={stkicky}>
-          <BackButton onClick={() => navigate('/groupmain')}>
+          <BackButton onClick={() => navigate(-1)}>
             <IconComponents iconType='vectorLeft' stroke='white' />
           </BackButton>
           {stkicky && <p>{data?.groupName}</p>}
@@ -58,16 +63,28 @@ export default function PostMain() {
             <GroupTitle>
               <Title>
                 <h4>{data?.groupName}</h4>
-                <IconComponents
-                  iconType='vectorRight'
-                  width='20'
-                  stroke='#787777'
-                  onClick={() => navigate(`/grouadd/${id}`)}
-                />
+                {Number(storedUserId) === data?.userId ? (
+                  <div style={{ cursor: 'pointer' }}>
+                    <IconComponents
+                      iconType='vectorRight'
+                      stroke='#9C9C9C'
+                      viewBox='0 0 10 15'
+                      width=' 6.302px'
+                      height='19px'
+                      onClick={() => navigate(`/groupedit/${id}`)}
+                    />
+                  </div>
+                ) : null}
               </Title>
-              <FriendAdd>
-                <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
-                <p>친구초대</p>
+              <FriendAdd onClick={() => kakaoShared()}>
+                <IconComponents
+                  iconType='inviteFriends'
+                  stroke='#8E8E8E'
+                  width='15px'
+                  height='15px'
+                  viewBox='0 0 15 15'
+                />
+                <p>공유하기</p>
               </FriendAdd>
             </GroupTitle>
             <DateLocation>
@@ -79,7 +96,8 @@ export default function PostMain() {
                   stroke='#8E8E8E'
                 />
                 <p>
-                  {data?.startDate.substr(0, 10)}~{data?.endDate.substr(0, 10)}
+                  {data?.startDate.substr(0, 10).replace(/-/g, '.')}-
+                  {data?.endDate.substr(0, 10).replace(/-/g, '.')}
                 </p>
               </WrapDate>
               <WrapLocation>
@@ -97,6 +115,7 @@ export default function PostMain() {
                 return (
                   <Profile
                     key={element.userId}
+                    userId={element.userId}
                     url={element.profileUrl}
                     name={element.nickname}
                     onClick={() => handleProfileClick(element)}
@@ -126,7 +145,7 @@ export default function PostMain() {
             })}
           </Content>
         </div>
-        <div style={{ height: '72px' }}></div>
+        <div style={{ height: '59px' }}></div>
       </Wrap>
       <Foot>
         <Footer />
@@ -166,6 +185,7 @@ const Head = styled.div`
 const CamereButton = styled.button`
   border: none;
   background: transparent;
+  cursor: pointer;
 `;
 const BackButton = styled(CamereButton)``;
 const Side = styled.div`
@@ -180,13 +200,18 @@ const GroupTitle = styled.div`
 `;
 const Title = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  h4 {
+    color: #4c4c4c;
+  }
 `;
 const FriendAdd = styled.div`
+  cursor: pointer;
   display: flex;
+  gap: 5px;
   p {
     color: #8e8e8e;
-    font-size: 12px;
+    font-size: 13px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -204,7 +229,7 @@ const WrapDate = styled.div`
     color: #666;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: normal;
   }
 `;
@@ -215,7 +240,7 @@ const WrapLocation = styled.div`
     color: #666;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: normal;
   }
 `;
@@ -229,6 +254,7 @@ const Content = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1px;
+  background: white;
 `;
 
 const Foot = styled.div`

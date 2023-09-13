@@ -3,19 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import api from '../../../api/index.jsx';
-import secureLocalStorage from 'react-secure-storage';
+import CommonModal from './CommonModal.jsx';
+import { useToast } from '../../../hooks/useToast.jsx';
+import { useRecoilState } from 'recoil';
+import { groupDataState } from '../../../recoil/Atom.js';
 
 function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
+  const [deleteModal, setDeleteModal] = useState(false);
   const modalRef = useRef(null);
   const navigate = useNavigate();
-  const storedUserId = secureLocalStorage.getItem('userId');
-  
+  const { showToast } = useToast();
+  const storedUserId = localStorage.getItem('userId');
+  const [groupData, setGroupData] = useRecoilState(groupDataState);
   const handleOverlayClick = () => {
     onClose && onClose();
   };
-
+  console.log('modal', groupData);
   useEffect(() => {
     if (modalRef.current && parentRef.current) {
       const rect = modalRef.current.getBoundingClientRect();
@@ -35,27 +40,27 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   }, [modalRef, parentRef]);
 
   const leaveGroupHandler = async (id) => {
-    const userConfirmation = window.confirm('정말로 나가시겠습니까?');
-
-    if (!userConfirmation) {
-      return;
-    }
     try {
       const response = await api.delete(`/group/${id}/groupout`, {
-        withCredentials: true,
       });
 
       if (response.data.success === false) {
         console.log(response.data.success);
+        setDeleteModal(false);
         setErrorMessage(response.data.message);
+        console.log('error',response.data.message)
       } else if (response.data.success) {
-        alert(response.data.message);
+        showToast('앨범에서 나갔습니다');
+        setDeleteModal(false);
         setErrorMessage(null);
+        setGroupData((prevData) => prevData.filter((group) => group.groupId !== id));
       }
     } catch (error) {
       console.log(error);
-      setErrorMessage('서버 애러 입니다');
+      setErrorMessage('서버 에러 입니다');
     }
+    
+    navigate('/groupmain', { replace: true });
   };
 
   return (
@@ -66,15 +71,26 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         {Number(storedUserId) === groupUserId && (
           <div>
             <ModalButton onClick={() => navigate(`/groupedit/${groupid}`)}>
-              수정하기
+              앨범 수정하기
             </ModalButton>
           </div>
         )}
         <div>
-          <ModalButton isend='true' onClick={() => leaveGroupHandler(groupid)}>
-            그룹나가기
+          <ModalButton isend='true' onClick={() => setDeleteModal(true)}>
+            {storedUserId === groupUserId ? '앨범 삭제하기' : '앨범 나가기'}
           </ModalButton>
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          {errorMessage && (
+            <ErrorMessage>초대된 친구가 남아있어 삭제할 수 없습니다</ErrorMessage>
+          )}
+          {deleteModal && (
+            <CommonModal
+              title={'앨범 나가기'}
+              description={'정말 앨범에서 나가시겠어요?'}
+              onCancel={() => setDeleteModal(false)}
+              onFunction={() => leaveGroupHandler(groupid)}
+              buttonText={'나가기'}
+            ></CommonModal>
+          )}
         </div>
       </MoreModalContainer>
     </>
@@ -145,7 +161,7 @@ const Overlay = styled.div`
   z-index: 499;
 `;
 
-MoreModal.propTypes = {   
+MoreModal.propTypes = {
   groupid: PropTypes.number,
   groupUserId: PropTypes.number,
   groupName: PropTypes.string,

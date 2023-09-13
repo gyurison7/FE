@@ -47,8 +47,8 @@ const themeHandler = (theme, bordercolor, color) => {
     case 'radius':
       return `
                 height: 57px;
-                padding: 0 1.25rem;
-                border-radius: 1.75rem;
+                padding: 19px 0 19px 35px;
+                border-radius: 28px;
                 border: 1px solid #FFF;
                 outline: none;
                 color: #FFF;

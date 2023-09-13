@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import GroupPageHeader from '../../layout/header/GroupPageHeader';
@@ -7,9 +7,13 @@ import { getGroupData } from '../../api/groupMainApi';
 import { useQuery } from 'react-query';
 import PlusButton from '../../components/common/button/PlusButton.jsx';
 import MoreModal from '../../components/common/modal/MoreModal.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { useRecoilState } from 'recoil';
+import { groupDataState } from '../../recoil/Atom';
 
 function GroupMain() {
   const [isMoreModalId, setMoreModalId] = useState(null);
+  const [groupData, setGroupData] = useRecoilState(groupDataState);
   const navigate = useNavigate();
   const parentRef = useRef(null);
 
@@ -18,11 +22,13 @@ function GroupMain() {
   };
 
   // groupdata 가져오기
-  const {
-    data: groupData,
-    isError,
-    isLoading,
-  } = useQuery('groupData', getGroupData);
+  const { data, isError, isLoading } = useQuery('groupData', getGroupData);
+
+  useEffect(() => {
+    if (data) {
+      setGroupData(data);
+    }
+  }, [data, setGroupData]);
 
   const moreEditHandler = (groupId) => {
     if (isMoreModalId === groupId) {
@@ -37,7 +43,9 @@ function GroupMain() {
         <FixedHeader />
         <GroupWrapper>
           {isLoading ? (
-            <div>Loading...</div>
+            <>
+              <LoadingSpinner />
+            </>
           ) : isError ? (
             <div>Error fetching group data</div>
           ) : groupData && groupData.length === 0 ? (
@@ -53,21 +61,21 @@ function GroupMain() {
                     src={`${process.env.PUBLIC_URL}/assets/image/plusimg.png`}
                     alt='logo'
                   />
-                  추억 만들기
+                  앨범 만들기
                 </PreMainButton>
               </PreMainContentWrapper>
             </PreMainContainer>
           ) : (
             <>
-              <ButtonWrapper>
-                <PlusButton onClick={writeButtonHandler} />
+              <ButtonWrapper onClick={writeButtonHandler}>
+                <PlusButton />
               </ButtonWrapper>
               {groupData.map((item) => {
                 const formattedStartDate = item.startDate
-                  ? item.startDate.slice(0, 10)
+                  ? item.startDate.slice(0, 10).replace(/-/g, '.')
                   : '';
                 const formattedEndDate = item.endDate
-                  ? item.endDate.slice(0, 10)
+                  ? item.endDate.slice(0, 10).replace(/-/g, '.')
                   : '';
 
                 return (
@@ -95,21 +103,13 @@ function GroupMain() {
                     </GroupDetailButton>
                     <div
                       style={{
-                        lineHeight: '7px',
                         paddingLeft: '2px',
-                        marginTop: '12px',
                       }}
                     >
-                      <h5> {item.groupName}</h5>
-                      <p
-                        style={{
-                          fontSize: '10px',
-                          color: 'gray',
-                          marginTop: '4px',
-                        }}
-                      >
+                      <Title> {item.groupName}</Title>
+                      <Date>
                         {formattedStartDate}~{formattedEndDate}
-                      </p>
+                      </Date>
                     </div>
                   </ButtonWrapper>
                 );
@@ -136,8 +136,22 @@ const FixedHeader = styled(GroupPageHeader)`
   z-index: 10;
 `;
 
+const Title = styled.p`
+  color: #4c4c4c;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding-top: 6px;
+`;
+const Date = styled.p`
+  font-size: 12px;
+  color: #606060;
+  padding-top: 2px;
+`;
 const GroupEditButton = styled.button`
   position: absolute;
+  padding: 3px 5px 12px 30px;
   right: 10px;
   top: 12px;
   border: none;
@@ -171,10 +185,11 @@ const MainContainer = styled.div`
 `;
 
 const GroupWrapper = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  overflow-y: auto;
+  background-color: white;
   align-items: flex-start;
   justify-content: flex-start;
   padding-bottom: 72px;
@@ -183,14 +198,14 @@ const GroupWrapper = styled.div`
   }
 `;
 const ButtonWrapper = styled.div`
-  margin-top: 12px;
   width: 40%;
   padding-bottom: 24px;
   cursor: pointer;
   margin-left: 24px;
   position: relative;
+  word-wrap: break-word;
 
-  h5{
+  h5 {
     margin-top: -10px;
     line-height: 16px;
   }
@@ -216,11 +231,12 @@ const ButtonWrapper = styled.div`
 // `;
 
 const PreMainContainer = styled.div`
-  display: flex;
+  width: 100%;
+  top: 12vh;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5rem;
+  display: flex;
+  position: absolute;
+  background-color: white;
 `;
 
 const PreMainContentWrapper = styled.div`
@@ -235,24 +251,29 @@ const PreMainContentWrapper = styled.div`
 
 const PreMainButton = styled.button`
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
   width: 167px;
   height: 52px;
   border-radius: 26.321px;
   background: #5873fe;
   color: #fff;
+  font-size: 16px;
 `;
 
 const PreMainText = styled.p`
   color: #4c4c4c;
   text-align: center;
-  font-size: 18px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 `;
 
 const PreMainPlus = styled.img`
-  width: 12px;
+  width: 16px;
 `;
 
 const Foot = styled.div`
@@ -265,3 +286,40 @@ const Foot = styled.div`
     width: 428px;
   }
 `;
+
+/// 스켈레턴
+// const SkeletonWrapper = styled.div`
+//   margin-top: 12px;
+//   width: 40%;
+//   padding-bottom: 24px;
+//   margin-left: 24px;
+//   position: relative;
+// `;
+
+// const SkeletonImage = styled.div`
+//   width: 100%;
+//   height: 170px;
+//   border-radius: 12px;
+//   background-color: #ccc;
+// `;
+
+// const SkeletonText = styled.div`
+//   h5,
+//   p {
+//     background-color: #ccc;
+//     width: 80%;
+//     height: 10px;
+//   }
+// `;
+
+// const SkeletonItem = () => (
+//   <SkeletonWrapper>
+//     <SkeletonImage />
+//     <SkeletonText>
+//       <h5>...</h5>
+//       <p></p>
+//     </SkeletonText>
+//   </SkeletonWrapper>
+// );
+
+// export default SkeletonItem;

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { css, keyframes, styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import Draggable from 'react-draggable';
+import { useToast } from '../../../hooks/useToast.jsx';
 
 const Portal = ({ children }) => {
   const el = document.getElementById('portal-root');
@@ -15,7 +17,27 @@ function DatePicker({
   endDate,
   setStartDate,
   setEndDate,
+  onSearchClick,
 }) {
+  const { showToast } = useToast();
+  useEffect(() => {
+    if (ismodalopen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [ismodalopen]);
+
+  const handleStop = (e, data) => {
+    if (data.y > 100) {
+      onClose();
+    }
+  };
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const years = Array.from({ length: 100 }, (_, i) => currentYear - 50 + i);
@@ -100,18 +122,44 @@ function DatePicker({
   };
 
   const applyHandler = () => {
+    if (!startDate && !endDate) {
+      showToast('시작 날짜와 종료 날짜를 설정해주세요');
+      return;
+    }
+
+    if (startDate && !endDate) {
+      showToast('종료날짜도 설정해주세요');
+      return;
+    }
+    onSearchClick?.();
     onClose();
   };
 
-  const handleOverlayClick = () => {
-    onClose && onClose();
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose && onClose();
+    }
   };
 
   return (
     <Portal>
-        <Overlay onClick={handleOverlayClick}/>
+      <Overlay onClick={handleOverlayClick} />
+      <Draggable
+        axis='y'
+        bounds={{ top: 0 }}
+        handle='.drag-handle'
+        onStop={(e, data) => handleStop(e, data)}
+      >
         <DatePickerWrap isopen={ismodalopen}>
-          <ModalButtonWrapper>
+        <div
+            style={{
+              width: '100%',
+              padding: '6px',
+            }}
+            className='drag-handle'
+          >
+          </div>
+          <ModalButtonWrapper >
             <ModalButton onClick={onClose}>
               <img
                 src={`${process.env.PUBLIC_URL}/assets/image/line.png`}
@@ -174,7 +222,7 @@ function DatePicker({
           <Footer>
             <FotterButton onClick={onResetHandler} color='rgba(148, 163, 184, 1)'>
               {' '}
-              초기회하기{' '}
+              초기화하기{' '}
             </FotterButton>
             <FotterButton onClick={applyHandler} color='rgba(88, 115, 254, 1)'>
               {' '}
@@ -182,6 +230,7 @@ function DatePicker({
             </FotterButton>
           </Footer>
         </DatePickerWrap>
+      </Draggable>
     </Portal>
   );
 }
@@ -203,7 +252,7 @@ const Overlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 9;
 `;
@@ -213,10 +262,12 @@ const shouldForwardProp = (prop) => !['isopen'].includes(prop);
 const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   @media (max-width: 428px) {
     width: 100%;
+    height: 100vh;
     margin: 0 auto;
   }
   @media (min-width: 429px) {
     width: 428px;
+    height: 100vh;
     margin: 0 auto;
   }
   padding: 16.9px;
@@ -227,7 +278,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
   background-color: #fff;
   padding: 1rem;
   z-index: 10;
-  transition: bottom 0.4s ease-out;
+  transition: bottom 0.1s ease-in;
   animation: ${({ isopen }) =>
     isopen
       ? css`
@@ -237,7 +288,7 @@ const DatePickerWrap = styled.div.withConfig({ shouldForwardProp })`
           ${slideDown} 1s
         `};
   height: 100%;
-  border-radius: 30px;
+  border-radius: 30px 30px 0 0;
   box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
 `;
 
@@ -295,6 +346,7 @@ const ModalButton = styled.button`
 
 const ModalButtonWrapper = styled.div`
   width: 100%;
+  padding-bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -400,7 +452,6 @@ const ButtonDays = styled('button').withConfig({
 const DaysName = styled.div`
   color: var(--gray-400, #94a3b8);
   text-align: center;
-  font-family: Inter;
   font-size: 14.63px;
   font-style: normal;
   font-weight: 600;
@@ -433,6 +484,7 @@ const FotterButton = styled.button`
   display: flex;
   width: 159px;
   height: 59px;
+  font-weight: 600;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -451,4 +503,5 @@ DatePicker.propTypes = {
   setStartDate: PropTypes.func,
   endDate: PropTypes.string,
   setEndDate: PropTypes.func,
+  onSearchClick: PropTypes.func,
 };

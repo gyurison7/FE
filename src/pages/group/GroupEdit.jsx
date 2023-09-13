@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/index.jsx';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
@@ -8,12 +8,12 @@ import IconComponents from '../../components/common/iconComponent/IconComponents
 import {
   BackButton,
   DateInput,
+  DateInputWraper,
   DivHeaderText,
+  ErrorText,
   Form,
-  FriendContentWrap,
   FriendSearchButton,
-  FriendSearchImage,
-  FriendSearchText,
+  FriendSearchInput,
   GroupWriteInput,
   ImageInput,
   PlaceAddButton,
@@ -35,20 +35,30 @@ import {
   WriteImageWrapper,
 } from './styleContainer.js';
 import DatePicker from '../../components/common/modal/DatePicker.jsx';
+import { useMutation, useQueryClient } from 'react-query';
+import { editGroup } from '../../api/groupMainApi.js';
+import { useToast } from '../../hooks/useToast.jsx';
+import LoadingSpinner from '../../components/common/loading/LoadingSpinner.jsx';
+import { debounce } from '../../hooks/debounce.js';
+import { fetchNickname } from '../../api/searchApi.js';
 
 function GroupWrite() {
+  const storedUserId = localStorage.getItem('userId');
   const { id } = useParams();
+  const { showToast } = useToast();
   const navigate = useNavigate();
   useEffect(() => {
     console.log(id);
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
-      console.log(res.data);
       setGroupName(res.data.groupName);
       const formattedStartDate = res.data.startDate.slice(0, 10);
       const formattedEndDate = res.data.endDate.slice(0, 10);
       setStartDate(formattedStartDate);
       setEndDate(formattedEndDate);
-      setSelectedFriends(res.data.participants);
+      const filteredFriends = res.data.participants.filter(
+        (participant) => participant.userId !== Number(storedUserId)
+      );
+      setSelectedFriends(filteredFriends);
       setThumbnailUrl(res.data.thumbnailUrl);
       if (res.data.place) {
         const placesArray = JSON.parse(res.data.place);
@@ -71,67 +81,95 @@ function GroupWrite() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDateModal, setDateModal] = useState(false);
 
-  const storedUserId = localStorage.getItem('userId');
+  //error state
+  const [groupNameError, setGroupNameError] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [placeError, setPlaceError] = useState(false);
 
-  const searchUser = async (nickname) => {
-    try {
-      const response = await api.get(`/nickname/${nickname}`, {
-        withCredentials: true,
-      });
-
-      const userData = response.data;
-      console.log('nickname', response);
-      console.log(userData);
-      setSearchResult(response.data.findByNicknameData);
-    } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message === '로그인이 필요한 기능입니다.'
-      ) {
-        console.error('User needs to log in to access this feature.');
-      } else {
-        console.error('Error fetching user data:', error);
+  const debounceNicknameSearch = useCallback(
+    debounce(async (searchAlbum) => {
+      setHasSearched(false);
+      try {
+        const data = await fetchNickname(searchAlbum);
+        setSearchResult(data.findByNicknameData);
+        setHasSearched(true);
+      } catch (error) {
+        console.error('Error fetching data by album:', error);
+        setHasSearched(true);
       }
-    }
-  };
+    }, 600),
+    []
+  );
+
+  console.log('parti', selectedFriends);
 
   //데이터 보내는 로직
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(editGroup, {
+    onMutate: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries('groupList');
+      navigate('/groupmain');
+    },
+  });
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    if (chosenFile) {
-      data.append('thumbnailUrl', chosenFile);
-    } else if (thumbnailUrl) {
-      data.append('thumbnailUrl', thumbnailUrl);
-    }
-    data.append('groupName', groupName);
-    data.append('place', JSON.stringify(places));
-    data.append(
-      'participant',
-      JSON.stringify(selectedFriends.map((friend) => friend.userId.toString()))
-    );
-    data.append('startDate', startDate);
-    data.append('endDate', endDate);
+    setGroupNameError(false);
+    setThumbnailError(false);
+    setDateError(false);
+    setPlaceError(false);
 
-    try {
-      const response = await api.put(`/group/${id}`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-      console.log(response.data);
-      navigate('/groupmain');
-    } catch (error) {
-      console.error('Error sending group data:', error);
+    let validationPassed = true;
+
+    if (!groupName) {
+      setGroupNameError(true);
+      validationPassed = false;
     }
+
+    if (!thumbnailUrl) {
+      setThumbnailError(true);
+      validationPassed = false;
+    }
+
+    if (!startDate || !endDate) {
+      setDateError(true);
+      validationPassed = false;
+    }
+
+    if (!places || places.length === 0) {
+      setPlaceError(true);
+      validationPassed = false;
+    }
+
+    if (!validationPassed) return;
+
+    const payload = {};
+
+    if (chosenFile) {
+      payload.thumbnailUrl = '';
+    } else if (thumbnailUrl) {
+      payload.thumbnailUrl = thumbnailUrl;
+    }
+
+    payload.groupName = groupName;
+    payload.place = JSON.stringify(places);
+    payload.participant = JSON.stringify(
+      selectedFriends.map((friend) => friend.userId.toString())
+    );
+    payload.startDate = startDate;
+    payload.endDate = endDate;
+
+    mutation.mutate({ data: payload, id, chosenFile });
+
   };
 
   const placeEnterAdd = (e) => {
     if (e.key === 'Enter' && place.trim() !== '') {
-      placeButtonHandler();
+      placeButtonHandler(e);
       e.preventDefault();
     }
   };
@@ -170,7 +208,7 @@ function GroupWrite() {
         break;
       case 'participants':
         setParticipant(value);
-        searchUser(value);
+        debounceNicknameSearch(value);
         break;
       default:
         break;
@@ -187,8 +225,13 @@ function GroupWrite() {
     navigate('/groupmain');
   };
 
-  const placeButtonHandler = () => {
+  const placeButtonHandler = (e) => {
+    e.preventDefault();
     const newPlaces = place;
+    if (places.includes(place)) {
+      showToast('이미 추가하신 장소 입니다');
+      return;
+    }
     setPlaces((prevPlaces) => [...prevPlaces, newPlaces]);
     setPlace('');
   };
@@ -209,13 +252,10 @@ function GroupWrite() {
     setSelectedFriends((prevfri) => prevfri.filter((item) => item.userId !== id));
   };
 
-  const isUserSelected = (userId) => {
-    return selectedFriends.some((friend) => friend.userId === userId);
-  };
-
   return (
     <>
       <Form onSubmit={submitHandler} onKeyPress={preventForceBack}>
+        {mutation.isLoading ? <LoadingSpinner /> : null}
         <WriteHeader>
           <div>
             <BackButton onClick={backButtonHandler}>
@@ -241,6 +281,7 @@ function GroupWrite() {
               required
             />
             <WordCount>{groupName.length}/25</WordCount>
+            {groupNameError && <ErrorText>앨범 이름을 입력해주세요</ErrorText>}
           </TitleWraper>
           <WriteImageWrapper>
             {thumbnailUrl ? (
@@ -257,14 +298,23 @@ function GroupWrite() {
                 썸네일 추가하기
               </WriteImageUpload>
             )}
+            {thumbnailError && <ErrorText>썸네일을 추가해주세요</ErrorText>}
           </WriteImageWrapper>
           <StDateWrapper>
             <DivHeaderText>함께한 추억 기간 </DivHeaderText>
-            <DateInput
-              value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
-              onClick={() => setDateModal(!isDateModal)}
-              readOnly
-            />
+            <DateInputWraper>
+              <img
+                className='inputIcon'
+                src={`${process.env.PUBLIC_URL}/assets/image/calander.png`}
+                alt='calander'
+              />
+              <DateInput
+                value={startDate && endDate ? `${startDate} ~ ${endDate}` : ''}
+                onClick={() => setDateModal(!isDateModal)}
+                placeholder='추억을 나눈 날짜를 설정해주세요'
+                readOnly
+              />
+            </DateInputWraper>
             {isDateModal && (
               <DatePicker
                 ismodalopen={isDateModal}
@@ -275,14 +325,15 @@ function GroupWrite() {
                 setEndDate={setEndDate}
               />
             )}
+            {dateError && <ErrorText>날짜를 설정해주세요</ErrorText>}
           </StDateWrapper>
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
             <PlaceInputWrapper>
               <img
-                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
-                alt='placeicon'
                 className='inputIcon'
+                src={`${process.env.PUBLIC_URL}/assets/image/locationicon.png`}
+                alt='calander'
               />
               <GroupWriteInput
                 name='place'
@@ -300,7 +351,10 @@ function GroupWrite() {
             {places.map((place, index) => (
               <PlaceResult key={index}>
                 {place}
-                <PlaceRemoveButton onClick={() => deletePlaceHandler(index)}>
+                <PlaceRemoveButton
+                  type='button'
+                  onClick={() => deletePlaceHandler(index)}
+                >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/image/cancleplace.png`}
                     alt='left'
@@ -308,30 +362,26 @@ function GroupWrite() {
                 </PlaceRemoveButton>
               </PlaceResult>
             ))}
+            {placeError && <ErrorText>추억장소를 추가해주세요</ErrorText>}
           </PlaceContainer>
           <div style={{ width: '100%' }}>
             <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
-              <FriendContentWrap>
-                <FriendSearchImage
-                  src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
-                  alt='search'
-                />
-                <FriendSearchText>
-                  {' '}
-                  추억을 나눈 친구를 검색해주세요{' '}
-                </FriendSearchText>
-              </FriendContentWrap>
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/image/friendsearchicon.png`}
+                alt='left'
+              />
+              <FriendSearchInput placeholder='추억을 나눈 친구를 검색해주세요' />
             </FriendSearchButton>
             {isModalOpen && (
               <FriendSearchModal
                 ismodalopen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 universalHandler={universalHandler}
-                isUserSelected={isUserSelected}
                 searchResult={searchResult}
                 addFriendHandler={addFriendHandler}
                 participants={participants}
+                hasSearched={hasSearched}
               />
             )}
           </div>

@@ -10,14 +10,9 @@ function PlusButton(props) {
         height={props.height}
         background={props.background}
         borderradious={props.borderradious}
+        onClick={props.onClick}
       >
-        <IconComponents
-          onClick={props.onClick}
-          iconType='plus'
-          width='24px'
-          height='24px'
-          stroke='white'
-        />
+        <IconComponents iconType='plus' width='24px' height='24px' stroke='white' />
       </WriteButton>
     </>
   );
