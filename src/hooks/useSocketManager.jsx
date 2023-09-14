@@ -1,15 +1,34 @@
 import socketIoClient from 'socket.io-client';
 import { useSetRecoilState } from 'recoil';
 import { isConnectSocketState } from '../recoil/Atom.js';
+import { useEffect, useState } from 'react';
+import { fetchNotification } from '../api/noticeApi.js';
 import { useToast } from './useToast.jsx';
 
 export function useSocketManager() {
   const setIsConnectSocketState = useSetRecoilState(isConnectSocketState);
+  const [noticeCount, setNoticeCount] = useState(0);
   const { showToast } = useToast();
 
   function getLoginUserId() {
     return localStorage.getItem('userId');
   }
+
+  const getNotice = async () => {
+    try {
+      const responseData = await fetchNotification();
+      const newData = responseData.filter(
+        (data) => data['Participants.status'] === 0
+      );
+      setNoticeCount(newData.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getNotice();
+  }, []);
 
   function initializeSocket() {
     const ENDPOINT = 'https://api.memorymingle.shop';
@@ -21,6 +40,7 @@ export function useSocketManager() {
       if (getLoginUserId()) {
         showToast(`${data.groupName}에 초대되셨습니다.`);
       }
+      getNotice();
     };
 
     socket.on('connect', () => {
@@ -46,5 +66,5 @@ export function useSocketManager() {
     return socket;
   }
 
-  return { initializeSocket };
+  return { initializeSocket, noticeCount };
 }

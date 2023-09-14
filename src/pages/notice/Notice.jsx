@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
+import { UpdateNotificationStatus, fetchNotification } from '../../api/noticeApi.js';
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
-import api from '../../api/index.jsx';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; // 한국어 로케일 추가
 import relativeTime from 'dayjs/plugin/relativeTime'; // relativeTime 플러그인 추가
@@ -13,25 +13,41 @@ dayjs.locale('ko');
 
 const Notice = () => {
   const [activeNav, setActiveNav] = useState('new');
-  const [noticeList, setNoticeList] = useState([]);
+  const [newNoticeList, setNewNoticeList] = useState([]); // 새로운 알림
+  const [pastNoticeList, setPastNoticeList] = useState([]); // 지난 알림
   const navigate = useNavigate();
 
-  const noticeClickHandler = (name) => {
+  const navClickHandler = (name) => {
     setActiveNav(name);
   };
 
   useEffect(() => {
-    const getNotification = async () => {
+    const getNotice = async () => {
       try {
-        const response = await api.get('/notification');
-        console.log(response.data.data);
-        setNoticeList(response.data.data);
+        const responseData = await fetchNotification();
+        console.log('responseData', responseData);
+        setNewNoticeList(
+          responseData.filter((data) => data['Participants.status'] === 0)
+        );
+        setPastNoticeList(
+          responseData.filter((data) => data['Participants.status'] === 1)
+        );
       } catch (error) {
         console.log(error);
       }
     };
-    getNotification();
+    getNotice();
   }, []);
+
+  const noticeClickHandler = async (groupId, participantId) => {
+    const participantIdString = JSON.stringify([participantId.toString()]);
+    try {
+      await UpdateNotificationStatus(participantIdString);
+      navigate(`/postmain/${groupId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -39,35 +55,37 @@ const Notice = () => {
       <Navbar>
         <button
           className={activeNav === 'new' ? 'active' : ''}
-          onClick={() => noticeClickHandler('new')}
+          onClick={() => navClickHandler('new')}
         >
           새로운 알림
         </button>
         <button
           className={activeNav === 'past' ? 'active' : ''}
-          onClick={() => noticeClickHandler('past')}
+          onClick={() => navClickHandler('past')}
         >
           지난 알림
         </button>
       </Navbar>
       <NoticeContainer>
-        {noticeList
-          .slice()
-          .reverse()
-          .map((notice) => {
-            const relativeDate = dayjs(notice['Participants.createdAt']).fromNow();
-            return (
-              <NoticeItem key={notice['Participants.participantid']}>
-                <img src={notice.thumbnailUrl} alt='썸네일' />
-                <button onClick={() => navigate(`/postmain/${notice.groupId}`)}>
-                  <p className='message'>
-                    앨범 {notice.groupName}에 초대되셨습니다.
-                  </p>
-                  <p className='date'>{relativeDate}</p>
-                </button>
-              </NoticeItem>
-            );
-          })}
+        {(activeNav === 'new' ? newNoticeList : pastNoticeList).map((notice) => {
+          const relativeDate = dayjs(notice['Participants.createdAt']).fromNow();
+          return (
+            <NoticeItem key={notice['Participants.participantid']}>
+              <img src={notice.thumbnailUrl} alt='썸네일' />
+              <button
+                onClick={() =>
+                  noticeClickHandler(
+                    notice.groupId,
+                    notice['Participants.participantid']
+                  )
+                }
+              >
+                <p className='message'>앨범 {notice.groupName}에 초대되셨습니다.</p>
+                <p className='date'>{relativeDate}</p>
+              </button>
+            </NoticeItem>
+          );
+        })}
       </NoticeContainer>
       <Foot>
         <Footer />

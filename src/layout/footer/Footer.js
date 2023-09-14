@@ -1,9 +1,12 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { useSocketManager } from '../../hooks/useSocketManager.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Footer() {
+  const { noticeCount } = useSocketManager();
+
   return (
     <Wrap>
       <div>
@@ -17,9 +20,12 @@ function Footer() {
         </StyledNavLink>
       </div>
       <div>
-        <StyledNavLink to='/notice'>
-          <IconComponents iconType='inbox' stroke='#4C4C4C' width="23" height="23" viewBox="0 0 23 23" />
-        </StyledNavLink>
+        <NoticeContainer>
+          <StyledNavLink to='/notice'>
+            <IconComponents iconType='inbox' stroke='#4C4C4C' width="23" height="23" viewBox="0 0 23 23" />
+            {noticeCount > 0 && <CountBadge>{noticeCount}</CountBadge>}
+          </StyledNavLink>
+        </NoticeContainer>
       </div>
       <div>
         <StyledNavLink to='/mypage'>
@@ -48,4 +54,25 @@ const StyledNavLink = styled(NavLink)`
       stroke: #5873fe;
     }
   }
+`;
+
+const NoticeContainer = styled.div`
+  position: relative;
+  display: inline-flex;
+`;
+
+const CountBadge = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  background-color: #FF6A6A;
+  color: #FFFFFF;
+  font-size: 12px;
 `;
