@@ -1,14 +1,14 @@
 import socketIoClient from 'socket.io-client';
 import { useSetRecoilState } from 'recoil';
-import { isConnectSocketState } from '../recoil/Atom.js';
-import { useEffect, useState } from 'react';
+import { isConnectSocketState, noticeCountState, noticeListState } from '../recoil/Atom.js';
+import { useEffect } from 'react';
 import { fetchNotification } from '../api/noticeApi.js';
 import { useToast } from './useToast.jsx';
 
 export function useSocketManager() {
   const setIsConnectSocketState = useSetRecoilState(isConnectSocketState);
-  const [noticeList, setNoticeList] = useState([]);
-  const [noticeCount, setNoticeCount] = useState(0);
+  const setNoticeList = useSetRecoilState(noticeListState);
+  const setNoticeCount = useSetRecoilState(noticeCountState);
   const { showToast } = useToast();
 
   function getLoginUserId() {
@@ -33,11 +33,8 @@ export function useSocketManager() {
   };
 
   useEffect(() => {
-  }, [noticeList]);
-
-  useEffect(() => {
     getNotice();
-  }, [getLoginUserId()]);
+  }, []);
 
   function initializeSocket() {
     const ENDPOINT = 'https://api.memorymingle.shop';
@@ -75,5 +72,5 @@ export function useSocketManager() {
     return socket;
   }
 
-  return { initializeSocket, noticeList, noticeCount };
+  return { initializeSocket };
 }
