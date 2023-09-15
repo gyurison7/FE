@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
-import { UpdateNotificationStatus, fetchNotification } from '../../api/noticeApi.js';
+import { UpdateNotificationStatus } from '../../api/noticeApi.js';
+import { useSocketManager } from '../../hooks/useSocketManager.jsx';
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import dayjs from 'dayjs';
@@ -13,31 +14,15 @@ dayjs.locale('ko');
 
 const Notice = () => {
   const [activeNav, setActiveNav] = useState('new');
-  const [newNoticeList, setNewNoticeList] = useState([]); // 새로운 알림
-  const [pastNoticeList, setPastNoticeList] = useState([]); // 지난 알림
+  const { noticeList } = useSocketManager();
   const navigate = useNavigate();
 
   const navClickHandler = (name) => {
     setActiveNav(name);
   };
 
-  useEffect(() => {
-    const getNotice = async () => {
-      try {
-        const responseData = await fetchNotification();
-        console.log('responseData', responseData);
-        setNewNoticeList(
-          responseData.filter((data) => data['Participants.status'] === 0)
-        );
-        setPastNoticeList(
-          responseData.filter((data) => data['Participants.status'] === 1)
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getNotice();
-  }, []);
+  const newNoticeList = noticeList.filter((notice) => notice['Participants.status'] === 0);
+  const pastNoticeList = noticeList.filter((notice) => notice['Participants.status'] === 1);
 
   const noticeClickHandler = async (groupId, participantId) => {
     const participantIdString = JSON.stringify([participantId.toString()]);
@@ -108,6 +93,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   width: 100%;
+  background-color: #fff;
 `;
 
 const Navbar = styled.div`
