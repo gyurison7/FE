@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
 import { UpdateNotificationStatus } from '../../api/noticeApi.js';
@@ -14,15 +14,26 @@ dayjs.locale('ko');
 
 const Notice = () => {
   const [activeNav, setActiveNav] = useState('new');
-  const { noticeList } = useSocketManager();
+  const { initializeSocket, noticeList } = useSocketManager();
   const navigate = useNavigate();
 
   const navClickHandler = (name) => {
     setActiveNav(name);
   };
 
-  const newNoticeList = noticeList.filter((notice) => notice['Participants.status'] === 0);
-  const pastNoticeList = noticeList.filter((notice) => notice['Participants.status'] === 1);
+  useEffect(() => {
+    const socket = initializeSocket();
+    return () => {
+      socket.disconnect();
+    };
+  }, [noticeList]);
+
+  const newNoticeList = noticeList.filter(
+    (notice) => notice['Participants.status'] === 0
+  );
+  const pastNoticeList = noticeList.filter(
+    (notice) => notice['Participants.status'] === 1
+  );
 
   const noticeClickHandler = async (groupId, participantId) => {
     const participantIdString = JSON.stringify([participantId.toString()]);

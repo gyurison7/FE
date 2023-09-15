@@ -16,7 +16,7 @@ export function useSocketManager() {
   }
 
   const getNotice = async () => {
-    if(!getLoginUserId()) return;
+    if (!getLoginUserId()) return;
 
     try {
       const responseData = await fetchNotification();
@@ -31,6 +31,10 @@ export function useSocketManager() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log('noticeList가 변경되었습니다:', noticeList);
+  }, [noticeList]);
 
   useEffect(() => {
     getNotice();

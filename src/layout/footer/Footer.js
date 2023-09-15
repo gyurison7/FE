@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { useSocketManager } from '../../hooks/useSocketManager.jsx';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Footer() {
-  const { noticeCount } = useSocketManager();
+  const { initializeSocket, noticeCount } = useSocketManager();
+  
+  useEffect(() => {
+    const socket = initializeSocket();
+    return () => {
+      socket.disconnect();
+    };
+  }, [noticeCount]);
 
   return (
     <Wrap>
