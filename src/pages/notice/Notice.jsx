@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
 import { UpdateNotificationStatus } from '../../api/noticeApi.js';
-import { useSocketManager } from '../../hooks/useSocketManager.jsx';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { noticeCountState, noticeListState } from '../../recoil/Atom.js';
 import Header from '../../components/common/header/Header.jsx';
 import Footer from '../../layout/footer/Footer.js';
 import dayjs from 'dayjs';
@@ -14,19 +15,14 @@ dayjs.locale('ko');
 
 const Notice = () => {
   const [activeNav, setActiveNav] = useState('new');
-  const { initializeSocket, noticeList } = useSocketManager();
+  const noticeList = useRecoilValue(noticeListState);
+  const setPastNoticeList = useSetRecoilState(noticeListState);
+  const setNoticeCount = useSetRecoilState(noticeCountState);
   const navigate = useNavigate();
 
   const navClickHandler = (name) => {
     setActiveNav(name);
   };
-
-  useEffect(() => {
-    const socket = initializeSocket();
-    return () => {
-      socket.disconnect();
-    };
-  }, [noticeList]);
 
   const newNoticeList = noticeList.filter(
     (notice) => notice['Participants.status'] === 0
@@ -39,6 +35,18 @@ const Notice = () => {
     const participantIdString = JSON.stringify([participantId.toString()]);
     try {
       await UpdateNotificationStatus(participantIdString);
+
+      setPastNoticeList((prev) => {
+        return prev.map((notice) => {
+          if (notice['Participants.participantid'] === participantId) {
+            return { ...notice, 'Participants.status': 1 };
+          } else {
+            return notice;
+          }
+        });
+      });
+      setNoticeCount((prev) => prev - 1);
+
       navigate(`/postmain/${groupId}`);
     } catch (error) {
       console.error(error);

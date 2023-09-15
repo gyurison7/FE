@@ -1,19 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { useSocketManager } from '../../hooks/useSocketManager.jsx';
+import { useRecoilValue } from 'recoil';
+import { noticeCountState } from '../../recoil/Atom.js';
 import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 
 function Footer() {
-  const { initializeSocket, noticeCount } = useSocketManager();
+  const noticeCount = useRecoilValue(noticeCountState);
   
-  useEffect(() => {
-    const socket = initializeSocket();
-    return () => {
-      socket.disconnect();
-    };
-  }, [noticeCount]);
-
   return (
     <Wrap>
       <div>
