@@ -26,6 +26,9 @@ const Notice = () => {
     return () => {
       socket.disconnect();
     };
+  }, []);
+
+  useEffect(() => {
   }, [noticeList]);
 
   const newNoticeList = noticeList.filter(

@@ -21,7 +21,7 @@ export function useSocketManager() {
     try {
       const responseData = await fetchNotification();
       if (responseData.success) {
-        setNoticeList([...responseData.data]); // 전체 알림 데이터
+        setNoticeList(responseData.data); // 전체 알림 데이터
         const newData = responseData.data.filter(
           (notice) => notice['Participants.status'] === 0
         );
@@ -33,7 +33,6 @@ export function useSocketManager() {
   };
 
   useEffect(() => {
-    console.log('noticeList가 변경되었습니다:', noticeList);
   }, [noticeList]);
 
   useEffect(() => {
