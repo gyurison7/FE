@@ -7,6 +7,7 @@ import { useToast } from './useToast.jsx';
 
 export function useSocketManager() {
   const setIsConnectSocketState = useSetRecoilState(isConnectSocketState);
+  const [noticeList, setNoticeList] = useState([]);
   const [noticeCount, setNoticeCount] = useState(0);
   const { showToast } = useToast();
 
@@ -15,20 +16,25 @@ export function useSocketManager() {
   }
 
   const getNotice = async () => {
+    if(!getLoginUserId()) return;
+
     try {
       const responseData = await fetchNotification();
-      const newData = responseData.filter(
-        (data) => data['Participants.status'] === 0
-      );
-      setNoticeCount(newData.length);
+      if (responseData.success) {
+        setNoticeList([...responseData.data]); // 전체 알림 데이터
+        const newData = responseData.data.filter(
+          (notice) => notice['Participants.status'] === 0
+        );
+        setNoticeCount(newData.length); // 새로운 알림 데이터 개수
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     getNotice();
-  }, []);
+  }, [getLoginUserId()]);
 
   function initializeSocket() {
     const ENDPOINT = 'https://api.memorymingle.shop';
@@ -39,8 +45,8 @@ export function useSocketManager() {
     const newUserAddedHandler = (data) => {
       if (getLoginUserId()) {
         showToast(`${data.groupName}에 초대되셨습니다.`);
+        getNotice();
       }
-      getNotice();
     };
 
     socket.on('connect', () => {
@@ -66,5 +72,5 @@ export function useSocketManager() {
     return socket;
   }
 
-  return { initializeSocket, noticeCount };
+  return { initializeSocket, noticeList, noticeCount };
 }
