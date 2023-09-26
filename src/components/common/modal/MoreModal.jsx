@@ -6,7 +6,7 @@ import api from '../../../api/index.jsx';
 import CommonModal from './CommonModal.jsx';
 import { useToast } from '../../../hooks/useToast.jsx';
 import { useRecoilState } from 'recoil';
-import { groupDataState } from '../../../recoil/Atom.js';
+import { groupDataState, noticeListState } from '../../../recoil/Atom.js';
 
 function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const [position, setPosition] = useState({});
@@ -17,6 +17,8 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
   const { showToast } = useToast();
   const storedUserId = localStorage.getItem('userId');
   const [groupData, setGroupData] = useRecoilState(groupDataState);
+  const [noticeList, setNoticeList] = useRecoilState(noticeListState);
+
   const handleOverlayClick = () => {
     onClose && onClose();
   };
@@ -54,6 +56,9 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         setDeleteModal(false);
         setErrorMessage(null);
         setGroupData((prevData) => prevData.filter((group) => group.groupId !== id));
+
+        const deletedNotice = noticeList.filter(notice => notice.groupId !== id);
+        setNoticeList(deletedNotice);
       }
     } catch (error) {
       console.log(error);
