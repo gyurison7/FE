@@ -44,7 +44,7 @@ export function useSocketManager() {
 
     const newUserAddedHandler = (data) => {
       if (getLoginUserId()) {
-        showToast(`${data.groupName}에 초대되셨습니다.`);
+        showToast(`앨범 ${data.groupName}에 초대되셨습니다.`);
         getNotice();
       }
     };
