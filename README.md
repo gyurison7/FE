@@ -1,6 +1,6 @@
 # Memory Mingle
 
-### 1. 프로젝트 소개👪
+### 1. 프로젝트 소개📷
 
 #### 우리만의 순간을 담아 공유하는 추억 앨범 서비스
 함께한 순간의 소중함을 간직하고 싶으신가요? 카톡으로는 찾아보기 힘들고, 인스타그램에는 공개하기가 어려워 숨겨진 추억들… 저희 Memory Mingle은 그 소중한 순간을 보관하고 오로지 함께한 친구들과만 나눌 수 있는 특별한 추억 앨범 서비스입니다. 단순한 사진 저장이 아닌, 의미 있는 추억의 공간을 함께 만들어보세요!
@@ -26,11 +26,16 @@
 <br />
 
 
-### 4. 주요 기능📷
+### 4. 주요 기능📱
 
 #### 앨범 만들기 / 친구 초대
 ![](https://github.com/MemoryMingle/FE/assets/135217349/1f63d4a4-8cef-44c7-906a-a066a0820396)
 ![](https://github.com/MemoryMingle/FE/assets/135217349/e72dea65-a438-4da5-947d-a4a54f2d6c10)
+<br/>
+
+#### 알림 기능
+![Cap 2023-09-27 10-29-45-607](https://github.com/MemoryMingle/FE/assets/135217349/1440cb02-1038-46ac-9542-aa1d9f35c7c8)
+![Cap 2023-09-27 10-31-21-239](https://github.com/MemoryMingle/FE/assets/135217349/03d2e6f9-a46d-4a8a-8733-6ea7bad248aa)
 <br/>
 
 #### 앨범 상세 보기 / 카카오톡 공유하기
@@ -38,13 +43,14 @@
 ![](https://github.com/MemoryMingle/FE/assets/135217349/0d386f75-2bae-40ba-b830-df28980771e5)
 <br/>
 
-#### 날짜, 앨범명, 장소 검색
+#### 날짜/앨범/장소 검색
 ![Cap 2023-09-07 16-34-00-745](https://github.com/MemoryMingle/FE/assets/135217349/78d62342-abf1-47ed-b950-d80a559998d9)
 ![Cap 2023-09-07 16-34-08-719](https://github.com/MemoryMingle/FE/assets/135217349/f7968e01-d613-4184-937d-fe47544eb42a)
+<br/>
 
-#### 이미지 크롭 기능 / 회원 탈퇴
+#### 이미지 크롭 기능
 ![Cap 2023-09-07 16-36-45-799](https://github.com/MemoryMingle/FE/assets/135217349/2cf6fa6e-52c3-4950-acf8-22ccc214445e)
-![Cap 2023-09-07 16-36-52-394](https://github.com/MemoryMingle/FE/assets/135217349/678b6378-d7fa-4b42-b344-aaecdd45dd71)
+![Cap 2023-09-27 10-13-02-837](https://github.com/MemoryMingle/FE/assets/135217349/9c6120d0-7159-412c-892e-98efae64ecb2)
 <br/>
 <br/>
 
@@ -71,127 +77,9 @@
 
 |  팀원  | Github                                       | 담당 업무                                                                                                                           |
 | :----: | :--------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-|  손규리  | [🔗gyurison7](https://github.com/gyurison7) | 시작페이지 Carousel 구현, 로그인/회원가입 구현, 카카오 소셜 로그인 구현, 마이페이지/비밀번호 변경 페이지 구현, 이미지 크롭 기능 구현, 회원탈퇴 구현                                                                         |
+|  손규리  | [🔗gyurison7](https://github.com/gyurison7) | 시작페이지 Carousel 구현, 로그인/회원가입 구현, 카카오 소셜 로그인 구현, 알림 기능 구현, 마이페이지 구현, 이미지 크롭 기능 구현, 회원탈퇴 구현                                                                         |
 |  Moses  | [🔗mmms2000](https://github.com/mmms2000)     | 메인페이지 구현, 앨범 만들기/수정하기 페이지 구현, 날짜/앨범/장소 검색 구현 |
 |  Khusan  | [🔗khu107](https://github.com/Haegnim)         | 스크롤에 따른 다이나믹 헤더 구현, 앨범 자세히 보기 페이지 구현, 게시글 올리기/수정하기 구현, 댓글 구현, 푸터 구현                                             |
 
 <br/>
 <br/>
-
-
-### 8. 폴더구조📂
-```
-📦src
- ┣ 📂api
- ┃ ┣ 📜auth.js
- ┃ ┣ 📜groupMainApi.js
- ┃ ┣ 📜index.jsx
- ┃ ┣ 📜postMainApi.js
- ┃ ┗ 📜searchApi.js
- ┣ 📂assets
- ┃ ┣ 📂fonts
- ┃ ┃ ┗ 📜PretendardVariable.woff2
- ┃ ┗ 📂images
- ┃ ┃ ┣ 📜background.png
- ┃ ┃ ┣ 📜introduction1.png
- ┃ ┃ ┣ 📜introduction2.png
- ┃ ┃ ┣ 📜introduction3.png
- ┃ ┃ ┣ 📜introduction4.png
- ┃ ┃ ┗ 📜introduction5.png
- ┣ 📂components
- ┃ ┣ 📂commentDropdown
- ┃ ┃ ┗ 📜CommentDropDown.jsx
- ┃ ┗ 📂common
- ┃ ┃ ┣ 📂avatar
- ┃ ┃ ┃ ┗ 📜Avatar.jsx
- ┃ ┃ ┣ 📂button
- ┃ ┃ ┃ ┣ 📜Button.jsx
- ┃ ┃ ┃ ┗ 📜PlusButton.jsx
- ┃ ┃ ┣ 📂comment
- ┃ ┃ ┃ ┗ 📜Comment.jsx
- ┃ ┃ ┣ 📂dropdown
- ┃ ┃ ┃ ┗ 📜Drop.jsx
- ┃ ┃ ┣ 📂header
- ┃ ┃ ┃ ┗ 📜Header.jsx
- ┃ ┃ ┣ 📂iconComponent
- ┃ ┃ ┃ ┣ 📜IconComponents.jsx
- ┃ ┃ ┃ ┗ 📜iconType.txt
- ┃ ┃ ┣ 📂imageCrop
- ┃ ┃ ┣ 📂input
- ┃ ┃ ┃ ┣ 📜Input.jsx
- ┃ ┃ ┃ ┗ 📜WriteImageUpload.jsx
- ┃ ┃ ┣ 📂loading
- ┃ ┃ ┃ ┣ 📜LoadingSpinner.css
- ┃ ┃ ┃ ┗ 📜LoadingSpinner.jsx
- ┃ ┃ ┣ 📂modal
- ┃ ┃ ┃ ┣ 📜CommonModal.jsx
- ┃ ┃ ┃ ┣ 📜CropperModal.jsx
- ┃ ┃ ┃ ┣ 📜DatePicker.jsx
- ┃ ┃ ┃ ┣ 📜MemberOutModal.jsx
- ┃ ┃ ┃ ┣ 📜MoreModal.jsx
- ┃ ┃ ┃ ┣ 📜MyPageProfileModal.jsx
- ┃ ┃ ┃ ┣ 📜NicknameModal.jsx
- ┃ ┃ ┃ ┣ 📜ProfileModal.jsx
- ┃ ┃ ┃ ┗ 📜SignupModal.jsx
- ┃ ┃ ┣ 📂nosearchresult
- ┃ ┃ ┃ ┗ 📜NoSearch.jsx
- ┃ ┃ ┣ 📂photo
- ┃ ┃ ┃ ┗ 📜Photo.jsx
- ┃ ┃ ┗ 📂profile
- ┃ ┃ ┃ ┗ 📜Profile.jsx
- ┣ 📂hooks
- ┃ ┣ 📜debounce.js
- ┃ ┣ 📜useStickyMode.jsx
- ┃ ┗ 📜useToast.jsx
- ┣ 📂layout
- ┃ ┣ 📂footer
- ┃ ┃ ┗ 📜Footer.js
- ┃ ┣ 📂header
- ┃ ┃ ┗ 📜GroupPageHeader.js
- ┃ ┗ 📜index.js
- ┣ 📂pages
- ┃ ┣ 📂app-introduction
- ┃ ┃ ┣ 📜Introduction.jsx
- ┃ ┃ ┗ 📜Introduction2.jsx
- ┃ ┣ 📂group
- ┃ ┃ ┣ 📜GroupEdit.jsx
- ┃ ┃ ┣ 📜GroupMain.jsx
- ┃ ┃ ┣ 📜GroupWrite.jsx
- ┃ ┃ ┗ 📜styleContainer.js
- ┃ ┣ 📂kakao-login
- ┃ ┃ ┗ 📜KakaoLogin.jsx
- ┃ ┣ 📂mypage
- ┃ ┃ ┣ 📜MyPage.jsx
- ┃ ┃ ┗ 📜PasswordChange.jsx
- ┃ ┣ 📂notice
- ┃ ┃ ┗ 📜Notice.jsx
- ┃ ┣ 📂post
- ┃ ┃ ┣ 📜PostDetail.jsx
- ┃ ┃ ┣ 📜PostEdit.jsx
- ┃ ┃ ┣ 📜PostMain.jsx
- ┃ ┃ ┗ 📜PostWrite.jsx
- ┃ ┣ 📂search
- ┃ ┃ ┣ 📜Search.jsx
- ┃ ┃ ┣ 📜SearchAlbum.jsx
- ┃ ┃ ┣ 📜SearchContainer.js
- ┃ ┃ ┣ 📜SearchDate.jsx
- ┃ ┃ ┗ 📜SearchPlace.jsx
- ┃ ┗ 📂signup-login
- ┃ ┃ ┣ 📜Login.jsx
- ┃ ┃ ┣ 📜Signup.jsx
- ┃ ┃ ┗ 📜UserProfile.jsx
- ┣ 📂recoil
- ┃ ┗ 📜Atom.js
- ┣ 📂router
- ┃ ┣ 📜NotProtectedRoute.jsx
- ┃ ┣ 📜ProtectedRoute.jsx
- ┃ ┗ 📜Router.jsx
- ┣ 📂utils
- ┃ ┣ 📜GoogleAnalytics.js
- ┃ ┣ 📜nicknameValidation.js
- ┃ ┣ 📜passwordValidation.js
- ┃ ┗ 📜shareKakao.js
- ┣ 📜App.jsx
- ┣ 📜index.css
- ┗ 📜index.js
-```
