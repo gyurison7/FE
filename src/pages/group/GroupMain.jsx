@@ -40,13 +40,10 @@ function GroupMain() {
   return (
     <>
       <MainContainer ref={parentRef}>
+        {isLoading ? <LoadingSpinner /> : null}
         <FixedHeader />
         <GroupWrapper>
-          {isLoading ? (
-            <>
-              <LoadingSpinner />
-            </>
-          ) : isError ? (
+          {isError ? (
             <div>Error fetching group data</div>
           ) : groupData && groupData.length === 0 ? (
             <PreMainContainer>
