@@ -57,8 +57,8 @@ function MoreModal({ groupid, groupUserId, groupName, parentRef, onClose }) {
         setErrorMessage(null);
         setGroupData((prevData) => prevData.filter((group) => group.groupId !== id));
 
-        const deletedNotice = noticeList.filter(notice => notice.groupId !== id);
-        setNoticeList(deletedNotice);
+        const updatedNoticeList = noticeList.filter((notice) => notice.groupId !== id);
+        setNoticeList(updatedNoticeList);
       }
     } catch (error) {
       console.log(error);
